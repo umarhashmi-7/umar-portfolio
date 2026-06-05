@@ -32,11 +32,23 @@ document.addEventListener('DOMContentLoaded', () => {
    1. PWA Service Worker Registration
    ========================================================================== */
 function initPWA() {
+  // Active cleanup of service workers and caches on the client main thread
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('[PWA] Service Worker registered with scope:', reg.scope))
-        .catch(err => console.error('[PWA] Service Worker registration failed:', err));
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (let registration of registrations) {
+        registration.unregister().then(() => {
+          console.log('[PWA] Service Worker unregistered');
+        });
+      }
+    });
+  }
+  if ('caches' in window) {
+    caches.keys().then((keys) => {
+      keys.forEach((key) => {
+        caches.delete(key).then(() => {
+          console.log('[PWA] Cache cleared:', key);
+        });
+      });
     });
   }
 }
