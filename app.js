@@ -1450,7 +1450,7 @@ const ARCH_DETAILS = {
           setTimeout(() => {
             // Trigger actual download
             const tempLink = document.createElement('a');
-            tempLink.href = "Siufit.apk";
+            tempLink.href = "https://github.com/umarhashmi-7/umar-portfolio/releases/download/v1.0.0/Siufit.apk";
             tempLink.download = "SIUFIT_v1.0_Stable.apk";
             document.body.appendChild(tempLink);
             tempLink.click();
