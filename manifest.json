@@ -1,0 +1,17 @@
+{
+  "short_name": "Umar Portfolio",
+  "name": "Mohd Umar Hashmi | Portfolio & Product Builder",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "display": "standalone",
+  "orientation": "portrait"
+}

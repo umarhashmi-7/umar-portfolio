@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Testing
+coverage/
+
+# Production build output
+dist/
+
+# IDE files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Large binaries (GitHub limit is 100MB; Siufit.apk is 108.6MB)
+*.apk
+
+# Android Source Code (keep separate from Web Portfolio repository)
+SIUFIT CLG/
+
