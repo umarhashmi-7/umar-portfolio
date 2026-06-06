@@ -28,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initChatbotShortcuts();
   initHeroRoles();
   initBlogModal();
+  initCertificationsShowcase();
 });
 
 /* ==========================================================================
@@ -244,6 +245,50 @@ function initVisitorAnalytics() {
   analyticsModal.addEventListener('click', (e) => {
     if (e.target === analyticsModal) analyticsModal.classList.remove('open');
   });
+
+  // Overhauled Interactive Chart Tooltips
+  const tooltip = document.getElementById('chart-tooltip');
+  const interactiveBars = document.querySelectorAll('.chart-bar-interactive');
+
+  if (tooltip && interactiveBars.length) {
+    interactiveBars.forEach(barWrapper => {
+      barWrapper.addEventListener('mouseenter', () => {
+        const barType = barWrapper.getAttribute('data-bar');
+        const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
+        
+        let val = 0;
+        if (barType === 'time') {
+          let siteTimeSpentSec = siteTimeSpent;
+          val = siteTimeSpentSec + 's';
+          if (siteTimeSpentSec >= 60) {
+            val = Math.floor(siteTimeSpentSec / 60) + 'm ' + (siteTimeSpentSec % 60) + 's';
+          }
+        } else if (barType === 'resume') {
+          val = (counts.resumeDownloads || 0) + ' Downloads';
+        } else if (barType === 'apk') {
+          val = (counts.apkDownloads || 0) + ' Downloads';
+        } else if (barType === 'contact') {
+          val = (counts.contactClicks || 0) + ' Clicks';
+        }
+
+        tooltip.innerText = val;
+        tooltip.classList.add('visible');
+        
+        const barRect = barWrapper.getBoundingClientRect();
+        const containerRect = barWrapper.offsetParent.getBoundingClientRect();
+        
+        const leftOffset = barRect.left - containerRect.left + (barRect.width / 2);
+        const topOffset = barRect.top - containerRect.top - 8;
+        
+        tooltip.style.left = `${leftOffset}px`;
+        tooltip.style.top = `${topOffset}px`;
+      });
+
+      barWrapper.addEventListener('mouseleave', () => {
+        tooltip.classList.remove('visible');
+      });
+    });
+  }
 
   function recordMetric(key) {
     const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
@@ -2008,7 +2053,7 @@ function initHeroCanvas() {
    23. 3D Card Tilt Parallax effect
    ========================================================================== */
 function initCardTilt3D() {
-  const cards = document.querySelectorAll('.siufit-hero-card, .project-card, .about-story');
+  const cards = document.querySelectorAll('.siufit-hero-card, .project-card, .about-story, .metrics-glass-card');
 
   if (!cards.length) return;
 
@@ -2341,6 +2386,179 @@ function initBlogModal() {
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && modal.classList.contains('open')) {
       closeModal();
+    }
+  });
+}
+
+/* ==========================================================================
+   31. Credentials & Certifications Showcase
+   ========================================================================== */
+function initCertificationsShowcase() {
+  const filterBtns = document.querySelectorAll('.cert-filter-btn');
+  const cards = document.querySelectorAll('.cert-card-v2');
+  const modal = document.getElementById('cert-lightbox-modal');
+  const modalImg = document.getElementById('cert-lightbox-img');
+  const modalCaption = document.getElementById('cert-lightbox-caption-text');
+  const modalDownload = document.getElementById('cert-lightbox-download-btn');
+  const closeBtn = document.getElementById('cert-lightbox-close-btn');
+  const prevBtn = document.getElementById('cert-lightbox-prev-btn');
+  const nextBtn = document.getElementById('cert-lightbox-next-btn');
+  const backdrop = document.getElementById('cert-lightbox-backdrop-btn');
+  const zoomWrapper = document.getElementById('cert-lightbox-img-zoom-wrapper');
+
+  if (!filterBtns.length || !cards.length || !modal) return;
+
+  // 1. Mouse Spotlight Tracker for cards
+  cards.forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+
+  // 2. Category Filtering Logic
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      // Toggle active states
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filterVal = btn.getAttribute('data-filter');
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        // Reset animation
+        card.style.animation = 'none';
+        
+        if (filterVal === 'all' || category === filterVal) {
+          card.classList.remove('hidden');
+          // Force reflow
+          void card.offsetWidth;
+          card.style.animation = 'certFadeIn 0.5s ease forwards';
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // 3. Build Gallery array of certs that have images
+  const gallery = [];
+  cards.forEach(card => {
+    const imgUrl = card.getAttribute('data-cert-img');
+    if (imgUrl) {
+      gallery.push({
+        element: card,
+        imgUrl: imgUrl,
+        title: card.getAttribute('data-title'),
+        issuer: card.getAttribute('data-issuer'),
+        date: card.getAttribute('data-date')
+      });
+    }
+  });
+
+  let currentGalleryIdx = 0;
+
+  // 4. Update Lightbox Modal content
+  const updateLightboxContent = (idx) => {
+    if (idx < 0 || idx >= gallery.length) return;
+    currentGalleryIdx = idx;
+    const cert = gallery[idx];
+
+    // Reset zoom state on load
+    modalImg.classList.remove('zoomed');
+    modalImg.style.transformOrigin = 'center center';
+
+    modalImg.src = cert.imgUrl;
+    modalImg.alt = `${cert.title} - ${cert.issuer} Certificate`;
+    modalCaption.textContent = `${cert.title} (${cert.issuer})`;
+    modalDownload.href = cert.imgUrl;
+  };
+
+  // 5. Open Lightbox Event Binding
+  gallery.forEach((cert, idx) => {
+    const viewBtn = cert.element.querySelector('.view-cert-btn');
+    if (viewBtn) {
+      viewBtn.addEventListener('click', () => {
+        updateLightboxContent(idx);
+        modal.style.display = 'flex';
+        // Force reflow
+        void modal.offsetWidth;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    }
+  });
+
+  // 6. Navigation Triggers
+  const navNext = () => {
+    let nextIdx = currentGalleryIdx + 1;
+    if (nextIdx >= gallery.length) nextIdx = 0;
+    updateLightboxContent(nextIdx);
+  };
+
+  const navPrev = () => {
+    let prevIdx = currentGalleryIdx - 1;
+    if (prevIdx < 0) prevIdx = gallery.length - 1;
+    updateLightboxContent(prevIdx);
+  };
+
+  nextBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navNext();
+  });
+
+  prevBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navPrev();
+  });
+
+  // 7. Zoom Interactive Feature
+  modalImg.addEventListener('click', (e) => {
+    e.stopPropagation();
+    modalImg.classList.toggle('zoomed');
+  });
+
+  zoomWrapper.addEventListener('mousemove', (e) => {
+    if (modalImg.classList.contains('zoomed')) {
+      const rect = zoomWrapper.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      modalImg.style.transformOrigin = `${x}% ${y}%`;
+    }
+  });
+
+  // 8. Close Modal Controls
+  const closeLightbox = () => {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    // Reset zoom
+    modalImg.classList.remove('zoomed');
+    
+    // Hide display after transition completes (0.4s)
+    setTimeout(() => {
+      if (!modal.classList.contains('open')) {
+        modal.style.display = 'none';
+      }
+    }, 400);
+  };
+
+  closeBtn.addEventListener('click', closeLightbox);
+  backdrop.addEventListener('click', closeLightbox);
+
+  // Keyboard navigation / escape
+  window.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('open')) return;
+
+    if (e.key === 'Escape') {
+      closeLightbox();
+    } else if (e.key === 'ArrowRight') {
+      navNext();
+    } else if (e.key === 'ArrowLeft') {
+      navPrev();
     }
   });
 }

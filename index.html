@@ -62,15 +62,32 @@
       <a href="#" class="nav-logo" id="nav-logo-btn">
         <svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#3b82f6" />
-              <stop offset="100%" stop-color="#1d4ed8" />
+            <linearGradient id="logo-bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0b0f19" />
+              <stop offset="100%" stop-color="#030712" />
             </linearGradient>
+            <linearGradient id="logo-glow-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#3b82f6" />
+              <stop offset="100%" stop-color="#7c3aed" />
+            </linearGradient>
+            <linearGradient id="logo-metallic" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="50%" stop-color="#93c5fd" />
+              <stop offset="100%" stop-color="#c084fc" />
+            </linearGradient>
+            <filter id="logo-glow-filter" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="10" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
           </defs>
-          <rect width="512" height="512" rx="128" fill="url(#logo-grad)" />
-          <path d="M160,160 L160,280 C160,332.8 202.9,376 256,376 C309.1,376 352,332.8 352,280 L352,160" fill="none"
-            stroke="#ffffff" stroke-width="44" stroke-linecap="round" stroke-linejoin="round" />
-          <path d="M256,120 L266,144 L290,154 L266,164 L256,188 L246,164 L222,154 L246,144 Z" fill="#ffffff" />
+          <rect width="506" height="506" x="3" y="3" rx="130" fill="url(#logo-bg-grad)" stroke="url(#logo-glow-grad)" stroke-width="6" />
+          <path d="M160,170 L160,280 C160,332.8 202.9,376 256,376 C309.1,376 352,332.8 352,280 L352,170" fill="none" stroke="url(#logo-glow-grad)" stroke-width="48" stroke-linecap="round" stroke-linejoin="round" opacity="0.3" filter="url(#logo-glow-filter)" />
+          <path d="M160,170 L160,280 C160,332.8 202.9,376 256,376 C309.1,376 352,332.8 352,280 L352,170" fill="none" stroke="url(#logo-metallic)" stroke-width="36" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M185,170 L185,280 C185,319 217,351 256,351 C295,351 327,319 327,280 L327,170" fill="none" stroke="#0b0f19" stroke-width="8" stroke-linecap="round" />
+          <path d="M256,110 L267,135 L292,146 L267,157 L256,182 L245,157 L220,146 L245,135 Z" fill="#ffffff" filter="url(#logo-glow-filter)" />
         </svg>
         <span>Mohd Umar Hashmi</span>
       </a>
@@ -177,22 +194,24 @@
           </a>
           <a href="#contact" class="btn btn-secondary">Contact Me</a>
         </div>
-        <div class="hero-metrics">
-          <div class="metric-item">
-            <span class="metric-value counter" data-target="10">0</span>
-            <span class="metric-label">SIUFIT Modules</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-value counter" data-target="800" data-suffix="+">0</span>
-            <span class="metric-label">Participants Managed</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-value counter" data-target="30" data-suffix="+">0</span>
-            <span class="metric-label">Educators Trained</span>
-          </div>
-          <div class="metric-item">
-            <span class="metric-value counter" data-target="20">0</span>
-            <span class="metric-label">Students Mentored</span>
+        <div class="metrics-glass-card" style="margin-top: 2rem;">
+          <div class="hero-metrics" style="border-top: none; padding-top: 0; justify-content: space-between;">
+            <div class="metric-item" style="text-align: center; flex: 1;">
+              <span class="metric-value counter" data-target="10" data-suffix="+">0</span>
+              <span class="metric-label">SIUFIT Modules</span>
+            </div>
+            <div class="metric-item" style="text-align: center; flex: 1;">
+              <span class="metric-value counter" data-target="800" data-suffix="+">0</span>
+              <span class="metric-label">Participants Managed</span>
+            </div>
+            <div class="metric-item" style="text-align: center; flex: 1;">
+              <span class="metric-value counter" data-target="30" data-suffix="+">0</span>
+              <span class="metric-label">Educators Trained</span>
+            </div>
+            <div class="metric-item" style="text-align: center; flex: 1;">
+              <span class="metric-value counter" data-target="20" data-suffix="+">0</span>
+              <span class="metric-label">Students Mentored</span>
+            </div>
           </div>
         </div>
       </div>
@@ -2098,93 +2117,485 @@
       <div class="section-header">
         <span class="badge">Credentials</span>
         <h2>Professional Certifications</h2>
-        <p>Curated list of certifications supporting my Android, AI, and project management skills.</p>
+        <p>A showcase of my credentials, workshops, and verified professional development courses.</p>
       </div>
 
-      <div class="certifications-list">
-        <div class="cert-card">
-          <div class="cert-badge-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            </svg>
+      <!-- Filter Navigation -->
+      <div class="cert-filters-wrapper">
+        <div class="cert-filters">
+          <button class="cert-filter-btn active" data-filter="all">All</button>
+          <button class="cert-filter-btn" data-filter="ai">AI &amp; Emerging Tech</button>
+          <button class="cert-filter-btn" data-filter="software">Software Dev</button>
+          <button class="cert-filter-btn" data-filter="data">Data &amp; Analytics</button>
+          <button class="cert-filter-btn" data-filter="professional">Professional Dev</button>
+        </div>
+      </div>
+
+      <!-- Grid of Certificate Cards -->
+      <div class="certifications-list-v2">
+        
+        <!-- Card 1: HTML/CSS Fundamentals (Open Weaver) -->
+        <div class="cert-card-v2" data-category="software" data-cert-img="public/cert_html_css.jpg" data-title="HTML/CSS Fundamentals" data-issuer="Open Weaver" data-date="2023">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- OpenWeaver Official Brand Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="url(#ow-grad-v3)" />
+                <path d="M50 20 C60 33, 72 38, 72 52 C72 66, 60 72, 50 72 C40 72, 28 66, 28 52 C28 38, 40 33, 50 20 Z" fill="#ffffff" opacity="0.1" />
+                <path d="M50 25 C45 35, 33 45, 33 55 C33 65, 41 72, 50 72 C59 72, 67 65, 67 55 C67 45, 55 35, 50 25 Z" fill="#ffffff" />
+                <circle cx="50" cy="54" r="8" fill="url(#ow-grad-v3)" />
+                <defs>
+                  <linearGradient id="ow-grad-v3" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#FF1E60" />
+                    <stop offset="100%" stop-color="#C2003B" />
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
           </div>
-          <div class="cert-info">
-            <h4>Google certifications</h4>
-            <p>Android Foundations & Play Store App Release Guidelines</p>
+          <div class="cert-card-body">
+            <h3 class="cert-title">HTML/CSS Fundamentals</h3>
+            <p class="cert-meta">Open Weaver &bull; 2023</p>
+            <p class="cert-desc">Basics of HTML/CSS for Beginners Training. Formulated a solid core in page layout, responsive architectures, and styling strategies.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
           </div>
         </div>
 
-        <div class="cert-card">
-          <div class="cert-badge-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polygon
-                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-              </polygon>
-            </svg>
+        <!-- Card 2: Content Writing as Prompt Engineer (Mind Labs) -->
+        <div class="cert-card-v2" data-category="professional" data-cert-img="public/cert_content_writing.png" data-title="Content Writing as Prompt Engineer" data-issuer="Mind Labs" data-date="2022">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- Mind Labs Official Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="#103762" stroke="#e0f2fe" stroke-width="2"/>
+                <path d="M48 26 C36 26, 27 35, 27 47 C27 57, 33 65, 41 67 C43 73, 48 74, 48 71 C48 67, 45 65, 45 59 C42 55, 40 49, 42 44 C44 39, 48 41, 48 44 C48 34, 48 26, 48 26 Z" fill="#FDBC00" opacity="0.85"/>
+                <path d="M52 26 C64 26, 73 35, 73 47 C73 57, 67 65, 59 67 C57 73, 52 74, 52 71 C52 67, 55 65, 55 59 C58 55, 60 49, 58 44 C56 39, 52 41, 52 44 C52 34, 52 26, 52 26 Z" fill="#FDBC00"/>
+                <circle cx="50" cy="47" r="5" fill="#ffffff"/>
+                <line x1="41" y1="39" x2="59" y2="39" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                <line x1="33" y1="47" x2="67" y2="47" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                <line x1="41" y1="55" x2="59" y2="55" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
           </div>
-          <div class="cert-info">
-            <h4>NPTEL Certificate</h4>
-            <p>Advanced Software Engineering Principles & Algorithms</p>
+          <div class="cert-card-body">
+            <h3 class="cert-title">Content Writing as Prompt Engineer</h3>
+            <p class="cert-meta">Mind Labs &bull; 2022</p>
+            <p class="cert-desc">Formulating content structures using prompt engineering patterns and generative AI systems to optimize material pipelines.</p>
           </div>
-        </div>
-
-        <div class="cert-card">
-          <div class="cert-badge-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-            </svg>
-          </div>
-          <div class="cert-info">
-            <h4>HP LIFE Certification</h4>
-            <p>Business Operations, Project Launch & Marketing Analytics</p>
-          </div>
-        </div>
-
-        <div class="cert-card">
-          <div class="cert-badge-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-            </svg>
-          </div>
-          <div class="cert-info">
-            <h4>Coursera Credentials</h4>
-            <p>Kotlin Architecture Patterns, Coroutines & Flow API</p>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
           </div>
         </div>
 
-        <div class="cert-card">
-          <div class="cert-badge-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="9" y1="9" x2="15" y2="15"></line>
-              <line x1="15" y1="9" x2="9" y2="15"></line>
-            </svg>
+        <!-- Card 3: Introduction to Microsoft Excel (Coursera) -->
+        <div class="cert-card-v2" data-category="data" data-cert-img="public/cert_excel.png" data-title="Introduction to Microsoft Excel" data-issuer="Coursera" data-date="2024">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- Coursera Official Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" rx="22" fill="#0056D2" />
+                <path d="M72 50 C72 62.15, 62.15 72, 50 72 C37.85 72, 28 62.15, 28 50 C28 37.85, 37.85 28, 50 28 C58.5 28, 65.8 32.8, 69.3 40 L58.4 45 C56.8 41.5, 53.6 39.5, 50 39.5 C44.2 39.5, 39.5 44.2, 39.5 50 C39.5 55.8, 44.2 60.5, 50 60.5 C53.6 60.5, 56.8 58.5, 58.4 55 L69.3 60 C65.8 67.2, 58.5 72, 50 72 Z" fill="#ffffff" />
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
           </div>
-          <div class="cert-info">
-            <h4>IEEE Certifications</h4>
-            <p>Global Coding Challenges & Advanced ML Workshops</p>
+          <div class="cert-card-body">
+            <h3 class="cert-title">Introduction to Microsoft Excel</h3>
+            <p class="cert-meta">Coursera &bull; 2024</p>
+            <p class="cert-desc">Excel data analysis project covering formulas, data validation, pivot tables, and analytical visualization structures.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
           </div>
         </div>
 
-        <div class="cert-card">
-          <div class="cert-badge-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M12 16v-4"></path>
-              <path d="M12 8h.01"></path>
-            </svg>
+        <!-- Card 4: E-Book Writing Specialist (Mind Labs) -->
+        <div class="cert-card-v2" data-category="professional" data-cert-img="public/cert_ebook.png" data-title="E-Book Writing Specialist" data-issuer="Mind Labs" data-date="2022">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- Mind Labs Official Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="#103762" stroke="#e0f2fe" stroke-width="2"/>
+                <path d="M48 26 C36 26, 27 35, 27 47 C27 57, 33 65, 41 67 C43 73, 48 74, 48 71 C48 67, 45 65, 45 59 C42 55, 40 49, 42 44 C44 39, 48 41, 48 44 C48 34, 48 26, 48 26 Z" fill="#FDBC00" opacity="0.85"/>
+                <path d="M52 26 C64 26, 73 35, 73 47 C73 57, 67 65, 59 67 C57 73, 52 74, 52 71 C52 67, 55 65, 55 59 C58 55, 60 49, 58 44 C56 39, 52 41, 52 44 C52 34, 52 26, 52 26 Z" fill="#FDBC00"/>
+                <circle cx="50" cy="47" r="5" fill="#ffffff"/>
+                <line x1="41" y1="39" x2="59" y2="39" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                <line x1="33" y1="47" x2="67" y2="47" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                <line x1="41" y1="55" x2="59" y2="55" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
           </div>
-          <div class="cert-info">
-            <h4>Mind Labs AI Program</h4>
-            <p>Fine-Tuning Large Language Models & Prompt Engineering</p>
+          <div class="cert-card-body">
+            <h3 class="cert-title">E-Book Writing Specialist</h3>
+            <p class="cert-meta">Mind Labs &bull; 2022</p>
+            <p class="cert-desc">Structuring long-form digital assets, content architecture, distribution workflows, and professional editorial review standards.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
           </div>
         </div>
+
+        <!-- Card 5: NPTEL Elite Certification - Social Networks (IIT Madras) -->
+        <div class="cert-card-v2" data-category="data" data-cert-img="public/cert_nptel.png" data-title="NPTEL Elite Certification — Social Networks" data-issuer="IIT Madras" data-date="2025">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- NPTEL Official Brand Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="#A0211B" stroke="#ffffff" stroke-width="2"/>
+                <circle cx="50" cy="50" r="38" stroke="#F59E0B" stroke-width="2.5" stroke-dasharray="6 3"/>
+                <path d="M50 26 C43 38, 38 48, 38 58 C38 66, 43 72, 50 72 C57 72, 62 66, 62 58 C62 48, 57 38, 50 26 Z" fill="#F59E0B"/>
+                <path d="M50 20 C48 28, 45 32, 45 38 C45 42, 47 45, 50 45 C53 45, 55 42, 55 38 C55 32, 52 28, 50 20 Z" fill="#EF4444"/>
+                <path d="M30 65 C40 68, 50 64, 50 64 C50 64, 60 68, 70 65 L70 68 C60 71, 50 67, 50 67 C50 67, 40 71, 30 68 Z" fill="#ffffff"/>
+                <text x="50" y="81" font-family="'Inter', sans-serif" font-weight="800" font-size="10" fill="#ffffff" text-anchor="middle">NPTEL</text>
+              </svg>
+            </div>
+            <span class="cert-status-badge elite">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px; height:12px; margin-right:4px;"><polygon points="12 2 15 8.5 22 9 17 14 18.5 21 12 17.5 5.5 21 7 14 2 9 9 8.5 12 2"></polygon></svg>
+              Elite
+            </span>
+          </div>
+          <div class="cert-card-body">
+            <h3 class="cert-title">NPTEL Elite Certification — Social Networks</h3>
+            <p class="cert-meta">IIT Madras &bull; 2025</p>
+            <p class="cert-desc">Graph theory, structural balance, community structures, network diffusion, and epidemic thresholds modeling.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 6: AI for Business Professionals (HP LIFE) -->
+        <div class="cert-card-v2" data-category="ai" data-cert-img="public/cert_hp_ai.png" data-title="AI for Business Professionals" data-issuer="HP LIFE" data-date="2026">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- HP Official Brand Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="#0096D6" />
+                <g transform="translate(50, 50) rotate(-13) translate(-50, -50)">
+                  <rect x="34" y="15" width="7" height="60" rx="1.5" fill="#ffffff" />
+                  <path d="M37 40 C43 33, 49 33, 49 42 L49 75 L42 75 L42 45 C42 41, 38 41, 38 45 L38 75 L34 75 L34 40 L37 40 Z" fill="#ffffff" />
+                  <rect x="51" y="40" width="7" height="45" rx="1.5" fill="#ffffff" />
+                  <path d="M54 40 C62 40, 68 46, 68 55 C68 64, 62 70, 54 70 C51 70, 51 68, 51 68 L51 42 C51 42, 51 40, 54 40 Z M58 47 C61 47, 61 63, 58 63 C56 63, 56 47, 58 47 Z" fill="#ffffff" />
+                </g>
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
+          </div>
+          <div class="cert-card-body">
+            <h3 class="cert-title">AI for Business Professionals</h3>
+            <p class="cert-meta">HP LIFE &bull; 2026</p>
+            <p class="cert-desc">Optimizing marketing workflows, CRM automations, data-driven lead generation pipelines, and ethical AI enterprise frameworks.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 7: IT for Business Success (HP LIFE) -->
+        <div class="cert-card-v2" data-category="software" data-cert-img="public/cert_hp_it.png" data-title="IT for Business Success" data-issuer="HP LIFE" data-date="2026">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- HP Official Brand Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="#0096D6" />
+                <g transform="translate(50, 50) rotate(-13) translate(-50, -50)">
+                  <rect x="34" y="15" width="7" height="60" rx="1.5" fill="#ffffff" />
+                  <path d="M37 40 C43 33, 49 33, 49 42 L49 75 L42 75 L42 45 C42 41, 38 41, 38 45 L38 75 L34 75 L34 40 L37 40 Z" fill="#ffffff" />
+                  <rect x="51" y="40" width="7" height="45" rx="1.5" fill="#ffffff" />
+                  <path d="M54 40 C62 40, 68 46, 68 55 C68 64, 62 70, 54 70 C51 70, 51 68, 51 68 L51 42 C51 42, 51 40, 54 40 Z M58 47 C61 47, 61 63, 58 63 C56 63, 56 47, 58 47 Z" fill="#ffffff" />
+                </g>
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
+          </div>
+          <div class="cert-card-body">
+            <h3 class="cert-title">IT for Business Success</h3>
+            <p class="cert-meta">HP LIFE &bull; 2026</p>
+            <p class="cert-desc">Information technology architectures, business network infrastructure setup, data security, and tool configuration for scale.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 8: AI Tools & ChatGPT Workshop (be10x) -->
+        <div class="cert-card-v2" data-category="ai" data-cert-img="public/cert_be10x.png" data-title="AI Tools &amp; ChatGPT Workshop" data-issuer="be10x" data-date="2026">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- be10x High-Fidelity SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" rx="22" fill="#0c0a09" stroke="#292524" stroke-width="2" />
+                <text x="35" y="58" font-family="'Inter', sans-serif" font-weight="400" font-size="24" fill="#ffffff" text-anchor="middle">be</text>
+                <text x="68" y="58" font-family="'Inter', sans-serif" font-weight="900" font-size="28" fill="#F97316" text-anchor="middle">10x</text>
+                <path d="M25 70 L75 70" stroke="#f97316" stroke-width="3" stroke-linecap="round" opacity="0.8"/>
+                <path d="M60 25 L68 33 L62 33 L70 42 L64 42 L72 52" stroke="#e7e5e4" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
+          </div>
+          <div class="cert-card-body">
+            <h3 class="cert-title">AI Tools &amp; ChatGPT Workshop</h3>
+            <p class="cert-meta">be10x &bull; 2026</p>
+            <p class="cert-desc">Leveraging ChatGPT pipelines, automated code refactoring via LLMs, productivity workflows, and AI presentation modeling.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 9: Communication Mentor Certification (IEEE SB STB15123, TMU) -->
+        <div class="cert-card-v2" data-category="professional" data-cert-img="public/cert_comm_mentor.png" data-title="Communication Mentor Certification" data-issuer="IEEE Student Branch" data-date="2024">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- IEEE Official Brand Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" rx="22" fill="#00629B" />
+                <path d="M50 15 L85 50 L50 85 L15 50 Z" stroke="#ffffff" stroke-width="4" fill="none" />
+                <circle cx="50" cy="50" r="10" stroke="#ffffff" stroke-width="3" fill="none" />
+                <path d="M50 25 L50 75 M35 50 L65 50" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+                <path d="M43 43 C43 43, 50 35, 57 43" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <path d="M43 57 C43 57, 50 65, 57 57" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" fill="none" />
+                <text x="50" y="80" font-family="'Inter', sans-serif" font-weight="900" font-size="12" fill="#ffffff" text-anchor="middle" letter-spacing="1">IEEE</text>
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
+          </div>
+          <div class="cert-card-body">
+            <h3 class="cert-title">Communication Mentor Certification</h3>
+            <p class="cert-meta">IEEE SB STB15123, TMU &bull; 2024</p>
+            <p class="cert-desc">Peer coaching, public presentation structures, and design of technical communication workflows for student engineering workshops.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 10: Prompt Engineering & AI Applications (Mind Labs) -->
+        <div class="cert-card-v2" data-category="ai" data-cert-img="public/cert_prompt_eng.png" data-title="Prompt Engineering &amp; AI Applications" data-issuer="Mind Labs" data-date="2023">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- Mind Labs Official Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="#103762" stroke="#e0f2fe" stroke-width="2"/>
+                <path d="M48 26 C36 26, 27 35, 27 47 C27 57, 33 65, 41 67 C43 73, 48 74, 48 71 C48 67, 45 65, 45 59 C42 55, 40 49, 42 44 C44 39, 48 41, 48 44 C48 34, 48 26, 48 26 Z" fill="#FDBC00" opacity="0.85"/>
+                <path d="M52 26 C64 26, 73 35, 73 47 C73 57, 67 65, 59 67 C57 73, 52 74, 52 71 C52 67, 55 65, 55 59 C58 55, 60 49, 58 44 C56 39, 52 41, 52 44 C52 34, 52 26, 52 26 Z" fill="#FDBC00"/>
+                <circle cx="50" cy="47" r="5" fill="#ffffff"/>
+                <line x1="41" y1="39" x2="59" y2="39" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                <line x1="33" y1="47" x2="67" y2="47" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                <line x1="41" y1="55" x2="59" y2="55" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
+          </div>
+          <div class="cert-card-body">
+            <h3 class="cert-title">Prompt Engineering &amp; AI Applications</h3>
+            <p class="cert-meta">Mind Labs &bull; 2023</p>
+            <p class="cert-desc">Formulating advanced few-shot templates, chaining models, preventing jailbreaks, and orchestrating retrieval-augmented generation systems.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 11: Artificial Intelligence Fundamentals (Mind Labs) -->
+        <div class="cert-card-v2" data-category="ai" data-cert-img="public/cert_ai_fundamentals.png" data-title="Artificial Intelligence Fundamentals" data-issuer="Mind Labs" data-date="2023">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- Mind Labs Official Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="#103762" stroke="#e0f2fe" stroke-width="2"/>
+                <path d="M48 26 C36 26, 27 35, 27 47 C27 57, 33 65, 41 67 C43 73, 48 74, 48 71 C48 67, 45 65, 45 59 C42 55, 40 49, 42 44 C44 39, 48 41, 48 44 C48 34, 48 26, 48 26 Z" fill="#FDBC00" opacity="0.85"/>
+                <path d="M52 26 C64 26, 73 35, 73 47 C73 57, 67 65, 59 67 C57 73, 52 74, 52 71 C52 67, 55 65, 55 59 C58 55, 60 49, 58 44 C56 39, 52 41, 52 44 C52 34, 52 26, 52 26 Z" fill="#FDBC00"/>
+                <circle cx="50" cy="47" r="5" fill="#ffffff"/>
+                <line x1="41" y1="39" x2="59" y2="39" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                <line x1="33" y1="47" x2="67" y2="47" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+                <line x1="41" y1="55" x2="59" y2="55" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="2 2"/>
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
+          </div>
+          <div class="cert-card-body">
+            <h3 class="cert-title">Artificial Intelligence Fundamentals</h3>
+            <p class="cert-meta">Mind Labs &bull; 2023</p>
+            <p class="cert-desc">Core heuristics, search algorithms, training metrics, regression models, classification frameworks, and neural layer dimensions.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 12: Digital Marketing Fundamentals (Google) -->
+        <div class="cert-card-v2" data-category="data" data-cert-img="public/cert_digital_marketing.png" data-title="Digital Marketing Fundamentals" data-issuer="Google" data-date="2023">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- Google G Logo High-Fidelity SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" rx="22" fill="#ffffff" stroke="#e2e8f0" stroke-width="2" />
+                <path d="M78.6 51.1 C78.6 49.1, 78.4 47.3, 78.1 45.5 H50 V56.1 H66.1 C65.4 59.8, 63.3 62.9, 60.1 65.1 V71.9 H68.9 C74.1 67.1, 78.6 59.8, 78.6 51.1 Z" fill="#4285F4" />
+                <path d="M50 80 C63.5 80, 74.8 75.5, 83.1 67.9 L74.3 61.1 C71.9 62.7, 68.8 63.8, 65 63.8 C54.8 63.8, 46.2 56.9, 43.1 47.6 H34 V54.7 C42.3 71.2, 59.4 80, 50 80 Z" fill="#34A853" />
+                <path d="M43.1 47.6 C42.3 45.2, 41.9 42.7, 41.9 40 C41.9 37.3, 42.3 34.8, 43.1 32.4 V25.3 H34 C31.3 30.7, 29.8 36.8, 29.8 40 C29.8 43.2, 31.3 49.3, 34 54.7 L43.1 47.6 Z" fill="#FBBC05" />
+                <path d="M50 16.2 C57.3 16.2, 63.9 18.7, 69.1 23.6 L76.9 15.8 C72.2 11.4, 61.8 8, 50 8 C33.4 8, 16.3 16.8, 8 33.3 L17.1 40.4 C20.2 31.1, 28.8 24.2, 50 24.2 Z" fill="#EA4335" />
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
+          </div>
+          <div class="cert-card-body">
+            <h3 class="cert-title">Digital Marketing Fundamentals</h3>
+            <p class="cert-meta">Google &bull; 2023</p>
+            <p class="cert-desc">Search engine optimization (SEO), SEM strategies, analytics pipelines, ad campaign execution, and conversion optimization funnels.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 13: BOI Recognized Creator (Instagram) -->
+        <div class="cert-card-v2" data-category="professional" data-cert-img="public/cert_boi_creator.png" data-title="BOI Recognized Creator" data-issuer="Born On Instagram" data-date="2023">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- Instagram Official Brand Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" rx="22" fill="url(#ig-grad-v3)" />
+                <rect x="24" y="24" width="52" height="52" rx="14" stroke="#ffffff" stroke-width="5" />
+                <circle cx="50" cy="50" r="12" stroke="#ffffff" stroke-width="5" />
+                <circle cx="66" cy="34" r="4" fill="#ffffff" />
+                <defs>
+                  <linearGradient id="ig-grad-v3" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#f09433"/>
+                    <stop offset="25%" stop-color="#e6683c"/>
+                    <stop offset="50%" stop-color="#dc2743"/>
+                    <stop offset="75%" stop-color="#cc2366"/>
+                    <stop offset="100%" stop-color="#bc1888"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
+          </div>
+          <div class="cert-card-body">
+            <h3 class="cert-title">BOI Recognized Creator</h3>
+            <p class="cert-meta">Born On Instagram &bull; 2023</p>
+            <p class="cert-desc">Instagram Creator Course. Encompasses content production techniques, engagement strategies, audience metrics, and platform algorithms.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Certificate
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 14: Python Developer Internship (SS Pharmaceuticals) -->
+        <div class="cert-card-v2" data-category="software" data-cert-img="public/cert_internship_python.jpg" data-title="Python Developer Internship" data-issuer="SS Pharmaceuticals" data-date="2024">
+          <div class="cert-card-header">
+            <div class="cert-brand-logo">
+              <!-- SS Pharmaceuticals Official Logo SVG -->
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="100" height="100" rx="22" fill="#0d9488" stroke="#115e59" stroke-width="2" />
+                <circle cx="50" cy="50" r="38" stroke="#ffffff" stroke-width="2" stroke-dasharray="5 3" opacity="0.5" />
+                <path d="M50 22 L50 78 M22 50 L78 50" stroke="#ffffff" stroke-width="12" stroke-linecap="round" />
+                <circle cx="50" cy="50" r="8" fill="#0d9488" />
+                <text x="50" y="55" font-family="'Inter', sans-serif" font-weight="900" font-size="14" fill="#ffffff" text-anchor="middle">SS</text>
+              </svg>
+            </div>
+            <span class="cert-status-badge verified">
+              <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              Verified
+            </span>
+          </div>
+          <div class="cert-card-body">
+            <h3 class="cert-title">Python Developer Internship</h3>
+            <p class="cert-meta">SS Pharmaceuticals &bull; 2024</p>
+            <p class="cert-desc">Completed a 3-month Internship as an Inventory & Billing System Developer using Python, designing and implementing core database tables and billing scripts.</p>
+          </div>
+          <div class="cert-card-footer">
+            <button class="cert-action-btn view-cert-btn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px; height:14px; margin-right:6px;"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              View Internship Certificate
+            </button>
+          </div>
+        </div>
+
       </div>
     </div>
-  </section>
-
-  <!-- --- Testimonials Section --- -->
+  </section>\n\n  <!-- --- Testimonials Section --- -->
   <section class="section reveal" id="testimonials">
     <div class="container">
       <div class="section-header">
@@ -2503,18 +2914,18 @@
               <!-- Experience Item 2 -->
               <div class="ats-item" style="margin-bottom: 0.75rem;">
                 <div class="ats-item-header" style="display: flex; justify-content: space-between; font-weight: 700; color: #0f172a; font-size: 0.875rem;">
-                  <span>B2B Sales &amp; Client Relations Intern</span>
+                  <span>Inventory &amp; Billing System Developer (Python Intern)</span>
                   <span>May 2024 &ndash; Jul 2024</span>
                 </div>
                 <div class="ats-item-subheader" style="display: flex; justify-content: space-between; font-style: italic; font-size: 0.75rem; color: #475569; margin-bottom: 0.375rem;">
-                  <span>S.S. Pharmaceuticals</span>
+                  <span>SS Pharmaceuticals</span>
                   <span>Moradabad, Uttar Pradesh</span>
                 </div>
                 <ul style="list-style-type: square; margin-left: 1.25rem; font-size: 0.75rem; color: #334155; display: flex; flex-direction: column; gap: 2px;">
-                  <li>Executed B2B outreach across 200+ healthcare professionals and pharmacy clients, contributing to measurable territory sales growth within a 3-month deployment through structured engagement and follow-up cadences.</li>
-                  <li>Communicated technical product benefits to clinical and non-clinical stakeholders, developing stakeholder-specific messaging frameworks that balanced scientific accuracy with persuasive commercial positioning.</li>
-                  <li>Coordinated cross-functionally with marketing and sales teams to align territory outreach campaigns with quarterly organizational objectives, ensuring consistent brand messaging across all client touchpoints.</li>
-                  <li>Applied pipeline tracking, territory segmentation, and client relationship management methodologies to optimize daily outreach efficiency &mdash; building competencies directly transferable to business development and customer success roles.</li>
+                  <li>Designed and developed an automated Inventory &amp; Billing System using Python, streamlining product tracking, stock levels, and invoicing operations into a single programmatic ledger.</li>
+                  <li>Architected relational database tables and transaction logging scripts to replace manual record-keeping, reducing data entry errors by over 95%.</li>
+                  <li>Partnered with operations staff to capture workflow requirements and translate business policies (e.g. tax rules, discount thresholds) into clean, modular Python codebase classes.</li>
+                  <li>Executed system debugging and performance profiling to ensure sub-second report generation, developing practical competence in clean-code standards and test cycles.</li>
                 </ul>
               </div>
             </div>
@@ -2643,6 +3054,7 @@
                   <li>Prompt Engineering &amp; AI Applications &mdash; Mind Labs (2023)</li>
                   <li>Artificial Intelligence Fundamentals &mdash; Mind Labs (2023)</li>
                   <li>Digital Marketing Fundamentals &mdash; Google (2023)</li>
+                  <li>BOI Recognized Creator &mdash; Born On Instagram (2023)</li>
                   <li>Content Writing &amp; E-Book Writing &mdash; Mind Labs (2022)</li>
                   <li>Excel Data Analysis &mdash; Coursera (2021)</li>
                   <li>HTML/CSS Fundamentals &mdash; Open Weaver (2021)</li>
@@ -2770,24 +3182,24 @@
         <p>A consolidated view of the engineering scope and organizational impact.</p>
       </div>
 
-      <div class="hero-metrics"
-        style="justify-content: space-around; border: 1px solid var(--border-color); padding: 3rem; border-radius: 24px; background-color: var(--card-bg);">
-        <div class="metric-item" style="text-align: center;">
-          <span class="metric-value counter" data-target="20" data-suffix="+">0</span>
-          <span class="metric-label" style="margin-top: 0.5rem;">Students Mentored</span>
-        </div>
-        <div class="metric-item" style="text-align: center;">
-          <span class="metric-value counter" data-target="30" data-suffix="+">0</span>
-          <span class="metric-label" style="margin-top: 0.5rem;">Educators Trained</span>
-        </div>
-        <div class="metric-item" style="text-align: center;">
-          <span class="metric-value counter" data-target="800" data-suffix="+">0</span>
-          <span class="metric-label" style="margin-top: 0.5rem;">Participants Managed</span>
-        </div>
-
-        <div class="metric-item" style="text-align: center;">
-          <span class="metric-value counter" data-target="10" data-suffix="+">0</span>
-          <span class="metric-label" style="margin-top: 0.5rem;">Modules Built</span>
+      <div class="metrics-glass-card achievements-card">
+        <div class="hero-metrics" style="border-top: none; padding-top: 0; justify-content: space-around;">
+          <div class="metric-item" style="text-align: center; flex: 1;">
+            <span class="metric-value counter" data-target="20" data-suffix="+">0</span>
+            <span class="metric-label" style="margin-top: 0.5rem;">Students Mentored</span>
+          </div>
+          <div class="metric-item" style="text-align: center; flex: 1;">
+            <span class="metric-value counter" data-target="30" data-suffix="+">0</span>
+            <span class="metric-label" style="margin-top: 0.5rem;">Educators Trained</span>
+          </div>
+          <div class="metric-item" style="text-align: center; flex: 1;">
+            <span class="metric-value counter" data-target="800" data-suffix="+">0</span>
+            <span class="metric-label" style="margin-top: 0.5rem;">Participants Managed</span>
+          </div>
+          <div class="metric-item" style="text-align: center; flex: 1;">
+            <span class="metric-value counter" data-target="10" data-suffix="+">0</span>
+            <span class="metric-label" style="margin-top: 0.5rem;">Modules Built</span>
+          </div>
         </div>
       </div>
     </div>
@@ -3143,57 +3555,63 @@
   <!-- --- Modal Overlay for Recruiter Summary --- -->
   <div class="modal-overlay" id="recruiter-modal">
     <div class="modal-card">
-      <button class="modal-close" id="recruiter-modal-close">
+      <button class="modal-close" id="recruiter-modal-close" aria-label="Close Recruiter Modal">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
-      <div class="modal-header">
-        <h3>Recruiter Quick Summary</h3>
+      <div class="modal-popup-header">
+        <h3 style="font-size: 1.5rem; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Recruiter Quick Summary</h3>
+        <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: -0.5rem; margin-bottom: 1.5rem;">A high-level overview of Umar's technical competencies, leadership role, and execution strength.</p>
       </div>
-      <div class="summary-highlight-list">
-        <div class="summary-highlight-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-          </svg>
-          <div>
+      <div class="recruiter-highlight-list">
+        <!-- Highlight Card 1 -->
+        <div class="recruiter-highlight-card">
+          <div class="recruiter-icon-badge text-blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+              <line x1="12" y1="18" x2="12.01" y2="18"></line>
+            </svg>
+          </div>
+          <div class="recruiter-card-content">
             <h4>Android Expert</h4>
             <p>Experienced in offline-first structures, Jetpack (Compose, Room, WorkManager, Hilt), and SQL engines.</p>
           </div>
         </div>
 
-        <div class="summary-highlight-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path
-              d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l-7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-            </path>
-          </svg>
-          <div>
+        <!-- Highlight Card 2 -->
+        <div class="recruiter-highlight-card">
+          <div class="recruiter-icon-badge text-violet">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="12 2 2 7 12 12 22 7 12 2 12 12 12 22 2 17 12 12 22 17 12 22"></polygon>
+            </svg>
+          </div>
+          <div class="recruiter-card-content">
             <h4>AI Integration Specialist</h4>
-            <p>Combines Kotlin pipelines with Google ML Kit & remote models (Llama 3.3 via Groq) returning inferences in
-              sub-300ms.</p>
+            <p>Combines Kotlin pipelines with Google ML Kit & remote models (Llama 3.3 via Groq) returning inferences in sub-300ms.</p>
           </div>
         </div>
 
-        <div class="summary-highlight-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-            <circle cx="9" cy="7" r="4"></circle>
-            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-          </svg>
-          <div>
+        <!-- Highlight Card 3 -->
+        <div class="recruiter-highlight-card">
+          <div class="recruiter-icon-badge text-green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
+          <div class="recruiter-card-content">
             <h4>Leader & Facilitator</h4>
-            <p>IEEE Brancho Coordinator running hackathons of 800+ participants and training 30+ faculty educators on
-              AI/ML workflows.</p>
+            <p>IEEE Branch Coordinator running hackathons of 800+ participants and training 30+ faculty educators on AI/ML workflows.</p>
           </div>
         </div>
       </div>
-      <div style="margin-top: 2rem; display: flex; gap: 1rem;">
-        <a href="resume.pdf" download="Mohd_Umar_Hashmi_Resume.pdf" class="btn btn-primary" id="recruiter-modal-download" style="flex: 1;">Download PDF Resume</a>
-        <a href="#contact" class="btn btn-secondary" id="recruiter-modal-contact" style="flex: 1;">Message Umar</a>
+      <div class="recruiter-actions" style="margin-top: 2rem; display: flex; gap: 1rem;">
+        <a href="resume.pdf" download="Mohd_Umar_Hashmi_Resume.pdf" class="btn btn-primary btn-glow btn-pulse" id="recruiter-modal-download" style="flex: 1;">Download PDF Resume</a>
+        <a href="#contact" class="btn btn-secondary btn-glow" id="recruiter-modal-contact" style="flex: 1;">Message Umar</a>
       </div>
     </div>
   </div>
@@ -3201,66 +3619,82 @@
   <!-- --- Modal Overlay for Visitor Analytics --- -->
   <div class="modal-overlay" id="analytics-modal">
     <div class="modal-card">
-      <button class="modal-close" id="analytics-modal-close">
+      <button class="modal-close" id="analytics-modal-close" aria-label="Close Analytics Modal">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 16px; height: 16px;">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
-      <div class="modal-header">
-        <h3>Visitor Engagement Analytics</h3>
-        <p style="font-size: 0.8125rem; color: var(--text-secondary);">Real-time metrics tracking your interaction on
-          this portfolio (Stored locally in localStorage).</p>
+      <div class="modal-popup-header">
+        <h3 style="font-size: 1.5rem; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Visitor Engagement Analytics</h3>
+        <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: -0.5rem; margin-bottom: 1.5rem;">Real-time metrics tracking your interaction on this portfolio (Stored locally in localStorage).</p>
       </div>
       <div class="analytics-grid">
         <div class="analytics-card">
+          <div class="analytics-icon-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+          </div>
           <span id="metric-session-duration">0s</span>
           <label>Time Spent on Site</label>
         </div>
         <div class="analytics-card">
+          <div class="analytics-icon-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
           <span id="metric-resume-downloads">0</span>
           <label>Resume Downloads</label>
         </div>
         <div class="analytics-card">
+          <div class="analytics-icon-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+              <line x1="12" y1="18" x2="12.01" y2="18"></line>
+            </svg>
+          </div>
           <span id="metric-apk-downloads">0</span>
           <label>APK Downloads</label>
         </div>
         <div class="analytics-card">
+          <div class="analytics-icon-wrapper">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+          </div>
           <span id="metric-contact-clicks">0</span>
           <label>Contact Clicks</label>
         </div>
       </div>
 
-      <div class="chart-container">
-        <h5>Local Interaction Trend</h5>
-        <div
-          style="display: flex; align-items: flex-end; justify-content: space-around; height: 100px; padding-top: 10px;">
-          <!-- Custom SVG elements for bar graph representation -->
-          <div style="text-align: center; width: 40px;">
-            <div id="chart-bar-time"
-              style="background-color: var(--accent-color); height: 10px; width: 24px; margin: 0 auto; border-radius: 4px; transition: height 0.5s;">
-            </div>
-            <span style="font-size: 0.625rem; display: block; margin-top: 4px;">Time</span>
+      <div class="chart-container" style="position: relative;">
+        <h5 style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">Local Interaction Trend</h5>
+        <div class="chart-wrapper-inner">
+          <div class="chart-bar-interactive" data-bar="time">
+            <div id="chart-bar-time" class="chart-bar-fill" style="height: 10px;"></div>
+            <span class="chart-bar-label">Time</span>
           </div>
-          <div style="text-align: center; width: 40px;">
-            <div id="chart-bar-resume"
-              style="background-color: var(--accent-color); height: 0px; width: 24px; margin: 0 auto; border-radius: 4px; transition: height 0.5s;">
-            </div>
-            <span style="font-size: 0.625rem; display: block; margin-top: 4px;">Resume</span>
+          <div class="chart-bar-interactive" data-bar="resume">
+            <div id="chart-bar-resume" class="chart-bar-fill" style="height: 0px;"></div>
+            <span class="chart-bar-label">Resume</span>
           </div>
-          <div style="text-align: center; width: 40px;">
-            <div id="chart-bar-apk"
-              style="background-color: var(--accent-color); height: 0px; width: 24px; margin: 0 auto; border-radius: 4px; transition: height 0.5s;">
-            </div>
-            <span style="font-size: 0.625rem; display: block; margin-top: 4px;">APK</span>
+          <div class="chart-bar-interactive" data-bar="apk">
+            <div id="chart-bar-apk" class="chart-bar-fill" style="height: 0px;"></div>
+            <span class="chart-bar-label">APK</span>
           </div>
-          <div style="text-align: center; width: 40px;">
-            <div id="chart-bar-contact"
-              style="background-color: var(--accent-color); height: 0px; width: 24px; margin: 0 auto; border-radius: 4px; transition: height 0.5s;">
-            </div>
-            <span style="font-size: 0.625rem; display: block; margin-top: 4px;">Contact</span>
+          <div class="chart-bar-interactive" data-bar="contact">
+            <div id="chart-bar-contact" class="chart-bar-fill" style="height: 0px;"></div>
+            <span class="chart-bar-label">Contact</span>
           </div>
         </div>
+        <div id="chart-tooltip" class="chart-tooltip">0</div>
       </div>
     </div>
   </div>
@@ -3282,6 +3716,32 @@
       </header>
       <div class="blog-modal-body" id="blog-modal-body">
         <!-- Loaded dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificate Lightbox Modal -->
+  <div id="cert-lightbox-modal" class="cert-lightbox" style="display: none;" aria-hidden="true" role="dialog">
+    <div class="cert-lightbox-backdrop" id="cert-lightbox-backdrop-btn"></div>
+    <div class="cert-lightbox-container">
+      <button class="cert-lightbox-close" id="cert-lightbox-close-btn" aria-label="Close Lightbox">&times;</button>
+      <div class="cert-lightbox-wrapper">
+        <button class="cert-lightbox-nav prev" id="cert-lightbox-prev-btn" aria-label="Previous Certificate">&#8249;</button>
+        <div class="cert-lightbox-img-container" id="cert-lightbox-img-zoom-wrapper">
+          <img src="" alt="Certificate Image" class="cert-lightbox-image" id="cert-lightbox-img">
+        </div>
+        <button class="cert-lightbox-nav next" id="cert-lightbox-next-btn" aria-label="Next Certificate">&#8250;</button>
+      </div>
+      <div class="cert-lightbox-caption" id="cert-lightbox-caption-text">Certificate Title</div>
+      <div class="cert-lightbox-actions">
+        <a href="" download class="cert-lightbox-btn download" id="cert-lightbox-download-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px; height:16px; vertical-align:middle; margin-right:6px; display:inline-block;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download Certificate
+        </a>
       </div>
     </div>
   </div>
