@@ -3036,9 +3036,13 @@ header {
   flex-shrink: 0;
 }
 
-.cert-brand-logo svg {
+.cert-brand-logo svg,
+.cert-brand-logo img {
   width: 100%;
   height: 100%;
+  object-fit: contain;
+  background-color: #ffffff;
+  padding: 2px;
 }
 
 .cert-status-badge {
