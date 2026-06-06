@@ -5716,6 +5716,269 @@ footer {
   color: #ffffff !important;
 }
 
+/* --- Rotating Roles Animation --- */
+.hero-rotating-roles {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+.hero-rotating-roles .prefix {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.role-scroller {
+  position: relative;
+  display: inline-block;
+  height: 1.75rem;
+  overflow: hidden;
+  min-width: 240px;
+}
+.role-item {
+  position: absolute;
+  left: 0;
+  white-space: nowrap;
+  font-weight: 700;
+  color: var(--accent-color);
+  opacity: 0;
+  transform: translateY(100%);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
+}
+.role-item.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.role-item.exit {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+/* --- Beyond Coding Section --- */
+.beyond-coding-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 1.5rem;
+}
+.beyond-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+.beyond-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-color);
+}
+.beyond-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background-color: var(--accent-soft);
+  color: var(--accent-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+.beyond-icon-wrapper svg {
+  width: 24px;
+  height: 24px;
+}
+.beyond-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+.beyond-details {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.beyond-details li {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  position: relative;
+  padding-left: 1rem;
+}
+.beyond-details li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: var(--accent-color);
+  font-weight: bold;
+}
+
+/* --- Professional Strengths Section --- */
+.strengths-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+.strength-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+.strength-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover);
+}
+.strength-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+.strength-icon {
+  width: 24px;
+  height: 24px;
+}
+.strength-icon.text-blue { color: #3b82f6; }
+.strength-icon.text-violet { color: #7c3aed; }
+.strength-icon.text-green { color: #10b981; }
+
+.strength-card h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.strength-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* --- Impact Metrics Section --- */
+.impact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+}
+.impact-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.impact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover);
+}
+.impact-icon-wrapper {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: var(--bg-tertiary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.impact-icon-wrapper svg {
+  width: 24px;
+  height: 24px;
+}
+.impact-icon-wrapper.text-blue { color: #3b82f6; background-color: rgba(59, 130, 246, 0.08); }
+.impact-icon-wrapper.text-violet { color: #7c3aed; background-color: rgba(124, 58, 237, 0.08); }
+.impact-icon-wrapper.text-green { color: #10b981; background-color: rgba(16, 185, 129, 0.08); }
+.impact-icon-wrapper.text-orange { color: #f97316; background-color: rgba(249, 115, 22, 0.08); }
+.impact-icon-wrapper.text-cyan { color: #06b6d4; background-color: rgba(6, 182, 212, 0.08); }
+.impact-icon-wrapper.text-rose { color: #f43f5e; background-color: rgba(244, 63, 94, 0.08); }
+
+.impact-value {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+}
+.impact-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* --- What I Bring to a Team Section --- */
+.what-i-bring-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.bring-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+}
+.bring-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--border-hover);
+}
+.bring-card-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.bring-card-icon.text-blue { color: #3b82f6; background-color: rgba(59, 130, 246, 0.08); }
+.bring-card-icon.text-violet { color: #7c3aed; background-color: rgba(124, 58, 237, 0.08); }
+.bring-card-icon.text-green { color: #10b981; background-color: rgba(16, 185, 129, 0.08); }
+.bring-card-icon.text-orange { color: #f97316; background-color: rgba(249, 115, 22, 0.08); }
+.bring-card-icon.text-rose { color: #f43f5e; background-color: rgba(244, 63, 94, 0.08); }
+.bring-card-icon.text-cyan { color: #06b6d4; background-color: rgba(6, 182, 212, 0.08); }
+.bring-card-icon.text-amber { color: #d97706; background-color: rgba(217, 119, 6, 0.08); }
+.bring-card-icon.text-emerald { color: #059669; background-color: rgba(5, 150, 105, 0.08); }
+
+.bring-card-icon svg {
+  width: 20px;
+  height: 20px;
+}
+.bring-card h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+.bring-card p {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
 /* --- Media Print overrides so ATS matches paper requirements --- */
 @media print {
   .resume-persona-customizer,
@@ -5728,5 +5991,6 @@ footer {
     padding: 0 !important;
     color: inherit !important;
     font-weight: normal !important;
+    text-shadow: none !important;
   }
 }

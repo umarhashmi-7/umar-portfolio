@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCardTilt3D();
   initSkillTraceability();
   initChatbotShortcuts();
+  initHeroRoles();
 });
 
 /* ==========================================================================
@@ -158,10 +159,11 @@ function initMetricsCounters() {
         const stepTime = Math.max(Math.floor(duration / target), 15);
         let start = 0;
 
+        const suffix = counter.getAttribute('data-suffix') || '';
         const timer = setInterval(() => {
           start += Math.ceil(target / (duration / stepTime));
           if (start >= target) {
-            counter.innerText = target + (target >= 800 || target >= 30 ? '+' : '');
+            counter.innerText = target + suffix;
             clearInterval(timer);
           } else {
             counter.innerText = start;
@@ -2194,4 +2196,38 @@ function initChatbotShortcuts() {
       // Direct routing will follow via the sendBtn click triggers
     }
   });
+}
+
+/* ==========================================================================
+   28. Hero Section Roles Scroller
+   ========================================================================== */
+function initHeroRoles() {
+  const roleScroller = document.getElementById('role-scroller');
+  if (!roleScroller) return;
+
+  const roles = roleScroller.querySelectorAll('.role-item');
+  if (roles.length === 0) return;
+
+  let currentIdx = 0;
+
+  setInterval(() => {
+    const activeRole = roles[currentIdx];
+    activeRole.classList.remove('active');
+    activeRole.classList.add('exit');
+
+    currentIdx = (currentIdx + 1) % roles.length;
+
+    const nextRole = roles[currentIdx];
+    nextRole.classList.remove('exit');
+    nextRole.classList.add('active');
+
+    // Clean up exit class after transition completes (0.5s)
+    setTimeout(() => {
+      roles.forEach((role, idx) => {
+        if (idx !== currentIdx) {
+          role.classList.remove('exit');
+        }
+      });
+    }, 500);
+  }, 2500); // Shift every 2.5 seconds
 }
