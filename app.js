@@ -107,8 +107,13 @@ function initNavigation() {
 
   // Toggle mobile menu
   hamburger.addEventListener('click', () => {
-    navLinks.classList.toggle('open');
+    const isOpen = navLinks.classList.toggle('open');
     hamburger.classList.toggle('active');
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
   });
 
   // Close mobile menu when a link is clicked
@@ -116,6 +121,7 @@ function initNavigation() {
     item.addEventListener('click', () => {
       navLinks.classList.remove('open');
       hamburger.classList.remove('active');
+      document.body.style.overflow = '';
     });
   });
 
@@ -414,32 +420,154 @@ function initVisitorAnalytics() {
    ========================================================================== */
 const AI_TOPICS = [
   {
+    topic: 'siufit',
     keys: ['siufit', 'fitness', 'nutrition', 'tracker', 'calorie', 'scan', 'diet', 'metabolic', 'llama', 'groq'],
-    response: "<strong>SIUFIT</strong> is Umar's marquee 10-module fitness and AI nutrition app ecosystem. Key highlights include:<br>• <strong>On-Device Vision:</strong> Google ML Kit food detection.<br>• <strong>Sub-200ms Inferences:</strong> Groq Llama 3.3 API routing.<br>• <strong>Offline Caches:</strong> Local SQLite databases synced silently via WorkManager.<br><br>👉 <a href='#siufit' class='btn-text' style='text-decoration: underline; font-weight:700;'>View the SIUFIT Showcase Section</a>"
+    response: `<div class='ai-rich-card'>
+      <div class='ai-rich-title'>🚀 SIUFIT App Ecosystem</div>
+      <p>Umar's flagship mobile & AI ecosystem features:</p>
+      <div class='ai-rich-list'>
+        <div class='ai-rich-item'><strong>On-Device Vision:</strong> Food & nutrition scanning via Google ML Kit.</div>
+        <div class='ai-rich-item'><strong>AI Insights:</strong> Sub-200ms chat routing via Groq & Llama 3.3.</div>
+        <div class='ai-rich-item'><strong>Robust Caching:</strong> Offline Room DB auto-synchronized to Firebase Firestore.</div>
+      </div>
+      <a href='#siufit' class='ai-rich-btn'>View Case Study & Interactive Demo</a>
+    </div>`
   },
   {
+    topic: 'skills',
     keys: ['skills', 'tech', 'languages', 'databases', 'kotlin', 'compose', 'java', 'sqlite', 'room', 'coroutines', 'hilt', 'flow'],
-    response: "Umar possesses extensive proficiency in:<br>• <strong>Android Dev:</strong> Kotlin, Jetpack Compose, Coroutines, Flow, Hilt, Room, WorkManager, Custom Views.<br>• <strong>AI & Vision:</strong> Groq API, Llama 3.3 / 3.1, Google ML Kit (OCR/Detection), Prompt Design.<br>• <strong>Backend & Cloud:</strong> Firebase (Auth, Firestore, Cloud Functions), Node.js, REST APIs.<br><br>👉 <a href='#skills' class='btn-text' style='text-decoration: underline; font-weight:700;'>Open Skills Inventory</a>"
+    response: `<div class='ai-rich-card'>
+      <div class='ai-rich-title'>🛠️ Technical Expertise</div>
+      <div class='ai-skill-tags'>
+        <span class='ai-tag tag-lang'>Kotlin</span>
+        <span class='ai-tag tag-lang'>Compose</span>
+        <span class='ai-tag tag-ai'>Groq Llama API</span>
+        <span class='ai-tag tag-ai'>ML Kit Vision</span>
+        <span class='ai-tag tag-db'>Room DB</span>
+        <span class='ai-tag tag-db'>Firebase</span>
+        <span class='ai-tag tag-arch'>Clean MVVM</span>
+        <span class='ai-tag tag-arch'>Coroutines</span>
+      </div>
+      <a href='#skills' class='ai-rich-btn'>Open Full Skills Inventory</a>
+    </div>`
   },
   {
-    keys: ['experience', 'timeline', 'job', 'work', 'internship', 'career', 'instructor', 'teaching', 'history'],
-    response: "Umar's professional timeline spans:<br>• <strong>2021-2022:</strong> Computer Science Instructor (Curriculum creation & programming labs).<br>• <strong>2022-2023:</strong> Android Software Intern (Wrote clean Kotlin code and Room database caching).<br>• <strong>2023-2024:</strong> Freelance Developer & Integrator (Shipped a wide portfolio of custom applications, API integrations, and billing systems).<br>• <strong>2024-Present:</strong> Emerging Tech Architect (Advising startups on modularized mobile software & AI).<br><br>👉 <a href='#experience' class='btn-text' style='text-decoration: underline; font-weight:700;'>Inspect Work Experience</a>"
+    topic: 'experience',
+    keys: ['experience', 'timeline', 'job', 'work', 'internship', 'career', 'history'],
+    response: `<div class='ai-rich-card'>
+      <div class='ai-rich-title'>💼 Professional History</div>
+      <div class='ai-mini-timeline'>
+        <div class='ai-time-node'>
+          <div class='ai-node-year'>2024-Present</div>
+          <div class='ai-node-desc'><strong>Emerging Tech Architect:</strong> Advising on modular Android & AI pipelines.</div>
+        </div>
+        <div class='ai-time-node'>
+          <div class='ai-node-year'>2023-2024</div>
+          <div class='ai-node-desc'><strong>Freelance Developer:</strong> Built custom inventory & SQLite apps.</div>
+        </div>
+        <div class='ai-time-node'>
+          <div class='ai-node-year'>2022-2023</div>
+          <div class='ai-node-desc'><strong>Android Software Intern:</strong> Shipped Kotlin code & offline caching.</div>
+        </div>
+        <div class='ai-time-node'>
+          <div class='ai-node-year'>2021-2022</div>
+          <div class='ai-node-desc'><strong>CS Instructor:</strong> Mentored students & managed programming labs.</div>
+        </div>
+      </div>
+      <a href='#experience' class='ai-rich-btn'>Browse Complete Timeline</a>
+    </div>`
   },
   {
+    topic: 'contact',
     keys: ['contact', 'email', 'phone', 'whatsapp', 'hire', 'reach', 'linkedin', 'message', 'address', 'location'],
-    response: "You can directly connect with Umar via:<br>• <strong>WhatsApp:</strong> <a href='https://wa.me/919012728789' target='_blank'>+91 9012728789</a><br>• <strong>Email:</strong> <a href='mailto:hashmiumar11161@gmail.com'>hashmiumar11161@gmail.com</a><br>• <strong>LinkedIn:</strong> <a href='https://www.linkedin.com/in/mohd-umar-hashmi' target='_blank'>mohd-umar-hashmi</a><br><br>👉 <a href='#contact' class='btn-text' style='text-decoration: underline; font-weight:700;'>Go to Contact Form</a>"
+    response: `<div class='ai-rich-card'>
+      <div class='ai-rich-title'>📞 Contact Channels</div>
+      <p>Connect directly with Umar to discuss opportunities:</p>
+      <div class='ai-contact-grid'>
+        <a href='https://wa.me/919012728789' target='_blank' class='ai-contact-btn wa-btn'>💬 WhatsApp Chat</a>
+        <a href='mailto:hashmiumar11161@gmail.com' class='ai-contact-btn mail-btn'>✉️ Send Email</a>
+        <a href='https://www.linkedin.com/in/mohd-umar-hashmi' target='_blank' class='ai-contact-btn link-btn'>🔗 LinkedIn Profile</a>
+      </div>
+      <a href='#contact' class='ai-rich-btn'>Go to Contact Form</a>
+    </div>`
   },
   {
+    topic: 'leadership',
     keys: ['leadership', 'workshop', 'ieee', 'mentor', 'train', 'organize', 'participants', 'faculty', 'impact'],
-    response: "Umar combines software skills with strong leadership capabilities:<br>• <strong>IEEE Branch Coordinator:</strong> Managed registrations and timelines for hackathons of **800+ participants**.<br>• <strong>AI/ML Workshop Leader:</strong> Curated curriculum and trained **30+ senior educators** on prompt design.<br>• <strong>Academic Mentor:</strong> Guided **20+ students** in starting software career paths.<br><br>👉 <a href='#leadership' class='btn-text' style='text-decoration: underline; font-weight:700;'>Explore Impact Section</a>"
+    response: `<div class='ai-rich-card'>
+      <div class='ai-rich-title'>🌟 Leadership & Impact</div>
+      <div class='ai-stats-row'>
+        <div class='ai-stat-box'><div class='ai-stat-num'>800+</div><div class='ai-stat-label'>Hackathon registrations managed</div></div>
+        <div class='ai-stat-box'><div class='ai-stat-num'>30+</div><div class='ai-stat-label'>Educators trained in AI & prompting</div></div>
+      </div>
+      <div class='ai-rich-list'>
+        <div class='ai-rich-item'><strong>IEEE Branch Coordinator:</strong> Led timelines, teams, and registrations.</div>
+        <div class='ai-rich-item'><strong>Academic Mentor:</strong> Guided 20+ juniors in mobile dev pathways.</div>
+      </div>
+      <a href='#leadership' class='ai-rich-btn'>Review Academic & Impact Records</a>
+    </div>`
   },
   {
+    topic: 'certifications',
     keys: ['certifications', 'credentials', 'nptel', 'hp life', 'google', 'coursera', 'badge', 'ieee cert'],
-    response: "Umar holds several key credentials:<br>• <strong>Google Certifications:</strong> Android Play Store Release Guidelines.<br>• <strong>NPTEL Certificate:</strong> Software Engineering Principles & Algorithms.<br>• <strong>HP LIFE Certification:</strong> Business Operations & Marketing Analytics.<br>• <strong>Mind Labs:</strong> LLM prompt engineering & pipelines.<br><br>👉 <a href='#certifications' class='btn-text' style='text-decoration: underline; font-weight:700;'>Open Certifications Section</a>"
+    response: `<div class='ai-rich-card'>
+      <div class='ai-rich-title'>📜 Verified Credentials</div>
+      <div class='ai-rich-list'>
+        <div class='ai-rich-item'>🏆 <strong>Google:</strong> Digital Marketing Fundamentals.</div>
+        <div class='ai-rich-item'>🎓 <strong>NPTEL (IIT Madras):</strong> Elite Cert in Social Networks.</div>
+        <div class='ai-rich-item'>🏢 <strong>HP LIFE:</strong> IT & Business Operations.</div>
+        <div class='ai-rich-item'>🧠 <strong>Mind Labs:</strong> AI & Prompt Engineering.</div>
+      </div>
+      <a href='#certifications' class='ai-rich-btn'>View Certificates Gallery</a>
+    </div>`
   },
   {
-    keys: ['projects', 'other', 'task', 'notes', 'auth', 'college', 'utility'],
-    response: "Umar has built several production-grade utility tools:<br>• <strong>Automated Task Manager:</strong> Kotlin background AlarmManager scheduling.<br>• <strong>Offline-First Notes App:</strong> FTS4 text search inside Room database.<br>• <strong>Firebase Authenticator:</strong> AES-256 KeyStore session encryption.<br>• <strong>College Resource Hub:</strong> WorkManager offline syncing system.<br><br>👉 <a href='#projects' class='btn-text' style='text-decoration: underline; font-weight:700;'>View Project Cards</a>"
+    topic: 'projects',
+    keys: ['projects', 'other', 'task', 'notes', 'auth', 'utility'],
+    response: `<div class='ai-rich-card'>
+      <div class='ai-rich-title'>⚙️ Production Utility Apps</div>
+      <div class='ai-rich-list'>
+        <div class='ai-rich-item'><strong>Automated Task Manager:</strong> Kotlin background AlarmManager scheduling.</div>
+        <div class='ai-rich-item'><strong>Offline-First Notes App:</strong> FTS4 text search inside Room database.</div>
+        <div class='ai-rich-item'><strong>Firebase Authenticator:</strong> AES-256 KeyStore session encryption.</div>
+        <div class='ai-rich-item'><strong>College Resource Hub:</strong> WorkManager offline syncing system.</div>
+      </div>
+      <a href='#projects' class='ai-rich-btn'>View Project Cards</a>
+    </div>`
+  },
+  {
+    topic: 'education',
+    keys: ['education', 'college', 'bca', 'university', 'studies', 'cgpa', 'marks', 'tmu', 'degree'],
+    response: `<div class='ai-rich-card'>
+      <div class='ai-rich-title'>🎓 Academic Records</div>
+      <div class='ai-rich-list'>
+        <div class='ai-rich-item'>🏫 <strong>Teerthanker Mahaveer University:</strong> Bachelor of Computer Applications (BCA).</div>
+        <div class='ai-rich-item'>📈 <strong>Performance:</strong> Scored an outstanding <strong>9.2 CGPA / 86%</strong> aggregate.</div>
+        <div class='ai-rich-item'>💡 <strong>Core Focus:</strong> Software engineering, database design, and mobile vision.</div>
+      </div>
+      <a href='#education' class='ai-rich-btn'>Inspect Academic Highlights</a>
+    </div>`
+  },
+  {
+    topic: 'sports',
+    keys: ['sports', 'football', 'extracurricular', 'hobbies', 'captain'],
+    response: `<div class='ai-rich-card'>
+      <div class='ai-rich-title'>⚽ Extracurricular & Sports</div>
+      <div class='ai-rich-list'>
+        <div class='ai-rich-item'>🏅 <strong>Football Representative:</strong> Competed at university and intercollegiate levels.</div>
+        <div class='ai-rich-item'>⚡ <strong>Team Captaincy:</strong> Led local squads, cultivating leadership and grit.</div>
+      </div>
+      <a href='#leadership' class='ai-rich-btn'>See Sports & Hobbies section</a>
+    </div>`
+  },
+  {
+    topic: 'about',
+    keys: ['who', 'umar', 'bio', 'profile', 'about', 'specialist', 'developer'],
+    response: `<div class='ai-rich-card'>
+      <div class='ai-rich-title'>👤 About Mohd Umar Hashmi</div>
+      <p>Umar is a multi-disciplinary tech professional, product builder, and technical mentor. He specializes in Android development, offline-first architectures, AI vision models, and prompt engineering pipelines.</p>
+      <a href='#' class='ai-rich-btn'>Back to Hero Section</a>
+    </div>`
   }
 ];
 
@@ -2194,6 +2322,7 @@ function initHeroCanvas() {
    23. 3D Card Tilt Parallax effect
    ========================================================================== */
 function initCardTilt3D() {
+  if (window.innerWidth < 768) return; // Disable tilt on mobile for smoother scrolling and less CPU draw
   const cards = document.querySelectorAll('.siufit-hero-card, .project-card, .about-story, .metrics-glass-card, .hero-image-frame');
 
   if (!cards.length) return;
