@@ -5979,10 +5979,160 @@ footer {
   color: var(--text-secondary);
 }
 
+/* --- Blog Modal Styles --- */
+.blog-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+.blog-modal.open {
+  display: flex;
+}
+.blog-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(3, 7, 18, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.blog-modal-container {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: var(--shadow-premium);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  z-index: 2001;
+  animation: modalScaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+@keyframes modalScaleUp {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+.blog-modal-header {
+  padding: 1.25rem 2rem;
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+}
+.blog-modal-nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.blog-modal-badge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent-color);
+  background-color: var(--accent-soft);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+}
+.blog-modal-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+}
+.blog-modal-close-btn:hover {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+.blog-modal-close-btn svg {
+  width: 20px;
+  height: 20px;
+}
+.blog-modal-body {
+  padding: 2.5rem 2rem;
+  overflow-y: auto;
+  font-size: 0.9375rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+}
+.blog-modal-body h1, .blog-modal-body h2, .blog-modal-body h3 {
+  color: var(--text-primary);
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 700;
+}
+.blog-modal-body h1 {
+  font-size: 1.875rem;
+  margin-top: 0;
+  line-height: 1.25;
+}
+.blog-modal-body h2 {
+  font-size: 1.375rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.375rem;
+}
+.blog-modal-body p {
+  margin-bottom: 1.25rem;
+}
+.blog-modal-body code {
+  font-family: var(--font-mono);
+  background-color: var(--bg-tertiary);
+  padding: 0.125rem 0.25rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+}
+.blog-modal-body pre {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  padding: 1.25rem;
+  border-radius: 8px;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+.blog-modal-body pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  color: var(--text-primary);
+}
+.blog-modal-body .meta-info {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1rem;
+}
+.blog-modal-body ul {
+  margin-left: 1.5rem;
+  margin-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
 /* --- Media Print overrides so ATS matches paper requirements --- */
 @media print {
   .resume-persona-customizer,
-  .resume-cover-letter-panel {
+  .resume-cover-letter-panel,
+  .blog-modal {
     display: none !important;
   }
   .ats-highlight {

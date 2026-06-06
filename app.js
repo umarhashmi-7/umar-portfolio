@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSkillTraceability();
   initChatbotShortcuts();
   initHeroRoles();
+  initBlogModal();
 });
 
 /* ==========================================================================
@@ -2230,4 +2231,116 @@ function initHeroRoles() {
       });
     }, 500);
   }, 2500); // Shift every 2.5 seconds
+}
+
+/* ==========================================================================
+   29. Interactive Blog Modal Reader
+   ========================================================================== */
+const ARTICLE_DATA = {
+  'siufit-case': `
+    <h1>How I Built SIUFIT: Sub-200ms LLM Calls</h1>
+    <div class="meta-info">
+      <span>Published: March 2026</span>
+      <span>•</span>
+      <span>Category: Mobile AI Architecture</span>
+    </div>
+    <p>Integrating large language models (LLMs) inside mobile devices presents complex constraints around latency, network bandwidth, and memory allocation. When developing the AI Coach assistant inside SIUFIT, my primary target was achieving sub-200ms streaming responses to ensure conversational fluency.</p>
+    
+    <h2>1. The Caching Protocol (Room DB)</h2>
+    <p>We implemented a local caching system using SQLite via Android's Room DB library. This ensures that duplicate user queries (e.g. asking for nutritional stats of common Indian foods) resolve instantly without hitting the cloud API. The database schema caches query embeddings and raw assistant text, delivering <strong>0ms local query resolution</strong> for cached contexts.</p>
+    
+    <h2>2. Lean Context Window Optimization</h2>
+    <p>To reduce payloads, we designed a sliding context window that strips out conversational filler, HTML fragments, and old tokens. We use recursive payload structuring: only the last 3 turns of active dialog are sent to the Groq LLaMA 3.3-70B API. Before payload compilation, we prune token count using a local character-trimmer pattern, bringing the payload size down by 60%.</p>
+    
+    <h2>3. The Streaming Parser</h2>
+    <p>Instead of waiting for the full response payload from the Groq endpoint, we utilize HTTP Server-Sent Events (SSE) to stream LLaMA response chunks. Our custom parser splits buffer bytes on the <code>data: </code> prefix, immediately sending parsed tokens to the Jetpack Compose UI. This decreases Time-To-First-Token (TTFT) to less than 180ms on high-speed cellular networks.</p>
+  `,
+  'android-journey': `
+    <h1>Android Development: The Modular Architecture Guide</h1>
+    <div class="meta-info">
+      <span>Published: January 2026</span>
+      <span>•</span>
+      <span>Category: System Design</span>
+    </div>
+    <p>Monolithic codebases lead to major issues over time: slower compile times, tightly coupled dependencies, and severe merge conflicts. In this guide, I walk through how I structured SIUFIT and other projects using high-level Gradle modularization.</p>
+    
+    <h2>1. The Three-Layer Modular Structure</h2>
+    <p>We divide our modules into three distinct boundaries:</p>
+    <ul>
+      <li><strong>:feature modules</strong>: Self-contained, isolated business modules (e.g. <code>:feature:nutrition</code>, <code>:feature:workout</code>) that do not depend on other feature modules.</li>
+      <li><strong>:core modules</strong>: Shared technical utilities (e.g. <code>:core:database</code>, <code>:core:network</code>) providing API and DB access.</li>
+      <li><strong>:app module</strong>: The entry module coordinating navigation, dependency injection graphs, and app initialization.</li>
+    </ul>
+    
+    <h2>2. Dependency Management via Dagger/Hilt</h2>
+    <p>By enforcing modular boundaries, feature modules cannot instantiate classes directly from core modules. We resolve this by using Dagger/Hilt. Core modules define public interfaces, and feature modules consume them via constructor injection, keeping the codebase completely decoupled and testable.</p>
+    
+    <h2>3. Performance Impact</h2>
+    <p>Modularization reduced clean build compile timelines by <strong>45%</strong>. Because Gradle caches compile outputs of unchanged modules, incremental builds now resolve in less than 3 seconds, significantly increasing developer feedback loops.</p>
+  `,
+  'ai-integration': `
+    <h1>Local ML Kit vs API Callouts on Android</h1>
+    <div class="meta-info">
+      <span>Published: November 2025</span>
+      <span>•</span>
+      <span>Category: Performance Engineering</span>
+    </div>
+    <p>When implementing scan tools on mobile apps (like SIUFIT's food database barcode scanner), developers face a choice: deploy local on-device machine learning models or rely on cloud API web service calls. We benchmarked both approaches on mid-range Android hardware.</p>
+    
+    <h2>1. Benchmarking Metrics</h2>
+    <p>We evaluated three primary performance parameters:</p>
+    <ul>
+      <li><strong>Latency</strong>: Time taken from camera preview frame extraction to parsed result output.</li>
+      <li><strong>Memory Footprint</strong>: Peak heap usage during scanner execution.</li>
+      <li><strong>Battery Draw</strong>: Milliamperes consumed over 50 consecutive scan operations.</li>
+    </ul>
+    
+    <h2>2. The Comparison</h2>
+    <p>Using Google's local <strong>ML Kit</strong> (running TensorFlow Lite models optimized on NNAPI/GPU execution), scanning barcode digits resolves in <strong>42ms on-device</strong>. It consumes 0KB of cellular data and operates fully offline.</p>
+    <p>In contrast, uploading raw image arrays to a remote cloud vision API resolves in <strong>850ms - 2100ms</strong> depending on network latency, and causes a 4.2x higher battery drain due to keeping the radio receiver active.</p>
+    
+    <h2>3. The Offline-First Verdict</h2>
+    <p>To preserve our offline-first core objective, SIUFIT runs local ML Kit models. Only when a scanned code is not in our SQLite DB does the app queue a lightweight REST API metadata fetch (using the USDA FoodData Central database) on the next sync cadence.</p>
+  `
+};
+
+function initBlogModal() {
+  const blogCards = document.querySelectorAll('.blog-card');
+  const modal = document.getElementById('blog-modal');
+  const modalBody = document.getElementById('blog-modal-body');
+  const closeBtn = document.getElementById('blog-modal-close');
+  
+  if (!blogCards.length || !modal || !modalBody || !closeBtn) return;
+  
+  blogCards.forEach(card => {
+    card.addEventListener('click', () => {
+      const articleKey = card.getAttribute('data-article');
+      const content = ARTICLE_DATA[articleKey];
+      if (content) {
+        modalBody.innerHTML = content;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden'; // Stop background scrolling
+      }
+    });
+  });
+  
+  const closeModal = () => {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  
+  closeBtn.addEventListener('click', closeModal);
+  
+  // Close on backdrop click
+  const backdrop = modal.querySelector('.blog-modal-backdrop');
+  if (backdrop) {
+    backdrop.addEventListener('click', closeModal);
+  }
+  
+  // Close on Escape key
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('open')) {
+      closeModal();
+    }
+  });
 }
