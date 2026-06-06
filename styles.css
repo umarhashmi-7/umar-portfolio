@@ -19,6 +19,12 @@
   --glass-bg: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(15, 23, 42, 0.06);
 
+  /* Glass Card & Text Color Defaults for Light Theme */
+  --bg-card-glass: rgba(15, 23, 42, 0.02);
+  --border-color-glass: rgba(15, 23, 42, 0.08);
+  --text-color: var(--text-primary);
+  --text-muted: var(--text-secondary);
+
   /* Shadows */
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -2px rgba(0, 0, 0, 0.02);
@@ -51,6 +57,12 @@
   --card-bg: #0b0f19;
   --glass-bg: rgba(3, 7, 18, 0.85);
   --glass-border: rgba(248, 250, 252, 0.06);
+
+  /* Glass Card & Text Color Defaults for Dark Theme */
+  --bg-card-glass: rgba(255, 255, 255, 0.03);
+  --border-color-glass: rgba(255, 255, 255, 0.08);
+  --text-color: #ffffff;
+  --text-muted: #94a3b8;
 
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
@@ -6945,7 +6957,7 @@ footer {
    Tech Stack Ecosystem Card
    ========================================================================== */
 .hero-tech-ecosystem-card {
-  background: var(--bg-glass);
+  background: var(--glass-bg);
   border: 1px solid var(--border-color);
   border-radius: 20px;
   padding: 1.25rem 1.5rem;
@@ -7048,7 +7060,7 @@ footer {
   align-items: center;
   gap: 16px;
   padding: 1rem 1.25rem;
-  background: var(--bg-glass);
+  background: var(--glass-bg);
   border: 1px solid var(--border-color);
   border-radius: 12px;
   text-align: left;
@@ -7101,7 +7113,7 @@ footer {
   margin-top: 2px;
 }
 .brand-matrix-content {
-  background: var(--bg-glass);
+  background: var(--glass-bg);
   border: 1px solid var(--border-color);
   border-radius: 24px;
   padding: 2.5rem;

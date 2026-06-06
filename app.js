@@ -609,7 +609,7 @@ const ARCH_DETAILS = {
   app: "<strong>2. Android App (MVVM Architecture):</strong> Kotlin-based application layers. Segregates business rules from views, communicating updates to observers using Kotlin Coroutines and Flows.",
   firebase: "<strong>Cloud: Firebase Firestore:</strong> Multi-device synchronization. Synced via WorkManager scheduler triggers, pushing cached local Room data once valid wifi states exist.",
   groq: "<strong>AI Gateway: Groq API Proxy:</strong> Fast API integration routing prompt requests directly to Llama 3.3 models. Bypasses standard server queuing for &lt;200ms processing times.",
-  db: "<strong>Local Database: SQLite & Room:</strong> Safe local sandboxing. All calories logs and biometric values are cached locally offline first, securing operational stability.",
+  db: "<strong>Local Cache: SQLite & Room DB:</strong> Safe local sandboxing. All calories logs and biometric values are cached locally offline first, which are then synchronized to the cloud via Firebase Firestore once network connectivity is established.",
   llama: "<strong>AI Engine: Llama 3.3 Core:</strong> A 70-billion parameter LLM evaluated via Groq cloud servers. Evaluates OCR vision details and maps nutritional plans."
 };
 
@@ -1061,8 +1061,8 @@ const ARCH_DETAILS = {
     2: {
       badge: "CENTRAL DATA HUD",
       title: "Unified Dashboard",
-      desc: "Aggregates calories consumed, steps count, active workout splits, and hydration intake metrics in real-time. Features custom concentric circle graphics summarizing macronutrient limits.",
-      stack: "Room Local Caching & Canvas Vector SVGs",
+      desc: "Aggregates calories consumed, steps, and workouts in real-time. Persists data locally in Room DB and syncs to cloud Firebase Firestore. Features custom macro rings.",
+      stack: "Room DB Caching & Firebase Sync",
       benefit: "Combines fragmented tracking details into a single visual log index."
     },
     3: {
@@ -1452,7 +1452,7 @@ const ARCH_DETAILS = {
       firebase: "<strong>Firebase Storage & Authentication:</strong> Sandboxes files, preserves user assets, and listens to bidirectional cloud collections for community rank and XP summaries.",
       ai: "<strong>Groq AI Gateway (Llama 3.3 Engine):</strong> Pipes client metabolic queries directly into high-speed Groq inference servers, evaluating calorie entries and returning feedback in under 200ms.",
       nutrition: "<strong>USDA Nutrition API:</strong> Resolves ingredients queries by parsing nutritional profiles directly against global food database definitions.",
-      analytics: "<strong>Local Cache Engine (SQLite / Room DB):</strong> Implements structured local database persistence, enabling full workout, calorie, and weight logs tracking completely offline."
+      analytics: "<strong>Room DB & Firebase Sync:</strong> Implements structured local database persistence synced with cloud Firebase Firestore, enabling seamless offline-first calorie and workout tracking."
     };
 
     nodes.forEach(node => {
@@ -1957,8 +1957,8 @@ function initResumeCustomizer() {
       slideIndex: 0
     },
     android: {
-      coverText: '<strong>🎯 Android Architect Profile Enabled</strong><br>Mohd Umar Hashmi has a proven track record of architecting scalable, offline-first mobile applications in Kotlin. He leverages Room databases for seamless local storage, Jetpack Compose for modern declarative UI structures, and WorkManager/AlarmManager for silent data sync and background scheduling splits. Select highlighted keywords inside are emphasized.',
-      keywords: ['Kotlin', 'Android App Development', 'Jetpack Compose', 'MVVM', 'Room Database', 'SQLite', 'WorkManager', 'AlarmManager', 'Offline-First', 'Dagger/Hilt', 'CameraX', 'Android Studio', 'Android SDK', 'Jetpack Components'],
+      coverText: '<strong>🎯 Android Architect Profile Enabled</strong><br>Mohd Umar Hashmi has a proven track record of architecting scalable, offline-first mobile applications in Kotlin. He integrates Room SQLite databases with Firebase Firestore for seamless local caching and cloud synchronization, utilizes Jetpack Compose for modern declarative UI structures, and schedules background tasks via WorkManager. Select highlighted keywords inside are emphasized.',
+      keywords: ['Kotlin', 'Android App Development', 'Jetpack Compose', 'MVVM', 'Room Database', 'SQLite', 'WorkManager', 'AlarmManager', 'Offline-First', 'Dagger/Hilt', 'CameraX', 'Android Studio', 'Android SDK', 'Jetpack Components', 'Firebase Firestore', 'Firebase Auth'],
       slideIndex: 1 // Go to Skills
     },
     ai: {
@@ -2432,8 +2432,8 @@ const ARTICLE_DATA = {
     </div>
     <p>Integrating large language models (LLMs) inside mobile devices presents complex constraints around latency, network bandwidth, and memory allocation. When developing the AI Coach assistant inside SIUFIT, my primary target was achieving sub-200ms streaming responses to ensure conversational fluency.</p>
     
-    <h2>1. The Caching Protocol (Room DB)</h2>
-    <p>We implemented a local caching system using SQLite via Android's Room DB library. This ensures that duplicate user queries (e.g. asking for nutritional stats of common Indian foods) resolve instantly without hitting the cloud API. The database schema caches query embeddings and raw assistant text, delivering <strong>0ms local query resolution</strong> for cached contexts.</p>
+    <h2>1. The Hybrid Sync & Caching Protocol (Room DB & Firebase)</h2>
+    <p>We implemented a hybrid synchronization protocol using Android's Room DB library for local SQLite caching and Firebase Firestore for cloud database synchronization. This ensures that duplicate user queries resolve instantly without hitting the cloud API while biometric logs and daily parameters are persisted across multiple devices. The local schema caches query embeddings and raw assistant text, delivering <strong>0ms local query resolution</strong> for cached contexts, and triggers background synchronization to Firebase Firestore once network connectivity is restored.</p>
     
     <h2>2. Lean Context Window Optimization</h2>
     <p>To reduce payloads, we designed a sliding context window that strips out conversational filler, HTML fragments, and old tokens. We use recursive payload structuring: only the last 3 turns of active dialog are sent to the Groq LLaMA 3.3-70B API. Before payload compilation, we prune token count using a local character-trimmer pattern, bringing the payload size down by 60%.</p>
