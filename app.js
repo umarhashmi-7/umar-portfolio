@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initTestimonialSlider();
   initFAQAccordion();
   initProjectToggles();
+  initProjectConsoles();
   initContactForm();
   initSocialActions();
   initResumeSlider();
@@ -30,6 +31,20 @@ document.addEventListener('DOMContentLoaded', () => {
   initBlogModal();
   initCertificationsShowcase();
 });
+
+// Helper to calculate correct assets path relative to base directory (to avoid 404s on GitHub Pages subdirectories)
+function getCorrectAssetPath(url) {
+  if (!url) return '';
+  if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) {
+    return url;
+  }
+  // Detect sub-directory deployment on GitHub Pages (e.g. /umar-portfolio/)
+  const pathSegments = window.location.pathname.split('/');
+  if (pathSegments[1] && pathSegments[1] !== 'index.html' && pathSegments[1] !== 'src') {
+    return '/' + pathSegments[1] + '/' + url;
+  }
+  return '/' + url;
+}
 
 /* ==========================================================================
    1. PWA Service Worker Registration
@@ -204,12 +219,75 @@ function initVisitorAnalytics() {
   const barApk = document.getElementById('chart-bar-apk');
   const barContact = document.getElementById('chart-bar-contact');
 
+  let maxScrollPercentage = 0;
+
+  // Expose score update globally
+  window.updateEngagementScore = function() {
+    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
+    
+    // Time score: 1 point per 5 seconds on site, up to 30 points
+    const timeScore = Math.min(Math.floor(siteTimeSpent / 5), 30);
+    
+    // Resume downloads: 20 points per download, max 20 points
+    const resumeScore = Math.min((counts.resumeDownloads || 0) * 20, 20);
+    
+    // APK downloads: 20 points per download, max 20 points
+    const apkScore = Math.min((counts.apkDownloads || 0) * 20, 20);
+    
+    // Contact clicks: 10 points per click, max 20 points
+    const contactScore = Math.min((counts.contactClicks || 0) * 10, 20);
+    
+    // Scroll score: max 10 points based on max scroll depth
+    const scrollScore = Math.min(Math.floor(maxScrollPercentage / 10), 10);
+    
+    // Actions (Console run, View certificates): 5 points per action, max 10 points
+    const actionScore = Math.min((counts.actions || 0) * 5, 10);
+    
+    // Total Engagement Score
+    const totalScore = Math.min(timeScore + resumeScore + apkScore + contactScore + scrollScore + actionScore, 100);
+    
+    // Update the ring indicator if it exists
+    const ringFill = document.getElementById('engagement-ring-fill');
+    const ringValue = document.getElementById('engagement-ring-value');
+    
+    if (ringFill) {
+      const circumference = 251.2;
+      const offset = circumference - (totalScore / 100) * circumference;
+      ringFill.style.strokeDashoffset = offset;
+    }
+    if (ringValue) {
+      ringValue.innerText = totalScore + '%';
+    }
+  };
+
+  // Expose action recorder globally
+  window.recordEngagementAction = function() {
+    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
+    counts.actions = (counts.actions || 0) + 1;
+    localStorage.setItem('umar-portfolio-metrics', JSON.stringify(counts));
+    window.updateEngagementScore();
+  };
+
+  // Track page scroll depth
+  window.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight > 0) {
+      const scrollPercent = Math.min(Math.floor((scrollTop / docHeight) * 100), 100);
+      if (scrollPercent > maxScrollPercentage) {
+        maxScrollPercentage = scrollPercent;
+        window.updateEngagementScore();
+      }
+    }
+  });
+
   // Track page timers
   setInterval(() => {
     siteTimeSpent++;
     if (analyticsModal.classList.contains('open')) {
       updateAnalyticsDisplay();
     }
+    window.updateEngagementScore();
   }, 1000);
 
   // Helper to safely bind click tracking
@@ -237,6 +315,7 @@ function initVisitorAnalytics() {
   // Open modal handler
   analyticsBtn.addEventListener('click', () => {
     updateAnalyticsDisplay();
+    window.updateEngagementScore();
     analyticsModal.classList.add('open');
   });
 
@@ -294,6 +373,7 @@ function initVisitorAnalytics() {
     const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
     counts[key] = (counts[key] || 0) + 1;
     localStorage.setItem('umar-portfolio-metrics', JSON.stringify(counts));
+    window.updateEngagementScore();
   }
 
   function updateAnalyticsDisplay() {
@@ -390,6 +470,58 @@ function initAIResumeBot() {
     }
   });
 
+  function triggerAISideEffects(query) {
+    const cleanQuery = query.toLowerCase().trim();
+    if (cleanQuery.includes('certif') || cleanQuery.includes('credential')) {
+      const el = document.getElementById('certifications');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('pulse-highlight');
+        setTimeout(() => el.classList.remove('pulse-highlight'), 2000);
+      }
+    } else if (cleanQuery.includes('skill') || cleanQuery.includes('inventory') || cleanQuery.includes('tech')) {
+      const el = document.getElementById('skills');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('pulse-highlight');
+        setTimeout(() => el.classList.remove('pulse-highlight'), 2000);
+      }
+    } else if (cleanQuery.includes('project') || cleanQuery.includes('work')) {
+      const el = document.getElementById('projects');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('pulse-highlight');
+        setTimeout(() => el.classList.remove('pulse-highlight'), 2000);
+      }
+    } else if (cleanQuery.includes('analytic') || cleanQuery.includes('visitor') || cleanQuery.includes('metric')) {
+      const btn = document.getElementById('analytics-btn');
+      if (btn) {
+        btn.click();
+      }
+    } else if (cleanQuery.includes('contact') || cleanQuery.includes('email') || cleanQuery.includes('message') || cleanQuery.includes('phone')) {
+      const el = document.getElementById('contact');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('pulse-highlight');
+        setTimeout(() => el.classList.remove('pulse-highlight'), 2000);
+      }
+    } else if (cleanQuery.includes('resume') || cleanQuery.includes('cv') || cleanQuery.includes('download')) {
+      const el = document.getElementById('resume');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('pulse-highlight');
+        setTimeout(() => el.classList.remove('pulse-highlight'), 2000);
+      }
+    } else if (cleanQuery.includes('siufit') || cleanQuery.includes('fitness') || cleanQuery.includes('nutri')) {
+      const el = document.getElementById('siufit');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        el.classList.add('pulse-highlight');
+        setTimeout(() => el.classList.remove('pulse-highlight'), 2000);
+      }
+    }
+  }
+
   function handleUserMessage() {
     const text = chatInput.value.trim();
     if (!text) return;
@@ -412,6 +544,9 @@ function initAIResumeBot() {
 
       const response = processQuery(text);
       appendBubble(response, 'ai');
+      
+      // Smart Page Controller Actions
+      triggerAISideEffects(text);
     }, 600);
   }
 
@@ -2053,7 +2188,7 @@ function initHeroCanvas() {
    23. 3D Card Tilt Parallax effect
    ========================================================================== */
 function initCardTilt3D() {
-  const cards = document.querySelectorAll('.siufit-hero-card, .project-card, .about-story, .metrics-glass-card');
+  const cards = document.querySelectorAll('.siufit-hero-card, .project-card, .about-story, .metrics-glass-card, .hero-image-frame');
 
   if (!cards.length) return;
 
@@ -2472,10 +2607,11 @@ function initCertificationsShowcase() {
     modalImg.classList.remove('zoomed');
     modalImg.style.transformOrigin = 'center center';
 
-    modalImg.src = cert.imgUrl;
+    const correctPath = getCorrectAssetPath(cert.imgUrl);
+    modalImg.src = correctPath;
     modalImg.alt = `${cert.title} - ${cert.issuer} Certificate`;
     modalCaption.textContent = `${cert.title} (${cert.issuer})`;
-    modalDownload.href = cert.imgUrl;
+    modalDownload.href = correctPath;
   };
 
   // 5. Open Lightbox Event Binding
@@ -2489,6 +2625,11 @@ function initCertificationsShowcase() {
         void modal.offsetWidth;
         modal.classList.add('open');
         document.body.style.overflow = 'hidden';
+        
+        // Count as engagement action
+        if (window.recordEngagementAction) {
+          window.recordEngagementAction();
+        }
       });
     }
   });
@@ -2560,5 +2701,97 @@ function initCertificationsShowcase() {
     } else if (e.key === 'ArrowLeft') {
       navPrev();
     }
+  });
+}
+
+/* ==========================================================================
+   32. Interactive Project Console Runners
+   ========================================================================== */
+function initProjectConsoles() {
+  const runButtons = document.querySelectorAll('.run-console-btn');
+  const clearButtons = document.querySelectorAll('.console-clear-btn');
+
+  const simulations = {
+    'task-manager': [
+      { text: '> Initializing TaskSchedulerRunner...', type: 'info' },
+      { text: '[INFO] Connecting to local Room SQLite Database...', type: 'info' },
+      { text: '[SUCCESS] Connection established in 12ms.', type: 'success' },
+      { text: '[DEBUG] Querying scheduled tasks table...', type: 'debug' },
+      { text: '[DEBUG] Found 3 active tasks: [Morning Cardio, Push Day, Diet Log]', type: 'debug' },
+      { text: '[INFO] Registering exact alarm wakeups with OS AlarmManager...', type: 'info' },
+      { text: '[SUCCESS] Alarm signals successfully locked.', type: 'success' },
+      { text: '[INFO] Checking WorkManager constraints for background sync...', type: 'info' },
+      { text: '[DEBUG] Constraints checked: Battery OK, Wi-Fi connected.', type: 'debug' },
+      { text: '[SUCCESS] Task Scheduler execution completed successfully.', type: 'success' }
+    ],
+    'notes-app': [
+      { text: '> Initializing NotesIndexEngine...', type: 'info' },
+      { text: '[INFO] Initializing Full-Text Search (FTS4) index...', type: 'info' },
+      { text: '[DEBUG] Reading raw markdown records from Notes table...', type: 'debug' },
+      { text: '[DEBUG] Processing 142 notes...', type: 'debug' },
+      { text: '[INFO] Tokenizing document contents for fast query matching...', type: 'info' },
+      { text: '[SUCCESS] Index rebuilt in 32ms.', type: 'success' },
+      { text: '[INFO] Setting up reactive Kotlin Flow observers...', type: 'info' },
+      { text: '[SUCCESS] Debounce filter bound. Listening to search input queries.', type: 'success' },
+      { text: '[SUCCESS] Notes indexing simulation completed successfully.', type: 'success' }
+    ]
+  };
+
+  runButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const project = btn.getAttribute('data-project');
+      const consoleEl = document.getElementById(`console-${project}`);
+      if (!consoleEl) return;
+
+      if (consoleEl.style.display === 'none') {
+        consoleEl.style.display = 'block';
+      }
+
+      const body = consoleEl.querySelector('.console-body');
+      if (!body || consoleEl.getAttribute('data-running') === 'true') return;
+
+      body.innerHTML = '';
+      consoleEl.setAttribute('data-running', 'true');
+      btn.disabled = true;
+      btn.style.opacity = '0.6';
+
+      const logs = simulations[project];
+      let idx = 0;
+
+      function printNextLine() {
+        if (idx < logs.length) {
+          const log = logs[idx];
+          const line = document.createElement('div');
+          line.className = `console-line ${log.type}`;
+          line.innerText = log.text;
+          body.appendChild(line);
+          body.scrollTop = body.scrollHeight;
+          
+          idx++;
+          setTimeout(printNextLine, 400 + Math.random() * 300);
+        } else {
+          consoleEl.removeAttribute('data-running');
+          btn.disabled = false;
+          btn.style.opacity = '1';
+          if (window.recordEngagementAction) {
+            window.recordEngagementAction();
+          }
+        }
+      }
+
+      printNextLine();
+    });
+  });
+
+  clearButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const consoleEl = btn.closest('.project-console');
+      if (!consoleEl) return;
+      const body = consoleEl.querySelector('.console-body');
+      if (body && consoleEl.getAttribute('data-running') !== 'true') {
+        body.innerHTML = '<div class="console-line init-line">> Console cleared. Ready.</div>';
+      }
+    });
   });
 }

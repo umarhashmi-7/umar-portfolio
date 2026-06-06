@@ -1236,7 +1236,13 @@
               <span class="tech-tag">AlarmManager</span>
             </div>
             <div class="project-meta-toggle">
-              <button class="btn-text toggle-project-details-btn">View Challenges & Lessons</button>
+              <div class="project-meta-actions">
+                <button class="btn-text toggle-project-details-btn">View Challenges & Lessons</button>
+                <button class="btn-text run-console-btn" data-project="task-manager">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px; height:12px; margin-right:4px;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                  Run Simulation
+                </button>
+              </div>
               <div class="project-extra-content">
                 <div class="challenge-box">
                   <label>Challenge</label>
@@ -1247,6 +1253,23 @@
                   <label>Lesson</label>
                   <p>Leveraged AlarmManager's exact alarm permissions and combined it with dynamic broadcastees for
                     rock-solid schedules.</p>
+                </div>
+              </div>
+              <!-- Mock Console Shell -->
+              <div class="project-console" id="console-task-manager" style="display: none;">
+                <div class="console-header">
+                  <div class="console-dots">
+                    <span class="console-dot red"></span>
+                    <span class="console-dot yellow"></span>
+                    <span class="console-dot green"></span>
+                  </div>
+                  <span class="console-title">TaskSchedulerRunner.kt</span>
+                  <button class="console-clear-btn" title="Clear Console">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:10px; height:10px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  </button>
+                </div>
+                <div class="console-body">
+                  <div class="console-line init-line">> Ready. Click 'Run Simulation' to start.</div>
                 </div>
               </div>
             </div>
@@ -1367,7 +1390,13 @@
               <span class="tech-tag">Flow API</span>
             </div>
             <div class="project-meta-toggle">
-              <button class="btn-text toggle-project-details-btn">View Challenges & Lessons</button>
+              <div class="project-meta-actions">
+                <button class="btn-text toggle-project-details-btn">View Challenges & Lessons</button>
+                <button class="btn-text run-console-btn" data-project="notes-app">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px; height:12px; margin-right:4px;"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                  Run Simulation
+                </button>
+              </div>
               <div class="project-extra-content">
                 <div class="challenge-box">
                   <label>Challenge</label>
@@ -1378,6 +1407,23 @@
                   <label>Lesson</label>
                   <p>Utilized SQLite's FTS4 extension within Room database and routed text changes through a 250ms
                     debounced Kotlin Flow.</p>
+                </div>
+              </div>
+              <!-- Mock Console Shell -->
+              <div class="project-console" id="console-notes-app" style="display: none;">
+                <div class="console-header">
+                  <div class="console-dots">
+                    <span class="console-dot red"></span>
+                    <span class="console-dot yellow"></span>
+                    <span class="console-dot green"></span>
+                  </div>
+                  <span class="console-title">NotesIndexEngine.kt</span>
+                  <button class="console-clear-btn" title="Clear Console">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:10px; height:10px;"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                  </button>
+                </div>
+                <div class="console-body">
+                  <div class="console-line init-line">> Ready. Click 'Run Simulation' to start.</div>
                 </div>
               </div>
             </div>
@@ -3625,9 +3671,29 @@
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
-      <div class="modal-popup-header">
-        <h3 style="font-size: 1.5rem; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Visitor Engagement Analytics</h3>
-        <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: -0.5rem; margin-bottom: 1.5rem;">Real-time metrics tracking your interaction on this portfolio (Stored locally in localStorage).</p>
+      <div class="modal-popup-header" style="display: flex; justify-content: space-between; align-items: center; gap: 20px; flex-wrap: wrap;">
+        <div style="flex: 1; min-width: 200px;">
+          <h3 style="font-size: 1.5rem; font-weight: 800; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Visitor Engagement Analytics</h3>
+          <p style="font-size: 0.8125rem; color: var(--text-secondary); margin-top: -0.5rem; margin-bottom: 1.5rem;">Real-time metrics tracking your interaction on this portfolio (Stored locally in localStorage).</p>
+        </div>
+        
+        <!-- Activity Ring Gauge -->
+        <div class="engagement-ring-container" title="Overall Engagement Level based on your scroll, clicks, downloads and time spent!">
+          <svg class="analytics-ring-svg" viewBox="0 0 100 100">
+            <defs>
+              <linearGradient id="ring-glow-grad-v2" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#10b981" />
+                <stop offset="100%" stop-color="#3b82f6" />
+              </linearGradient>
+            </defs>
+            <circle class="ring-bg" cx="50" cy="50" r="40" />
+            <circle class="ring-fill" id="engagement-ring-fill" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2" />
+          </svg>
+          <div class="ring-label-wrapper">
+            <span class="ring-value" id="engagement-ring-value">0%</span>
+            <span class="ring-title">Score</span>
+          </div>
+        </div>
       </div>
       <div class="analytics-grid">
         <div class="analytics-card">
