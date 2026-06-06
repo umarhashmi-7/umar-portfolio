@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initProjectCaseStudyTabs();
   initExperienceTimeline();
   initSpotlightCarousel();
+  initOverflowDiagnostic();
 });
 
 // Helper to calculate correct assets path relative to base directory (to avoid 404s on GitHub Pages subdirectories)
@@ -3269,4 +3270,22 @@ function initSpotlightCarousel() {
       updateSlides(idx);
     });
   });
+}
+
+function initOverflowDiagnostic() {
+  const checkOverflows = () => {
+    const docWidth = document.documentElement.clientWidth;
+    const elements = document.querySelectorAll('*');
+    elements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.right > docWidth) {
+        if (el.closest('.horizontal-journey-scroll-wrapper') || el.closest('.arch-svg-wrapper') || el.closest('.siufit-product-modal') || el.closest('.lightbox-overlay-modal')) {
+          return;
+        }
+        console.warn('Overflowing Element:', el, 'Width:', rect.width, 'Right:', rect.right, 'DocWidth:', docWidth);
+      }
+    });
+  };
+  window.addEventListener('load', checkOverflows);
+  window.addEventListener('resize', checkOverflows);
 }

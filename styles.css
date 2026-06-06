@@ -79,6 +79,14 @@
   padding: 0;
 }
 
+html,
+body {
+  width: 100%;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
 html {
   font-size: 16px;
   scroll-behavior: smooth;
@@ -89,7 +97,6 @@ body {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   line-height: 1.6;
-  overflow-x: hidden;
   transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
@@ -4562,26 +4569,59 @@ footer {
   }
 
   .nav-links {
-    display: none;
-    position: absolute;
-    top: 4rem;
-    left: 0;
-    width: 100%;
-    background-color: var(--bg-primary);
-    border-bottom: 1px solid var(--border-color);
-    padding: 1.5rem;
+    display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    align-items: stretch;
-    box-shadow: var(--shadow-md);
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(3, 7, 18, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 2000;
+    padding: 2rem;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity var(--transition-normal), visibility var(--transition-normal);
+  }
+
+  [data-theme="light"] .nav-links {
+    background-color: rgba(255, 255, 255, 0.98);
   }
 
   .nav-links.open {
-    display: flex;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .nav-links a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem 0;
   }
 
   .hamburger {
     display: flex;
+    z-index: 2001;
+  }
+
+  .hamburger.active span:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+  }
+  .hamburger.active span:nth-child(2) {
+    opacity: 0;
+    transform: scale(0);
+  }
+  .hamburger.active span:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
   }
 
   .section {
@@ -8623,7 +8663,7 @@ footer {
 }
 
 /* --- MOBILE-FIRST SKILLS GRID OVERRIDES (Task 4) --- */
-@media (max-width: 375px) {
+@media (max-width: 576px) {
   .skills-grid {
     grid-template-columns: 1fr !important;
   }
@@ -8686,11 +8726,24 @@ footer {
 }
 
 /* --- MOBILE-FIRST GRIDS COLLAPSE OVERRIDES (Task 6) --- */
-@media (max-width: 480px) {
+@media (max-width: 576px) {
   .projects-grid,
   .blog-grid,
-  .certifications-list-v2 {
+  .certifications-list-v2,
+  .credentials-dashboard-grid {
     grid-template-columns: 1fr !important;
+  }
+
+  .container {
+    padding: 0 1rem !important;
+  }
+
+  .section {
+    padding: 3rem 0 !important;
+  }
+
+  .recruiter-hero-box {
+    padding: 1.5rem 1rem !important;
   }
 }
 
