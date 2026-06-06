@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initFAQAccordion();
   initProjectToggles();
   initProjectConsoles();
+  initBrandMatrix();
+  initTechEcosystemCanvas();
   initContactForm();
   initSocialActions();
   initResumeSlider();
@@ -30,6 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroRoles();
   initBlogModal();
   initCertificationsShowcase();
+  initSiufitShowcasePlayground();
+  initProjectCaseStudyTabs();
+  initExperienceTimeline();
+  initSpotlightCarousel();
 });
 
 // Helper to calculate correct assets path relative to base directory (to avoid 404s on GitHub Pages subdirectories)
@@ -2792,6 +2798,346 @@ function initProjectConsoles() {
       if (body && consoleEl.getAttribute('data-running') !== 'true') {
         body.innerHTML = '<div class="console-line init-line">> Console cleared. Ready.</div>';
       }
+    });
+  });
+}
+
+/* ==========================================================================
+   33. Brand Matrix Tab Switcher
+   ========================================================================== */
+function initBrandMatrix() {
+  const tabs = document.querySelectorAll('.matrix-tab-btn');
+  const panels = document.querySelectorAll('.matrix-panel');
+
+  if (!tabs.length || !panels.length) return;
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const tabId = tab.getAttribute('data-matrix-tab');
+
+      // Update active states
+      tabs.forEach(t => t.classList.remove('active'));
+      panels.forEach(p => p.classList.remove('active'));
+
+      tab.classList.add('active');
+      const targetPanel = document.getElementById(`matrix-panel-${tabId}`);
+      if (targetPanel) {
+        targetPanel.classList.add('active');
+      }
+
+      // Record engagement action
+      if (window.recordEngagementAction) {
+        window.recordEngagementAction();
+      }
+    });
+  });
+}
+
+/* ==========================================================================
+   34. Tech Ecosystem Dynamic Network Canvas
+   ========================================================================== */
+function initTechEcosystemCanvas() {
+  const container = document.getElementById('hero-tech-ecosystem');
+  const canvas = document.getElementById('tech-connector-canvas');
+
+  if (!container || !canvas) return;
+
+  const ctx = canvas.getContext('2d');
+  const nodes = container.querySelectorAll('.tech-node');
+
+  const connections = [
+    { from: 'kotlin', to: 'android' },
+    { from: 'android', to: 'database' },
+    { from: 'ai', to: 'vision' },
+    { from: 'ai', to: 'cloud' },
+    { from: 'cloud', to: 'backend' },
+    { from: 'vision', to: 'android' }
+  ];
+
+  let hoveredNode = null;
+
+  function resizeCanvas() {
+    const dpr = window.devicePixelRatio || 1;
+    const rect = container.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+    ctx.scale(dpr, dpr);
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  // Find center position of a node element relative to the container
+  function getNodeCenter(node) {
+    const rect = node.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    return {
+      x: rect.left - containerRect.left + rect.width / 2,
+      y: rect.top - containerRect.top + rect.height / 2
+    };
+  }
+
+  // Draw network lines
+  function drawConnections() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    connections.forEach(conn => {
+      const fromEl = container.querySelector(`[data-tech="${conn.from}"]`);
+      const toEl = container.querySelector(`[data-tech="${conn.to}"]`);
+
+      if (fromEl && toEl) {
+        const fromPos = getNodeCenter(fromEl);
+        const toPos = getNodeCenter(toEl);
+
+        const isHighlighted = hoveredNode === conn.from || hoveredNode === conn.to;
+
+        ctx.beginPath();
+        ctx.moveTo(fromPos.x, fromPos.y);
+        ctx.lineTo(toPos.x, toPos.y);
+
+        if (isHighlighted) {
+          ctx.strokeStyle = '#3b82f6';
+          ctx.lineWidth = 2.5;
+          ctx.shadowBlur = 8;
+          ctx.shadowColor = 'rgba(59, 130, 246, 0.6)';
+        } else {
+          ctx.strokeStyle = document.body.getAttribute('data-theme') === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.06)';
+          ctx.lineWidth = 1.2;
+          ctx.shadowBlur = 0;
+        }
+
+        ctx.stroke();
+      }
+    });
+  }
+
+  // Monitor hover state
+  nodes.forEach(node => {
+    node.addEventListener('mouseenter', () => {
+      hoveredNode = node.getAttribute('data-tech');
+      drawConnections();
+    });
+
+    node.addEventListener('mouseleave', () => {
+      hoveredNode = null;
+      drawConnections();
+    });
+  });
+
+  // Initial render after small timeout to ensure layout completes
+  setTimeout(drawConnections, 300);
+}
+
+
+/* ==========================================================================
+   35. SIUFIT Interactive Showcase & Architecture Controllers
+   ========================================================================== */
+function initSiufitShowcasePlayground() {
+  const featureBtns = document.querySelectorAll('.siufit-feature-btn');
+  const mainViewport = document.getElementById('siufit-main-screen-viewport');
+
+  if (featureBtns.length && mainViewport) {
+    // Initial load - screen 3 (AI Coach) is active by default
+    mainViewport.innerHTML = `<div class="mock-screen active screenshot-mode">${SIUFIT_SCREENS[3]}</div>`;
+
+    featureBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        featureBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const idx = parseInt(btn.getAttribute('data-screen-idx'), 10);
+        const currentScreen = mainViewport.querySelector('.mock-screen');
+        if (currentScreen) {
+          currentScreen.style.opacity = '0';
+          currentScreen.style.transition = 'opacity 0.3s ease';
+          setTimeout(() => {
+            mainViewport.innerHTML = `<div class="mock-screen active screenshot-mode" style="opacity:0; transition: opacity 0.3s ease;">${SIUFIT_SCREENS[idx]}</div>`;
+            const nextScreen = mainViewport.querySelector('.mock-screen');
+            if (nextScreen) {
+              nextScreen.offsetHeight; // force reflow
+              nextScreen.style.opacity = '1';
+            }
+          }, 300);
+        } else {
+          mainViewport.innerHTML = `<div class="mock-screen active screenshot-mode">${SIUFIT_SCREENS[idx]}</div>`;
+        }
+
+        if (window.recordEngagementAction) {
+          window.recordEngagementAction();
+        }
+      });
+    });
+  }
+
+  // Architecture SVG diagram node hover effects on main page
+  const archNodes = document.querySelectorAll('.arch-node-g');
+  const archReadout = document.getElementById('siufit-arch-description-box');
+
+  if (archNodes.length && archReadout) {
+    archNodes.forEach(node => {
+      const showDescription = () => {
+        archNodes.forEach(n => {
+          const rect = n.querySelector('rect');
+          if (rect) rect.style.stroke = 'var(--border-color)';
+        });
+        const rect = node.querySelector('rect');
+        if (rect) rect.style.stroke = 'var(--accent-color)';
+
+        const descText = node.getAttribute('data-arch-desc');
+        archReadout.innerHTML = descText;
+      };
+
+      node.addEventListener('mouseenter', showDescription);
+      node.addEventListener('click', showDescription);
+      
+      node.addEventListener('mouseleave', () => {
+        const rect = node.querySelector('rect');
+        if (rect) rect.style.stroke = 'var(--border-color)';
+        archReadout.innerHTML = 'Hover over any architecture node above to inspect system telemetry and data parameters.';
+      });
+    });
+  }
+}
+
+/* ==========================================================================
+   36. Project Case Studies Internal Tabs
+   ========================================================================== */
+function initProjectCaseStudyTabs() {
+  const cards = document.querySelectorAll('.project-card');
+  cards.forEach(card => {
+    const tabs = card.querySelectorAll('.cs-tab-btn');
+    const panels = card.querySelectorAll('.cs-panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const tabName = tab.getAttribute('data-cs-tab');
+
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        panels.forEach(p => {
+          if (p.getAttribute('data-cs-panel') === tabName) {
+            p.classList.add('active');
+          } else {
+            p.classList.remove('active');
+          }
+        });
+
+        if (window.recordEngagementAction) {
+          window.recordEngagementAction();
+        }
+      });
+    });
+  });
+}
+
+/* ==========================================================================
+   37. Experience Vertical Timeline Drawer & Progress
+   ========================================================================== */
+function initExperienceTimeline() {
+  const disclosureBtns = document.querySelectorAll('.btn-disclosure');
+  const timelineItems = document.querySelectorAll('.timeline-item');
+  const timelineSection = document.getElementById('experience');
+  const fillBar = document.getElementById('exp-timeline-fill');
+
+  disclosureBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.timeline-card');
+      const drawer = card.querySelector('.card-expanded-drawer');
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+
+      if (isExpanded) {
+        drawer.style.maxHeight = '0px';
+        btn.setAttribute('aria-expanded', 'false');
+      } else {
+        const inner = drawer.querySelector('.expanded-inner');
+        drawer.style.maxHeight = `${inner.scrollHeight}px`;
+        btn.setAttribute('aria-expanded', 'true');
+      }
+
+      if (window.recordEngagementAction) {
+        window.recordEngagementAction();
+      }
+    });
+  });
+
+  if (timelineSection && fillBar && timelineItems.length) {
+    const trackVerticalFill = () => {
+      const rect = timelineSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      // Calculate vertical progress relative to center of screen viewport
+      const scrollPos = windowHeight / 2 - rect.top;
+      let pct = (scrollPos / rect.height) * 100;
+      pct = Math.max(0, Math.min(100, pct));
+
+      fillBar.style.height = `${pct}%`;
+
+      timelineItems.forEach(item => {
+        const itemRect = item.getBoundingClientRect();
+        if (itemRect.top < windowHeight * 0.6) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+    };
+
+    window.addEventListener('scroll', trackVerticalFill);
+    window.addEventListener('resize', trackVerticalFill);
+    setTimeout(trackVerticalFill, 200);
+  }
+}
+
+/* ==========================================================================
+   38. Spotlight Certifications Carousel
+   ========================================================================== */
+function initSpotlightCarousel() {
+  const slides = document.querySelectorAll('.spotlight-slide');
+  const dots = document.querySelectorAll('.spot-dot');
+  const prevBtn = document.getElementById('spotlight-prev');
+  const nextBtn = document.getElementById('spotlight-next');
+
+  if (!slides.length || !dots.length) return;
+
+  let currentIdx = 0;
+
+  const updateSlides = (idx) => {
+    currentIdx = idx;
+    slides.forEach((slide, i) => {
+      if (i === currentIdx) {
+        slide.classList.add('active');
+      } else {
+        slide.classList.remove('active');
+      }
+    });
+
+    dots.forEach((dot, i) => {
+      if (i === currentIdx) {
+        dot.classList.add('active');
+      } else {
+        dot.classList.remove('active');
+      }
+    });
+  };
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => {
+      let idx = currentIdx - 1;
+      if (idx < 0) idx = slides.length - 1;
+      updateSlides(idx);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      let idx = (currentIdx + 1) % slides.length;
+      updateSlides(idx);
+    });
+  }
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const idx = parseInt(dot.getAttribute('data-spot-idx'), 10);
+      updateSlides(idx);
     });
   });
 }
