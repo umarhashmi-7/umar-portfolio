@@ -100,6 +100,23 @@ body {
   transition: background-color var(--transition-normal), color var(--transition-normal);
 }
 
+/* Global Subtle Grain Texture Overlay */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.015;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+[data-theme="dark"] body::before {
+  opacity: 0.025;
+}
+
 h1,
 h2,
 h3,
@@ -388,14 +405,53 @@ header {
   transition: all var(--transition-fast);
 }
 
-/* --- Hero Section --- */
+/* --- Hero Section (Premium Redesign) --- */
+#hero {
+  position: relative;
+  overflow: hidden;
+  border-bottom: none;
+}
+
+.hero-gradient-mesh {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(59, 130, 246, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(124, 58, 237, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 10%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="dark"] .hero-gradient-mesh {
+  background:
+    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(59, 130, 246, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(124, 58, 237, 0.1) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 50% 10%, rgba(16, 185, 129, 0.06) 0%, transparent 50%);
+}
+
+.hero-noise-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 0;
+}
+
+[data-theme="dark"] .hero-noise-overlay {
+  opacity: 0.05;
+}
+
 .hero-wrapper {
   display: grid;
-  grid-template-columns: 1.2fr 0.8fr;
+  grid-template-columns: 1.15fr 0.85fr;
   gap: 4rem;
   align-items: center;
-  padding-top: 8rem;
-  padding-bottom: 4rem;
+  padding-top: 10rem;
+  padding-bottom: 5rem;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-content {
@@ -404,84 +460,130 @@ header {
   align-items: flex-start;
 }
 
+/* Staggered entrance animation */
+.hero-anim {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: heroFadeUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: calc(var(--anim-order, 0) * 0.1s + 0.15s);
+}
+
+@keyframes heroFadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Badge */
+.hero-badge {
+  font-size: 0.8125rem;
+  letter-spacing: 0.06em;
+}
+
+/* Headline — 3-line stacked identity */
 .hero-headline {
-  font-size: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  font-size: clamp(2.75rem, 5vw, 4.5rem);
   font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 1.25rem;
-  background: linear-gradient(135deg, var(--text-primary) 60%, var(--accent-color) 100%);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.5rem;
+  background: none;
+  -webkit-background-clip: unset;
+  -webkit-text-fill-color: unset;
+}
+
+.hero-line {
+  display: block;
+  background: linear-gradient(135deg, var(--text-primary) 40%, var(--accent-color) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.hero-subheading {
-  font-size: 1.25rem;
+.hero-line:nth-child(2) {
+  background: linear-gradient(135deg, var(--text-primary) 30%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.hero-line:nth-child(3) {
+  background: linear-gradient(135deg, var(--text-primary) 50%, #10b981 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Description */
+.hero-description {
+  font-size: 1.125rem;
+  line-height: 1.7;
   color: var(--text-secondary);
-  font-weight: 500;
+  max-width: 540px;
   margin-bottom: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
+  font-weight: 400;
 }
 
+.hero-description strong {
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+/* CTAs */
 .hero-ctas {
   display: flex;
   gap: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   flex-wrap: wrap;
 }
 
-/* --- Metrics Glass Card Overhaul --- */
-.metrics-glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-color);
-  border-radius: 24px;
-  padding: 2.25rem 2rem;
-  width: 100%;
-  box-shadow: var(--shadow-premium);
-  transition: all var(--transition-normal);
-  position: relative;
-  overflow: hidden;
-  z-index: 2;
+/* Resume text link */
+.hero-resume-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  transition: color var(--transition-fast);
+  margin-bottom: 2.5rem;
+  text-decoration: none;
 }
 
-.metrics-glass-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle at 20% 20%, var(--accent-soft) 0%, transparent 60%);
-  pointer-events: none;
-  z-index: 0;
+.hero-resume-link:hover {
+  color: var(--accent-color);
 }
 
-.metrics-glass-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--accent-hover);
-  box-shadow: 0 20px 45px rgba(37, 99, 235, 0.08), var(--shadow-premium);
+.hero-resume-link svg {
+  transition: transform var(--transition-fast);
 }
 
-.hero-metrics {
+.hero-resume-link:hover svg {
+  transform: translateY(2px);
+}
+
+/* Metrics strip — inline, minimal */
+.hero-metrics-strip {
   display: flex;
-  gap: 2rem;
-  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
   width: 100%;
-  z-index: 1;
-  position: relative;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
 }
 
-.metric-item {
+.metric-chip {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
-.metric-value {
-  font-size: 2.25rem;
+.metric-chip .metric-value {
+  font-size: 1.75rem;
   font-weight: 800;
   background: var(--accent-gradient);
   -webkit-background-clip: text;
@@ -490,60 +592,232 @@ header {
   line-height: 1.2;
 }
 
-.metric-label {
-  font-size: 0.8125rem;
+.metric-chip .metric-label {
+  font-size: 0.75rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  margin-top: 0.25rem;
+  margin-top: 0.125rem;
 }
 
-/* Hero Profile Frame */
+.metric-divider {
+  width: 1px;
+  height: 36px;
+  background-color: var(--border-color);
+  flex-shrink: 0;
+}
+
+/* Trust bar */
+.hero-trust-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.trust-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.trust-logos {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.trust-logo-item {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  opacity: 0.5;
+  transition: opacity var(--transition-fast), color var(--transition-fast);
+  cursor: default;
+  letter-spacing: -0.01em;
+}
+
+.trust-logo-item:hover {
+  opacity: 1;
+  color: var(--text-primary);
+}
+
+.trust-divider {
+  color: var(--text-tertiary);
+  opacity: 0.3;
+  font-size: 0.875rem;
+}
+
+/* Hero Profile Frame — Circular with rotating gradient ring */
 .hero-image-container {
   position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: translateY(-15px);
 }
 
 .hero-image-frame {
   position: relative;
   width: 340px;
   height: 340px;
-  border-radius: 30px;
-  background-color: var(--bg-tertiary);
-  border: 1px solid var(--border-color);
-  padding: 10px;
-  box-shadow: var(--shadow-premium);
+  border-radius: 50%;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: var(--shadow-premium);
   transition: transform var(--transition-slow);
+  z-index: 1;
 }
 
-.hero-image-frame:hover {
-  transform: scale(1.02);
+/* Rotating gradient background border */
+.hero-image-frame::before {
+  content: '';
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: conic-gradient(from 0deg, #3b82f6, #7c3aed, #10b981, #3b82f6);
+  animation: heroRingRotate 8s linear infinite;
+  z-index: -2;
 }
 
-.hero-image-frame svg,
-.hero-image-frame img {
-  width: 100%;
-  height: 100%;
-  border-radius: 20px;
+/* Inner overlay to mask the middle and create a 5px border */
+.hero-image-frame::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 50%;
+  background-color: var(--bg-primary);
+  z-index: -1;
+  transition: background-color var(--transition-fast);
+}
+
+@keyframes heroRingRotate {
+  to { transform: rotate(360deg); }
+}
+
+.hero-image-frame:hover::before {
+  animation-play-state: paused;
+}
+
+.hero-image-frame img,
+.hero-image-frame svg {
+  width: calc(100% - 10px);
+  height: calc(100% - 10px);
+  border-radius: 50%;
   object-fit: cover;
   object-position: center 12%;
-  transform: scale(1.1);
+  transform: scale(1.05);
+  background-color: var(--bg-tertiary);
+  z-index: 1;
 }
 
 .hero-image-glow {
   position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle, var(--accent-soft) 0%, transparent 70%);
+  top: -15%;
+  left: -15%;
+  width: 130%;
+  height: 130%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.06) 0%, transparent 60%);
   z-index: -1;
   pointer-events: none;
+}
+
+[data-theme="dark"] .hero-image-glow {
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 60%);
+}
+
+/* Hero responsive */
+@media (max-width: 1024px) {
+  .hero-wrapper {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    text-align: center;
+    padding-top: 8rem;
+  }
+
+  .hero-content {
+    align-items: center;
+  }
+
+  .hero-headline {
+    align-items: center;
+  }
+
+  .hero-description {
+    max-width: 100%;
+  }
+
+  .hero-ctas {
+    justify-content: center;
+  }
+
+  .hero-resume-link {
+    justify-content: center;
+  }
+
+  .hero-metrics-strip {
+    justify-content: center;
+  }
+
+  .hero-trust-bar {
+    justify-content: center;
+  }
+
+  .hero-image-frame {
+    width: 280px;
+    height: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-headline {
+    font-size: 2.25rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-headline {
+    font-size: 1.85rem;
+  }
+
+  .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0.75rem;
+  }
+
+  .hero-ctas .btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .hero-metrics-strip {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .metric-divider {
+    display: none;
+  }
+
+  .metric-chip {
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-image-frame {
+    width: 240px;
+    height: 240px;
+  }
 }
 
 /* --- About Me Section --- */
@@ -3172,6 +3446,7 @@ header {
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
+  will-change: opacity;
 }
 
 .cert-lightbox.open {
@@ -3200,6 +3475,7 @@ header {
   align-items: center;
   transform: scale(0.9);
   transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+  will-change: transform;
 }
 
 .cert-lightbox.open .cert-lightbox-container {
@@ -3395,6 +3671,21 @@ header {
   font-weight: 500;
   font-size: 0.8125rem;
   color: var(--text-secondary);
+}
+
+.testimonial-badge-pill {
+  display: inline-flex !important;
+  align-items: center;
+  padding: 2px 8px;
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 20px;
+  font-size: 0.7rem !important;
+  font-weight: 700 !important;
+  color: #10b981 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 6px;
 }
 
 .testimonial-dots {
@@ -3937,6 +4228,7 @@ textarea.form-control {
   transform: translateY(20px) scale(0.95);
   pointer-events: none;
   transition: all var(--transition-normal);
+  will-change: transform, opacity;
 }
 
 .ai-chat-window.open {
@@ -4090,6 +4382,7 @@ textarea.form-control {
   opacity: 0;
   pointer-events: none;
   transition: opacity var(--transition-normal);
+  will-change: opacity;
 }
 
 .modal-overlay.open {
@@ -4108,6 +4401,7 @@ textarea.form-control {
   position: relative;
   transform: translateY(20px) scale(0.98);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color var(--transition-normal);
+  will-change: transform;
 }
 
 [data-theme="dark"] .modal-card {
@@ -4524,28 +4818,6 @@ footer {
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 1024px) {
-  .hero-wrapper {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    text-align: center;
-  }
-
-  .hero-content {
-    align-items: center;
-  }
-
-  .hero-headline {
-    font-size: 2.75rem;
-  }
-
-  .hero-ctas {
-    justify-content: center;
-  }
-
-  .hero-metrics {
-    justify-content: center;
-  }
-
   .about-grid,
   .leadership-grid,
   .contact-wrapper {
@@ -4956,6 +5228,7 @@ footer {
   pointer-events: none;
   transform: scale(1.02);
   transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.5s;
+  will-change: transform, opacity;
 }
 
 .siufit-product-modal.active {
@@ -6176,15 +6449,7 @@ footer {
   opacity: 0.55;
 }
 
-#hero {
-  position: relative;
-  overflow: hidden;
-}
-
-.hero-wrapper {
-  position: relative;
-  z-index: 1;
-}
+/* #hero and .hero-wrapper styles moved to primary hero CSS block */
 
 /* --- Resume Persona Customizer --- */
 .resume-persona-customizer {
@@ -6412,45 +6677,7 @@ footer {
   color: #ffffff !important;
 }
 
-/* --- Rotating Roles Animation --- */
-.hero-rotating-roles {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1.25rem;
-  font-size: 1.125rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-}
-.hero-rotating-roles .prefix {
-  font-weight: 600;
-  color: var(--text-primary);
-}
-.role-scroller {
-  position: relative;
-  display: inline-block;
-  height: 1.75rem;
-  overflow: hidden;
-  min-width: 240px;
-}
-.role-item {
-  position: absolute;
-  left: 0;
-  white-space: nowrap;
-  font-weight: 700;
-  color: var(--accent-color);
-  opacity: 0;
-  transform: translateY(100%);
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s ease;
-}
-.role-item.active {
-  opacity: 1;
-  transform: translateY(0);
-}
-.role-item.exit {
-  opacity: 0;
-  transform: translateY(-100%);
-}
+/* --- Rotating Roles Animation (Deprecated — removed in hero redesign) --- */
 
 /* --- Beyond Coding Section --- */
 .beyond-coding-grid {
@@ -6715,6 +6942,7 @@ footer {
   overflow: hidden;
   z-index: 2001;
   animation: modalScaleUp 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  will-change: transform, opacity;
 }
 @keyframes modalScaleUp {
   from { transform: scale(0.95); opacity: 0; }
@@ -6977,14 +7205,7 @@ footer {
   letter-spacing: 0.05em;
 }
 
-/* 3. 3D Tilt Card depth enhancements */
-.hero-image-frame {
-  transform-style: preserve-3d;
-}
-.hero-image-frame img, .hero-image-frame svg {
-  transform: translateZ(30px) scale(1.1);
-  transition: transform 0.1s ease;
-}
+/* 3. 3D Tilt Card depth enhancements — disabled for circular hero frame */
 
 /* 4. AI Chat targeting glow effect */
 @keyframes pulseHighlightGlow {
@@ -6998,76 +7219,8 @@ footer {
 }
 
 /* ==========================================================================
-   Tech Stack Ecosystem Card
+   Tech Stack Ecosystem Card (Deprecated — removed in hero redesign)
    ========================================================================== */
-.hero-tech-ecosystem-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 1.25rem 1.5rem;
-  box-shadow: var(--shadow-premium);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-.ecosystem-title {
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-secondary);
-  margin-bottom: 1rem;
-  text-align: left;
-}
-.hero-tech-ecosystem {
-  position: relative;
-  width: 100%;
-  height: 120px;
-}
-.tech-node {
-  position: absolute;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 30px;
-  padding: 6px 14px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  cursor: pointer;
-  z-index: 2;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-[data-theme="light"] .tech-node {
-  background: rgba(0, 0, 0, 0.03);
-  border: 1px solid rgba(0, 0, 0, 0.08);
-}
-.tech-node:hover {
-  background: var(--accent-gradient);
-  border-color: transparent;
-  color: #ffffff;
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
-}
-.node-icon {
-  font-size: 0.85rem;
-}
-.tech-connector-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-
 /* ==========================================================================
    Brand Matrix Section
    ========================================================================== */
@@ -7410,129 +7563,8 @@ footer {
 
 /* ==========================================================================
    Upgrades - Hero Roles, Tech Ecosystem & Statistics Card
+   (Deprecated — elements removed in hero redesign)
    ========================================================================== */
-.role-rotating-roles {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 1.15rem;
-  margin-bottom: 2rem;
-  flex-wrap: wrap;
-  text-align: left;
-}
-.role-rotating-roles .prefix {
-  color: var(--text-secondary);
-  font-weight: 500;
-}
-.role-scroller {
-  position: relative;
-  height: 1.6em;
-  width: 250px;
-  overflow: hidden;
-  display: inline-block;
-  vertical-align: middle;
-}
-.role-item {
-  position: absolute;
-  left: 0;
-  top: 100%;
-  opacity: 0;
-  width: 100%;
-  font-weight: 800;
-  color: var(--accent-color);
-  transition: top 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-.role-item.active {
-  top: 0;
-  opacity: 1;
-}
-.role-item.exit {
-  top: -100%;
-  opacity: 0;
-}
-
-.hero-tech-ecosystem-card {
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  padding: 1.5rem;
-  width: 100%;
-  box-shadow: var(--shadow-md);
-  margin-top: 1.5rem;
-  position: relative;
-}
-.ecosystem-title {
-  font-size: 0.8rem;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 1rem;
-  text-align: left;
-}
-.hero-tech-ecosystem {
-  position: relative;
-  height: 180px;
-  width: 100%;
-  overflow: hidden;
-}
-.tech-node {
-  position: absolute;
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 20px;
-  padding: 6px 14px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: var(--shadow-sm);
-  cursor: pointer;
-  z-index: 10;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.tech-node:hover {
-  transform: scale(1.05);
-  border-color: var(--accent-color);
-  box-shadow: 0 0 12px var(--accent-soft);
-}
-.node-icon {
-  font-size: 0.9rem;
-}
-.tech-connector-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  z-index: 1;
-}
-
-.metrics-glass-card {
-  position: relative;
-}
-.metrics-glass-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 24px;
-  padding: 1.5px;
-  background: linear-gradient(135deg, var(--accent-color), transparent 50%, var(--accent-color));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  opacity: 0.15;
-  transition: opacity 0.3s ease;
-}
-.metrics-glass-card:hover::after {
-  opacity: 0.4;
-}
 
 /* ==========================================================================
    Upgrades - SIUFIT Showcase Playground, Architecture & Timeline
@@ -7598,6 +7630,222 @@ footer {
   font-size: 0.75rem;
   color: var(--text-tertiary);
   font-weight: 500;
+}
+
+/* SIUFIT Action Buttons */
+.siufit-action-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-download-icon {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+}
+
+.siufit-platform-badge-row {
+  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.card-platform-badge {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent-color);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.card-status-badge {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  margin-left: 6px;
+}
+
+/* SIUFIT Screenshots Gallery & Marquee */
+.siufit-gallery-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 5rem auto 2.5rem;
+}
+
+.siufit-gallery-header h3 {
+  font-size: 1.625rem;
+  font-weight: 800;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.siufit-gallery-header p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.siufit-screenshots-marquee {
+  width: 100%;
+  overflow-x: auto;
+  padding: 1rem 0;
+  margin-bottom: 3rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-color) transparent;
+}
+
+.siufit-screenshots-marquee::-webkit-scrollbar {
+  height: 6px;
+}
+
+.siufit-screenshots-marquee::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.siufit-screenshots-marquee::-webkit-scrollbar-thumb {
+  background-color: var(--border-color);
+  border-radius: 10px;
+}
+
+.screenshots-track {
+  display: flex;
+  gap: 1.5rem;
+  padding: 0 1rem;
+  min-width: max-content;
+}
+
+.screenshot-card {
+  width: 200px;
+  flex-shrink: 0;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color var(--transition-fast), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.screenshot-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent-color);
+  box-shadow: var(--shadow-premium);
+}
+
+.screenshot-card img {
+  width: 100%;
+  border-radius: 10px;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 9 / 16;
+  background: var(--bg-tertiary);
+}
+
+.screenshot-label {
+  margin-top: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* SIUFIT Product Roadmap styles */
+.siufit-roadmap-container {
+  margin-top: 5rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.roadmap-header {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 3rem;
+}
+
+.roadmap-header h3 {
+  font-size: 1.625rem;
+  font-weight: 800;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.roadmap-header p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.roadmap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+@media (max-width: 992px) {
+  .roadmap-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
+
+.roadmap-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.roadmap-card:hover {
+  border-color: rgba(59, 130, 246, 0.2);
+  box-shadow: var(--shadow-sm);
+}
+
+.roadmap-status {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 4px 10px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 1rem;
+}
+
+.roadmap-card.completed .roadmap-status {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.roadmap-card.planned .roadmap-status {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--accent-color);
+}
+
+.roadmap-card h4 {
+  font-size: 1.125rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.roadmap-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
 }
 
 .siufit-playground-header, .siufit-arch-header, .siufit-journey-header {
@@ -7860,16 +8108,21 @@ footer {
   text-transform: uppercase;
   font-weight: 600;
 }
-.challenge-box, .lesson-box {
+.challenge-box, .lesson-box, .architecture-box {
   background: var(--card-bg);
   border-left: 3px solid var(--accent-color);
   border-radius: 0 8px 8px 0;
   padding: 8px 12px;
 }
+.architecture-box {
+  border-left-color: #7c3aed;
+  margin-bottom: 10px;
+}
 .challenge-box {
   border-left-color: #ef4444;
+  margin-bottom: 10px;
 }
-.challenge-box label, .lesson-box label {
+.challenge-box label, .lesson-box label, .architecture-box label {
   font-size: 0.625rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -7877,11 +8130,14 @@ footer {
   display: block;
   margin-bottom: 2px;
 }
-.challenge-box p, .lesson-box p {
+.challenge-box p, .lesson-box p, .architecture-box p {
   font-size: 0.78rem;
   line-height: 1.4;
   color: var(--text-secondary);
   margin: 0;
+}
+.lessons-text {
+  margin-top: 10px !important;
 }
 
 /* ==========================================================================
@@ -8549,102 +8805,10 @@ footer {
   margin-top: 0.15rem;
 }
 
-/* --- MOBILE-FIRST HERO OPTIMIZATIONS (Task 2) --- */
-@media (max-width: 768px) {
-  .hero-headline {
-    font-size: 2.25rem !important;
-  }
-}
-
-@media (max-width: 576px) {
-  .hero-headline {
-    font-size: 1.85rem !important;
-  }
-  
-  .hero-rotating-roles,
-  .role-rotating-roles {
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    gap: 0.25rem !important;
-  }
-  
-  .role-scroller {
-    width: 100% !important;
-    min-width: auto !important;
-    text-align: center !important;
-    height: 1.75rem !important;
-  }
-  
-  .role-item {
-    width: 100% !important;
-    text-align: center !important;
-    left: 0 !important;
-    right: 0 !important;
-  }
-  
-  .hero-ctas {
-    flex-direction: column !important;
-    align-items: stretch !important;
-    width: 100% !important;
-    gap: 0.75rem !important;
-  }
-  
-  .hero-ctas .btn {
-    width: 100% !important;
-    text-align: center !important;
-    justify-content: center !important;
-  }
-  
-  .hero-metrics {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 1.5rem !important;
-  }
-  
-  .metric-item {
-    text-align: center !important;
-    align-items: center !important;
-  }
-  
-  .hero-image-frame {
-    width: 260px !important;
-    height: 260px !important;
-  }
-  
-  .hero-tech-ecosystem {
-    display: flex !important;
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 0.5rem !important;
-    height: auto !important;
-    padding: 0.5rem 0 !important;
-  }
-  
-  .tech-node {
-    position: relative !important;
-    left: auto !important;
-    top: auto !important;
-    margin: 2px !important;
-    display: inline-flex !important;
-  }
-  
-  .tech-connector-canvas {
-    display: none !important;
-  }
-}
-
+/* --- MOBILE-FIRST HERO OPTIMIZATIONS (Cleaned — styles moved to primary hero CSS block) --- */
 @media (max-width: 375px) {
   .hero-headline {
     font-size: 1.65rem !important;
-  }
-}
-
-@media (max-width: 350px) {
-  .hero-image-frame {
-    width: 220px !important;
-    height: 220px !important;
   }
 }
 

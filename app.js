@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initMetricsCounters();
   initVisitorAnalytics();
   initAIResumeBot();
-  initSiufitCarousel();
+  initSiufitShowcase();
   initSiufitArchitecture();
   initSiufitJourney();
   initSiufitLightbox();
@@ -48,9 +48,32 @@ function getCorrectAssetPath(url) {
   // Detect sub-directory deployment on GitHub Pages (e.g. /umar-portfolio/)
   const pathSegments = window.location.pathname.split('/');
   if (pathSegments[1] && pathSegments[1] !== 'index.html' && pathSegments[1] !== 'src') {
-    return '/' + pathSegments[1] + '/' + url;
+    return `/${pathSegments[1]}/${url}`;
   }
-  return '/' + url;
+  return url;
+}
+
+// Throttle function using requestAnimationFrame for scroll handlers
+function throttleRAF(fn) {
+  let ticking = false;
+  return function(...args) {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        fn.apply(this, args);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  };
+}
+
+// Debounce function to delay execution of heavy events (resize, typing, etc.)
+function debounce(fn, delay) {
+  let timer = null;
+  return function(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn.apply(this, args), delay);
+  };
 }
 
 /* ==========================================================================
@@ -127,7 +150,7 @@ function initNavigation() {
   });
 
   // Track active section on scroll
-  window.addEventListener('scroll', () => {
+  window.addEventListener('scroll', throttleRAF(() => {
     const scrollY = window.pageYOffset;
     sections.forEach(section => {
       const sectionHeight = section.offsetHeight;
@@ -144,7 +167,7 @@ function initNavigation() {
         }
       }
     });
-  });
+  }));
 }
 
 /* ==========================================================================
@@ -282,7 +305,7 @@ function initVisitorAnalytics() {
   };
 
   // Track page scroll depth
-  window.addEventListener('scroll', () => {
+  window.addEventListener('scroll', throttleRAF(() => {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const docHeight = document.documentElement.scrollHeight - window.innerHeight;
     if (docHeight > 0) {
@@ -292,7 +315,7 @@ function initVisitorAnalytics() {
         window.updateEngagementScore();
       }
     }
-  });
+  }));
 
   // Track page timers
   setInterval(() => {
@@ -422,7 +445,7 @@ function initVisitorAnalytics() {
 const AI_TOPICS = [
   {
     topic: 'siufit',
-    keys: ['siufit', 'fitness', 'nutrition', 'tracker', 'calorie', 'scan', 'diet', 'metabolic', 'llama', 'groq'],
+    keys: ['siufit', 'fitness', 'nutrition', 'tracker', 'trackers', 'calorie', 'calories', 'scan', 'scans', 'diet', 'diets', 'metabolic', 'llama', 'groq', 'health', 'workout', 'workouts', 'timer', 'weight'],
     response: `<div class='ai-rich-card'>
       <div class='ai-rich-title'>🚀 SIUFIT App Ecosystem</div>
       <p>Umar's flagship mobile & AI ecosystem features:</p>
@@ -436,7 +459,7 @@ const AI_TOPICS = [
   },
   {
     topic: 'skills',
-    keys: ['skills', 'tech', 'languages', 'databases', 'kotlin', 'compose', 'java', 'sqlite', 'room', 'coroutines', 'hilt', 'flow'],
+    keys: ['skills', 'skill', 'tech', 'languages', 'language', 'databases', 'database', 'kotlin', 'compose', 'java', 'sqlite', 'room', 'coroutines', 'hilt', 'flow', 'programming', 'code', 'coding', 'xml'],
     response: `<div class='ai-rich-card'>
       <div class='ai-rich-title'>🛠️ Technical Expertise</div>
       <div class='ai-skill-tags'>
@@ -454,7 +477,7 @@ const AI_TOPICS = [
   },
   {
     topic: 'experience',
-    keys: ['experience', 'timeline', 'job', 'work', 'internship', 'career', 'history'],
+    keys: ['experience', 'experiences', 'timeline', 'job', 'jobs', 'work', 'works', 'internship', 'internships', 'career', 'careers', 'history', 'employ', 'employment', 'resume', 'cv'],
     response: `<div class='ai-rich-card'>
       <div class='ai-rich-title'>💼 Professional History</div>
       <div class='ai-mini-timeline'>
@@ -480,7 +503,7 @@ const AI_TOPICS = [
   },
   {
     topic: 'contact',
-    keys: ['contact', 'email', 'phone', 'whatsapp', 'hire', 'reach', 'linkedin', 'message', 'address', 'location'],
+    keys: ['contact', 'contacts', 'email', 'phone', 'whatsapp', 'hire', 'reach', 'linkedin', 'message', 'messages', 'address', 'location', 'social', 'github'],
     response: `<div class='ai-rich-card'>
       <div class='ai-rich-title'>📞 Contact Channels</div>
       <p>Connect directly with Umar to discuss opportunities:</p>
@@ -494,7 +517,7 @@ const AI_TOPICS = [
   },
   {
     topic: 'leadership',
-    keys: ['leadership', 'workshop', 'ieee', 'mentor', 'train', 'organize', 'participants', 'faculty', 'impact'],
+    keys: ['leadership', 'workshop', 'workshops', 'ieee', 'mentor', 'mentors', 'train', 'organize', 'organizer', 'participants', 'faculty', 'impact', 'lead', 'leader', 'coordinator'],
     response: `<div class='ai-rich-card'>
       <div class='ai-rich-title'>🌟 Leadership & Impact</div>
       <div class='ai-stats-row'>
@@ -510,7 +533,7 @@ const AI_TOPICS = [
   },
   {
     topic: 'certifications',
-    keys: ['certifications', 'credentials', 'nptel', 'hp life', 'google', 'coursera', 'badge', 'ieee cert'],
+    keys: ['certifications', 'certification', 'credentials', 'credential', 'nptel', 'hp life', 'google', 'coursera', 'badge', 'badges', 'ieee cert', 'certificate', 'certificates'],
     response: `<div class='ai-rich-card'>
       <div class='ai-rich-title'>📜 Verified Credentials</div>
       <div class='ai-rich-list'>
@@ -524,7 +547,7 @@ const AI_TOPICS = [
   },
   {
     topic: 'projects',
-    keys: ['projects', 'other', 'task', 'notes', 'auth', 'utility'],
+    keys: ['projects', 'project', 'other', 'task', 'tasks', 'notes', 'auth', 'utility', 'utilities'],
     response: `<div class='ai-rich-card'>
       <div class='ai-rich-title'>⚙️ Production Utility Apps</div>
       <div class='ai-rich-list'>
@@ -538,20 +561,20 @@ const AI_TOPICS = [
   },
   {
     topic: 'education',
-    keys: ['education', 'college', 'bca', 'university', 'studies', 'cgpa', 'marks', 'tmu', 'degree'],
+    keys: ['education', 'college', 'bca', 'university', 'studies', 'cgpa', 'marks', 'tmu', 'degree', 'degrees', 'school', 'student'],
     response: `<div class='ai-rich-card'>
       <div class='ai-rich-title'>🎓 Academic Records</div>
       <div class='ai-rich-list'>
         <div class='ai-rich-item'>🏫 <strong>Teerthanker Mahaveer University:</strong> Bachelor of Computer Applications (BCA).</div>
         <div class='ai-rich-item'>📈 <strong>Performance:</strong> Scored an outstanding <strong>9.2 CGPA / 86%</strong> aggregate.</div>
-        <div class='ai-rich-item'>💡 <strong>Core Focus:</strong> Software engineering, database design, and mobile vision.</div>
+        <div class='ai-rich-item'>💡 <strong>Focus Areas:</strong> Software engineering, database design, and mobile vision.</div>
       </div>
       <a href='#education' class='ai-rich-btn'>Inspect Academic Highlights</a>
     </div>`
   },
   {
     topic: 'sports',
-    keys: ['sports', 'football', 'extracurricular', 'hobbies', 'captain'],
+    keys: ['sports', 'sport', 'football', 'extracurricular', 'hobbies', 'hobby', 'captain'],
     response: `<div class='ai-rich-card'>
       <div class='ai-rich-title'>⚽ Extracurricular & Sports</div>
       <div class='ai-rich-list'>
@@ -563,7 +586,7 @@ const AI_TOPICS = [
   },
   {
     topic: 'about',
-    keys: ['who', 'umar', 'bio', 'profile', 'about', 'specialist', 'developer'],
+    keys: ['who', 'umar', 'bio', 'profile', 'about', 'specialist', 'developer', 'developers', 'background'],
     response: `<div class='ai-rich-card'>
       <div class='ai-rich-title'>👤 About Mohd Umar Hashmi</div>
       <p>Umar is a multi-disciplinary tech professional, product builder, and technical mentor. He specializes in Android development, offline-first architectures, AI vision models, and prompt engineering pipelines.</p>
@@ -607,47 +630,54 @@ function initAIResumeBot() {
 
   function triggerAISideEffects(query) {
     const cleanQuery = query.toLowerCase().trim();
-    if (cleanQuery.includes('certif') || cleanQuery.includes('credential')) {
+    
+    // Helper to check match on word boundary or prefix boundary
+    const match = (keyword) => {
+      const regex = new RegExp('\\b' + keyword, 'i');
+      return regex.test(cleanQuery);
+    };
+
+    if (match('certif') || match('credential')) {
       const el = document.getElementById('certifications');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.classList.add('pulse-highlight');
         setTimeout(() => el.classList.remove('pulse-highlight'), 2000);
       }
-    } else if (cleanQuery.includes('skill') || cleanQuery.includes('inventory') || cleanQuery.includes('tech')) {
+    } else if (match('skill') || match('inventory') || match('tech')) {
       const el = document.getElementById('skills');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.classList.add('pulse-highlight');
         setTimeout(() => el.classList.remove('pulse-highlight'), 2000);
       }
-    } else if (cleanQuery.includes('project') || cleanQuery.includes('work')) {
+    } else if (match('project') || match('work')) {
       const el = document.getElementById('projects');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.classList.add('pulse-highlight');
         setTimeout(() => el.classList.remove('pulse-highlight'), 2000);
       }
-    } else if (cleanQuery.includes('analytic') || cleanQuery.includes('visitor') || cleanQuery.includes('metric')) {
+    } else if (match('analytic') || match('visitor') || match('metric')) {
       const btn = document.getElementById('analytics-btn');
       if (btn) {
         btn.click();
       }
-    } else if (cleanQuery.includes('contact') || cleanQuery.includes('email') || cleanQuery.includes('message') || cleanQuery.includes('phone')) {
+    } else if (match('contact') || match('email') || match('message') || match('phone') || match('reach')) {
       const el = document.getElementById('contact');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.classList.add('pulse-highlight');
         setTimeout(() => el.classList.remove('pulse-highlight'), 2000);
       }
-    } else if (cleanQuery.includes('resume') || cleanQuery.includes('cv') || cleanQuery.includes('download')) {
+    } else if (match('resume') || match('cv') || match('download')) {
       const el = document.getElementById('resume');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
         el.classList.add('pulse-highlight');
         setTimeout(() => el.classList.remove('pulse-highlight'), 2000);
       }
-    } else if (cleanQuery.includes('siufit') || cleanQuery.includes('fitness') || cleanQuery.includes('nutri')) {
+    } else if (match('siufit') || match('fitness') || match('nutri')) {
       const el = document.getElementById('siufit');
       if (el) {
         el.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -701,19 +731,32 @@ function initAIResumeBot() {
     counts.aiQueries = (counts.aiQueries || 0) + 1;
     localStorage.setItem('umar-portfolio-metrics', JSON.stringify(counts));
 
-    if (cleanQuery.includes('hello') || cleanQuery.includes('hi') || cleanQuery.includes('hey')) {
+    // Handle greeting strictly on word boundaries to avoid false positives (like "hi" in "history" or "this")
+    const greetingRegex = /\b(hi|hello|hey|yo|greetings|hola|whatsapp)\b/i;
+    if (greetingRegex.test(cleanQuery)) {
       return "Hello! I am Umar's Interactive AI Representative. How can I help you today? You can ask me about his 'SIUFIT architecture', 'Android skills', or 'work history'.";
     }
 
-    // Advanced token matching
+    // Advanced token matching using regex word boundaries to avoid substring collisions
     let bestTopic = null;
     let maxScore = 0;
 
     AI_TOPICS.forEach(t => {
       let score = 0;
       t.keys.forEach(k => {
-        if (cleanQuery.includes(k)) {
-          score += 2; // Direct word hit
+        // Escaping key for safety
+        const escapedKey = k.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+        // If keyword is short (e.g. 3 chars or less like "bca" or "who"), check strict full-word match
+        // Otherwise, allow prefix boundary check (e.g. "certif" matches "certifications", "project" matches "projects")
+        let regex;
+        if (k.length <= 3) {
+          regex = new RegExp('\\b' + escapedKey + '\\b', 'i');
+        } else {
+          regex = new RegExp('\\b' + escapedKey, 'i');
+        }
+
+        if (regex.test(cleanQuery)) {
+          score += 2; // Direct word or valid prefix hit
         }
       });
       if (score > maxScore) {
@@ -748,427 +791,16 @@ const ARCH_DETAILS = {
 // SIUFIT Module Scope Variables & Templates
   // 1. Storage of high-fidelity vector screen markup templates for lazy loading
   const SIUFIT_SCREENS = {
-    0: `
-      <div class="app-screen-content theme-dark-onboarding">
-        <div class="mock-header-row">
-          <span>Welcome to SIUFIT, Rafi!</span>
-          <span>✉</span>
-        </div>
-        <div style="background: linear-gradient(135deg, #1f6feb 0%, #8957e5 100%); color: #ffffff; padding: 1.2em; border-radius: 12px; font-weight: 800; text-align: center; font-size: 1em; box-shadow: 0 4px 15px rgba(0,0,0,0.3); margin-bottom: 1em;">
-          WELCOME TO SIUFIT
-          <div style="font-size: 0.65em; font-weight: 400; opacity: 0.9; margin-top: 4px; letter-spacing: 1.5px;">INTELLIGENT HEALTH ECOSYSTEM</div>
-        </div>
-        <div style="font-size: 0.95em; font-weight: 700; color: #ffffff; margin-bottom: 0.5em; margin-top: 0.5em;">
-          Hey Rafi — welcome aboard.
-        </div>
-        <p style="font-size: 0.8em; line-height: 1.4; margin: 0 0 1em 0; color: #8b949e;">
-          Your SIUFIT AI coach is ready. Track nutrition, follow workouts, and see progress — all in one place.
-        </p>
-        <div style="display: flex; flex-direction: column; gap: 0.8em; margin-bottom: 1em;">
-          <div style="display: flex; align-items: center; gap: 0.8em; background: #161b22; padding: 0.7em; border-radius: 10px; border: 1px solid #30363d;">
-            <span style="font-size: 1.2em;">🍎</span>
-            <div style="font-size: 0.75em; line-height: 1.3;">
-              <strong style="color: #ffffff; display: block; margin-bottom: 0.2em;">Smart Nutrition</strong>
-              Log meals faster and stay consistent.
-            </div>
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.8em; background: #161b22; padding: 0.7em; border-radius: 10px; border: 1px solid #30363d;">
-            <span style="font-size: 1.2em;">🏋️</span>
-            <div style="font-size: 0.75em; line-height: 1.3;">
-              <strong style="color: #ffffff; display: block; margin-bottom: 0.2em;">Active Training</strong>
-              Follow splits, track sets, and rest.
-            </div>
-          </div>
-        </div>
-        <button class="mock-btn primary" style="width: 100%; padding: 0.8em; font-size: 0.85em; margin-top: auto; border-radius: 10px; border: none; font-weight:700;">Open SIUFIT</button>
-      </div>
-    `,
-    1: `
-      <div class="app-screen-content theme-dark-blue">
-        <div class="mock-header-row">
-          <span style="color: #3b82f6; font-size: 1em; cursor: pointer;">←</span>
-          <span style="font-size: 0.9em; font-weight: 700; color: #fff;">SIUFIT Context AI</span>
-          <span class="mock-badge-pill blue" style="font-size: 0.7em; padding: 0.2em 0.5em;">Step 1 of 3</span>
-        </div>
-        <div style="display: flex; justify-content: center; align-items: center; margin: 1em 0;">
-          <div style="position: relative; width: 5em; height: 5em; border-radius: 50%; background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, rgba(139,92,246,0.2) 100%); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(59, 130, 246, 0.4); box-shadow: 0 0 15px rgba(59,130,246,0.15);">
-            <svg viewBox="0 0 100 100" style="width: 3em; height: 3em;">
-              <rect x="47" y="10" width="6" height="15" fill="#3b82f6" rx="2" />
-              <circle cx="50" cy="8" r="5" fill="#f43f5e" />
-              <rect x="25" y="25" width="50" height="45" rx="14" fill="#1e293b" stroke="#3b82f6" stroke-width="4" />
-              <circle cx="40" cy="45" r="6" fill="#10b981" />
-              <circle cx="40" cy="45" r="2.5" fill="#ffffff" />
-              <circle cx="60" cy="45" r="6" fill="#10b981" />
-              <circle cx="60" cy="45" r="2.5" fill="#ffffff" />
-              <rect x="40" y="58" width="20" height="3" rx="1.5" fill="#3b82f6" />
-              <rect x="19" y="38" width="6" height="18" fill="#475569" rx="3" />
-              <rect x="75" y="38" width="6" height="18" fill="#475569" rx="3" />
-            </svg>
-          </div>
-        </div>
-        <div style="text-align: center; font-size: 0.95em; font-weight: 700; color: #ffffff; margin-bottom: 0.4em; letter-spacing: 0.5px;">
-          Meet Your AI Coach
-        </div>
-        <p style="text-align: center; font-size: 0.8em; line-height: 1.4; color: #94a3b8; margin: 0 0 1em 0; padding: 0 5px;">
-          "I know your goals, calories, and what you've eaten today! Ask me to plan your next meal."
-        </p>
-        <div class="mock-card">
-          <div style="display: flex; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 0.5em; margin-bottom: 0.5em; font-size: 0.8em;">
-            <span style="color: #94a3b8;">Primary Goal</span>
-            <strong style="color: #10b981;">Fat Loss / Muscle Gain</strong>
-          </div>
-          <div style="display: flex; justify-content: space-between; font-size: 0.8em;">
-            <span style="color: #94a3b8;">Daily Budget</span>
-            <strong style="color: #3b82f6;">2,200 kcal</strong>
-          </div>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: auto; padding-top: 0.5em;">
-          <div style="display: flex; gap: 0.4em;">
-            <span style="width: 6px; height: 6px; border-radius: 50%; background: #3b82f6;"></span>
-            <span style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2);"></span>
-            <span style="width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2);"></span>
-          </div>
-          <button class="mock-btn primary" style="border-radius: 20px; padding: 0.4em 1.2em; font-size: 0.8em; display: flex; align-items: center; gap: 4px; border:none; font-weight:700;">
-            Next <span>→</span>
-          </button>
-        </div>
-      </div>
-    `,
-    2: `
-      <div class="app-screen-content theme-light-gray">
-        <div class="mock-header-row" style="border:none; margin-bottom: 0.4em; padding-bottom: 0;">
-          <div>
-            <div style="font-size: 0.75rem; color: #64748b; font-weight: 700; letter-spacing: 0.5px;">SUNDAY, MAY 10</div>
-            <div style="font-size: 1.15em; font-weight: 800; color: #0f172a; line-height: 1.1;">Summary</div>
-          </div>
-          <span class="mock-badge-pill orange" style="font-size: 0.75em; display: flex; align-items: center; gap: 2px;">
-            🔥 12 Days
-          </span>
-        </div>
-        <div style="background: linear-gradient(135deg, #0b0f19 0%, #1e1b4b 100%); color: #ffffff; padding: 0.6em 0.8em; border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 0.78em; margin-bottom: 0.8em; box-shadow: 0 4px 10px rgba(0,0,0,0.15);">
-          <div style="display: flex; align-items: center; gap: 0.5em; flex: 1;">
-            <span style="font-size: 1.1em;">☁️</span>
-            <div style="font-weight: 500; line-height: 1.2; text-align:left;">Good morning! Let's crush your goals.</div>
-          </div>
-          <span style="background: rgba(255,255,255,0.15); padding: 0.2em 0.5em; border-radius: 6px; font-weight: 700; color: #fff; cursor: pointer; font-size: 0.9em; border: 1px solid rgba(255,255,255,0.1);">Chat +</span>
-        </div>
-        <div class="mock-circle-chart" style="width: 6.5em; height: 6.5em; position:relative; margin:0 auto; display:flex; align-items:center; justify-content:center;">
-          <svg viewBox="0 0 120 120" style="width: 100%; height: 100%;">
-            <circle cx="60" cy="60" r="48" fill="none" stroke="#e2e8f0" stroke-width="4" />
-            <circle cx="60" cy="60" r="40" fill="none" stroke="#e2e8f0" stroke-width="4" />
-            <circle cx="60" cy="60" r="32" fill="none" stroke="#e2e8f0" stroke-width="4" />
-            <circle cx="60" cy="60" r="48" fill="none" stroke="#f43f5e" stroke-width="4" stroke-linecap="round"
-                    stroke-dasharray="301.59" stroke-dashoffset="120" transform="rotate(-90 60 60)" />
-            <circle cx="60" cy="60" r="40" fill="none" stroke="#10b981" stroke-width="4" stroke-linecap="round"
-                    stroke-dasharray="251.32" stroke-dashoffset="80" transform="rotate(-90 60 60)" />
-            <circle cx="60" cy="60" r="32" fill="none" stroke="#3b82f6" stroke-width="4" stroke-linecap="round"
-                    stroke-dasharray="201.06" stroke-dashoffset="50" transform="rotate(-90 60 60)" />
-          </svg>
-          <div style="position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; top:50%; left:50%; transform:translate(-50%,-50%);">
-            <span style="font-size: 0.6em; color: #64748b; font-weight: 700; letter-spacing: 0.5px;">CALORIES</span>
-            <span style="font-size: 1.3em; font-weight: 800; color: #0f172a; line-height: 1.0;">1,420</span>
-            <span style="font-size: 0.6em; color: #64748b; margin-top: 1px;">/ 2200 kcal</span>
-          </div>
-        </div>
-        <div style="display: flex; justify-content: space-around; font-size: 0.75em; font-weight: 700; margin-bottom: 0.8em; margin-top:0.4em;">
-          <span style="color: #f43f5e;">🔴 Pro: 110g</span>
-          <span style="color: #10b981;">🟢 Carb: 140g</span>
-          <span style="color: #3b82f6;">🔵 Fat: 45g</span>
-        </div>
-        <div style="display: flex; gap: 0.4em; margin-bottom: 0.8em;">
-          <span class="mock-btn primary" style="flex: 1; font-size: 0.75em; padding: 0.4em; border-radius: 6px; text-align:center; font-weight:700;">Log Food</span>
-          <span class="mock-btn primary" style="flex: 1; font-size: 0.75em; padding: 0.4em; border-radius: 6px; background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); text-align:center; font-weight:700;">AI Coach</span>
-          <span class="mock-btn outline" style="flex: 1; font-size: 0.75em; padding: 0.4em; border-radius: 6px; text-align:center; font-weight:700; background:white; border:1px solid #cbd5e1;">History</span>
-        </div>
-        <div style="font-size: 0.8em; display: flex; flex-direction: column; gap: 0.4em; border-top: 1px solid #e2e8f0; padding-top: 0.6em;">
-          <strong style="color: #334155; font-size: 0.85em; margin-bottom: 0.2em; text-align:left; display:block;">Suggested Next Meals</strong>
-          <div style="display: flex; justify-content: space-between; align-items: center; background: #ffffff; padding: 0.4em 0.6em; border-radius: 6px; border: 1px solid #e2e8f0; font-weight: 600; font-size: 0.95em;">
-            <span style="display:flex; align-items:center; gap: 3px;">🍳 Boiled Egg</span>
-            <span class="mock-badge-pill orange" style="font-size: 0.75em; padding: 0.1em 0.4em; background:rgba(234,88,12,0.1); color:#ea580c; border-radius:12px;">High Protein</span>
-          </div>
-        </div>
-        <div style="border-top: 1px solid #e2e8f0; padding-top: 0.6em; display: flex; justify-content: space-between; align-items: center; font-size: 0.8em; margin-top: auto;">
-          <div>
-            <strong style="color: #334155; display: block; font-size: 0.85em; text-align:left;">Water Intake</strong>
-            <span style="color: #64748b; font-size: 0.78em; display:block; text-align:left;">4 / 8 glasses</span>
-          </div>
-          <div style="display: flex; align-items: center; gap: 0.5em;">
-            <span style="width: 1.5em; height: 1.5em; border-radius: 50%; border: 1px solid #cbd5e1; display: flex; align-items: center; justify-content: center; font-weight: 700; cursor: pointer; background: #ffffff; font-size: 0.85em;">-</span>
-            <span style="background: #3b82f6; color: #ffffff; width: 1.8em; height: 1.8em; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.95em; cursor: pointer; box-shadow: 0 2px 6px rgba(59,130,246,0.3);">+</span>
-          </div>
-        </div>
-      </div>
-    `,
-    3: `
-      <div class="app-screen-content theme-light-gray">
-        <div class="mock-header-row">
-          <div style="display: flex; flex-direction: column; text-align:left;">
-            <span style="font-size: 1.15em; font-weight: 800; color: #0f172a;">SIUFIT AI Coach</span>
-            <span style="font-size: 0.7em; color: #8b5cf6; font-weight: 700; margin-top: 2px;">Context-Aware ✨</span>
-          </div>
-          <span class="mock-badge-pill blue" style="font-size: 0.8em; display: flex; align-items: center; justify-content: center; width: 2em; height: 2em; padding:0; border-radius: 50%; background:rgba(59,130,246,0.1); color:#3b82f6;">☁️</span>
-        </div>
-        <div style="display: flex; gap: 0.4em; margin-bottom: 0.6em;">
-          <span style="background: #ffffff; border: 1px solid #cbd5e1; font-size: 0.75em; padding: 0.3em 0.8em; border-radius: 12px; cursor: pointer; font-weight: 600; color: #475569; box-shadow: var(--shadow-sm);">Plan my next meal</span>
-        </div>
-        <div style="flex: 1; display: flex; flex-direction: column; gap: 0.8em; overflow-y: auto; padding-right: 2px; margin-bottom: 0.6em;">
-          <div style="background: #ffffff; border: 1px solid #e2e8f0; padding: 0.6em 0.8em; border-radius: 12px; border-top-left-radius: 2px; font-size: 0.82em; max-width: 90%; line-height: 1.4; color: #334155; box-shadow: var(--shadow-sm); text-align:left;">
-            Hi Rafi! I'm your context-aware SIUFIT Coach. Want me to plan your next meal?
-          </div>
-          <div style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: #ffffff; padding: 0.6em 0.8em; border-radius: 12px; border-top-right-radius: 2px; font-size: 0.82em; max-width: 80%; align-self: flex-end; line-height: 1.4; box-shadow: 0 3px 8px rgba(37,99,235,0.2); text-align:left;">
-            Plan my next meal
-          </div>
-          <div style="background: #ffffff; border: 1px solid #e2e8f0; padding: 0.6em 0.8em; border-radius: 12px; border-top-left-radius: 2px; font-size: 0.8em; max-width: 95%; line-height: 1.4; color: #334155; box-shadow: var(--shadow-sm); text-align:left;">
-            <strong style="color: #8b5cf6; display: block; margin-bottom: 0.3em; font-size:1.05em;">Time to fuel up! 🍳</strong>
-            Considering your remaining 780 kcal:
-            <div style="margin-top: 0.4em; font-weight: 600; border-left: 2px solid #3b82f6; padding-left: 0.5em; font-style: italic; color: #475569; font-size: 0.95em;">
-              • 2 Boiled Eggs (140 kcal)<br>
-              • 1 Bowl Stir fry Paneer (210 kcal)
-            </div>
-          </div>
-        </div>
-        <div style="display: flex; gap: 0.4em; align-items: center; border-top: 1px solid #e2e8f0; padding: 0.6em 0 0 0; margin-top: auto;">
-          <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 20px; flex: 1; padding: 0.4em 0.8em; font-size: 0.8em; color: #94a3b8; display: flex; justify-content: space-between; align-items: center;">
-            <span>Ask your AI Coach...</span>
-            <span>🎙️</span>
-          </div>
-          <span style="background: #3b82f6; color: #ffffff; width: 2.2em; height: 2.2em; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85em; cursor: pointer; box-shadow: 0 3px 8px rgba(59,130,246,0.3); font-weight:700;">⚡</span>
-        </div>
-      </div>
-    `,
-    4: `
-      <div class="app-screen-content theme-light-gray">
-        <div class="mock-header-row" style="border:none; margin-bottom: 0.4em;">
-          <span style="font-size: 1.15em; font-weight: 800; color: #0f172a;">Log Food</span>
-        </div>
-        <div style="display: flex; gap: 2px; background: #f1f5f9; padding: 2px; border-radius: 8px; margin-bottom: 0.8em; border: 1px solid #e2e8f0;">
-          <span style="background: #3b82f6; color: #ffffff; font-size: 0.75em; padding: 0.4em 0; border-radius: 6px; flex: 1; text-align: center; font-weight: 700; box-shadow: var(--shadow-sm);">Breakfast</span>
-          <span style="font-size: 0.75em; padding: 0.4em 0; color: #64748b; flex: 1; text-align: center; font-weight: 600;">Lunch</span>
-          <span style="font-size: 0.75em; padding: 0.4em 0; color: #64748b; flex: 1; text-align: center; font-weight: 600;">Dinner</span>
-        </div>
-        <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 8px; padding: 0.5em 0.8em; font-size: 0.82em; color: #94a3b8; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8em;">
-          <span>Search food...</span>
-          <div style="display: flex; gap: 0.5em; font-size: 0.95em;">🎙️ 📷</div>
-        </div>
-        <div style="font-size: 0.85em; font-weight: 700; color: #334155; margin-bottom: 0.5em; text-align:left;">Quick Add Library</div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; flex: 1;">
-          <div class="mock-card" style="text-align: center; font-size: 0.9em; display: flex; flex-direction: column; align-items: center; gap: 0.2em; padding: 0.6em; margin-bottom:0; background:white; border:1px solid #e2e8f0;">
-            <span style="font-size: 1.4em;">🌾</span>
-            <strong style="color: #0f172a;">Roti (1 Pc)</strong>
-            <span style="color: #f43f5e; font-weight: 700; font-size:0.9em;">71 kcal</span>
-          </div>
-          <div class="mock-card" style="text-align: center; font-size: 0.9em; display: flex; flex-direction: column; align-items: center; gap: 0.2em; padding: 0.6em; margin-bottom:0; background:white; border:1px solid #e2e8f0;">
-            <span style="font-size: 1.4em;">🍲</span>
-            <strong style="color: #0f172a;">Dal Fry</strong>
-            <span style="color: #f43f5e; font-weight: 700; font-size:0.9em;">163 kcal</span>
-          </div>
-          <div class="mock-card" style="text-align: center; font-size: 0.9em; display: flex; flex-direction: column; align-items: center; gap: 0.2em; padding: 0.6em; margin-bottom:0; background:white; border:1px solid #e2e8f0;">
-            <span style="font-size: 1.4em;">🍚</span>
-            <strong style="color: #0f172a;">Basmati Rice</strong>
-            <span style="color: #f43f5e; font-weight: 700; font-size:0.9em;">206 kcal</span>
-          </div>
-          <div class="mock-card" style="text-align: center; font-size: 0.9em; display: flex; flex-direction: column; align-items: center; gap: 0.2em; padding: 0.6em; margin-bottom:0; background:white; border:1px solid #e2e8f0;">
-            <span style="font-size: 1.4em;">🍳</span>
-            <strong style="color: #0f172a;">Egg Omelette</strong>
-            <span style="color: #f43f5e; font-weight: 700; font-size:0.9em;">143 kcal</span>
-          </div>
-        </div>
-      </div>
-    `,
-    5: `
-      <div class="app-screen-content theme-light-gray">
-        <div class="mock-header-row">
-          <span style="color: #3b82f6; font-size: 1em; cursor: pointer; font-weight:bold;">←</span>
-          <span style="font-size: 0.9em; font-weight: 800; color: #0f172a; text-align:center;">Paneer Butter Masala</span>
-          <span style="opacity: 0;">→</span>
-        </div>
-        <div style="font-size: 0.75em; color: #64748b; margin-bottom: 0.6em; text-align:left;">Nutrition per 100g • Adjust quantity below</div>
-        <div class="mock-circle-chart" style="width: 5.5em; height: 5.5em; margin: 0.4em auto 0.8em; position:relative; display:flex; align-items:center; justify-content:center;">
-          <div style="width: 100%; height: 100%; border-radius: 50%; border: 6px solid #e2e8f0; border-top-color: #f43f5e; border-left-color: #10b981; border-bottom-color: #3b82f6; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); background:white; position:absolute;">
-            <span style="font-size: 1.3em; font-weight: 800; color:#0f172a; line-height:1;">229</span>
-            <span style="font-size: 0.65em; color: #64748b; font-weight: 600;">kcal</span>
-          </div>
-        </div>
-        <div class="mock-card" style="font-size: 0.82em; padding: 0.65em; margin-bottom: 0.8em; display:flex; flex-direction:column; gap:0.4em; background:white; border:1px solid #e2e8f0;">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span style="color: #f43f5e; font-weight: 600;">🔴 Protein</span>
-            <strong>9.2g</strong>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.3em;">
-            <span style="color: #10b981; font-weight: 600;">🟢 Carbs</span>
-            <strong>8.6g</strong>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 0.3em;">
-            <span style="color: #3b82f6; font-weight: 600;">🔵 Fats</span>
-            <strong>18.5g</strong>
-          </div>
-        </div>
-        <div style="font-size: 0.82em; display: flex; flex-direction: column; gap: 0.5em; margin-bottom: 0.8em; text-align:left;">
-          <div style="display: flex; justify-content: space-between; font-weight: 700; color: #334155;">
-            <span>Quantity</span>
-            <span style="color: #3b82f6;">150 g</span>
-          </div>
-          <div style="height: 6px; background: #e2e8f0; border-radius: 4px; position: relative; margin: 0.2em 0;">
-            <div style="position: absolute; left: 0; top: 0; height: 100%; width: 75%; background: #3b82f6; border-radius: 4px;"></div>
-            <div style="position: absolute; left: 75%; top: -3px; width: 12px; height: 12px; border-radius: 50%; background: #2563eb; border: 2.5px solid #ffffff; box-shadow: var(--shadow-sm); transform: translateX(-50%);"></div>
-          </div>
-          <div style="display: flex; justify-content: space-between; margin-top: 0.2em; font-size: 0.9em; font-weight: 600;">
-            <span style="background: #f1f5f9; padding: 0.2em 0.5em; border-radius: 4px; cursor: pointer; color: #475569;">50g</span>
-            <span style="background: #f1f5f9; padding: 0.2em 0.5em; border-radius: 4px; cursor: pointer; color: #475569;">100g</span>
-            <span style="background: #dbeafe; color: #1d4ed8; font-weight: 700; padding: 0.2em 0.5em; border-radius: 4px; cursor: pointer; border: 1px solid #bfdbfe;">150g</span>
-            <span style="background: #f1f5f9; padding: 0.2em 0.5em; border-radius: 4px; cursor: pointer; color: #475569;">200g</span>
-          </div>
-        </div>
-        <button class="mock-btn success" style="width: 100%; padding: 0.7em; font-size: 0.85em; margin-top: auto; border-radius: 10px; font-weight:700; background:#10b981; border:none; color:white;">+ Add To My Log</button>
-      </div>
-    `,
-    6: `
-      <div class="app-screen-content theme-dark-blue">
-        <div class="mock-header-row">
-          <span style="font-size: 1.15em; font-weight: 800; color: #ffffff;">Workouts</span>
-          <span style="font-size: 1em; color: #94a3b8; cursor:pointer;">📅</span>
-        </div>
-        <div style="background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%); border: 1px solid rgba(255,255,255,0.06); padding: 0.8em; border-radius: 10px; display: flex; justify-content: space-between; font-size: 0.82em; font-weight: 700; margin-bottom: 0.8em; box-shadow: var(--shadow-sm);">
-          <div>Done: <span style="color: #a855f7; font-size: 1.1em; font-weight:800;">2</span></div>
-          <div>Burned: <span style="color: #f43f5e; font-size: 1.1em; font-weight:800;">320 kcal</span></div>
-        </div>
-        <div style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06); border-radius: 8px; padding: 0.5em 0.8em; font-size: 0.8em; color: #94a3b8; display: flex; align-items: center; gap: 0.5em; margin-bottom: 0.8em; text-align:left;">
-          <span>🔍 Search exercises...</span>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 0.5em;">
-          <div class="mock-list-item" style="border-left: 4px solid #3b82f6; margin-bottom:0; background:rgba(255,255,255,0.02); padding: 0.7em 0.8em; display:flex; justify-content:space-between; align-items:center; border-radius:4px;">
-            <div style="text-align:left;">
-              <strong style="color: #ffffff; display: block; font-size: 1em;">Wide Push-ups</strong>
-              <span style="color: #64748b; font-size: 0.85em; margin-top:1px; display:block;">3 Sets x 12 • 60s Rest</span>
-            </div>
-            <svg viewBox="0 0 40 20" style="width: 2.2em; height: 1.2em; opacity: 0.6;">
-              <line x1="2" y1="18" x2="38" y2="18" stroke="#94a3b8" stroke-width="2.5" />
-              <circle cx="8" cy="12" r="3" fill="#3b82f6" />
-              <line x1="8" y1="12" x2="28" y2="14" stroke="#94a3b8" stroke-width="2.5" />
-              <line x1="28" y1="14" x2="34" y2="18" stroke="#3b82f6" stroke-width="2.5" />
-            </svg>
-          </div>
-          <div class="mock-list-item" style="border-left: 4px solid #10b981; margin-bottom:0; background:rgba(255,255,255,0.02); padding: 0.7em 0.8em; display:flex; justify-content:space-between; align-items:center; border-radius:4px;">
-            <div style="text-align:left;">
-              <strong style="color: #ffffff; display: block; font-size: 1em;">DB Bench Press</strong>
-              <span style="color: #64748b; font-size: 0.85em; margin-top:1px; display:block;">4 Sets x 10 • 90s Rest</span>
-            </div>
-            <span style="color:#10b981; font-weight:bold; font-size:1.1em;">✓</span>
-          </div>
-        </div>
-        <div style="position: absolute; bottom: 12px; right: 12px; background: #8b5cf6; color: #ffffff; width: 2.2em; height: 2.2em; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9em; box-shadow: 0 4px 10px rgba(139,92,246,0.4); cursor: pointer; border:none;">+</div>
-      </div>
-    `,
-    7: `
-      <div class="app-screen-content theme-deep-indigo">
-        <div class="mock-header-row">
-          <span style="font-size: 1.15em; font-weight: 800; color: #ffffff; letter-spacing: 0.5px;">PUSH-UPS</span>
-          <span style="color: #f43f5e; font-size: 0.8em; font-weight: 700;">🔥 85 kcal</span>
-        </div>
-        <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; height: 5em; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; margin-bottom: 0.8em; border-bottom: 3px solid #3b82f6;">
-          <svg viewBox="0 0 100 40" style="width: 5.5em; height: 2.8em;">
-            <line x1="5" y1="32" x2="95" y2="32" stroke="#3b82f6" stroke-width="2.5" />
-            <circle cx="20" cy="18" r="4.5" fill="#f43f5e" />
-            <line x1="20" y1="18" x2="65" y2="23" stroke="#ffffff" stroke-width="3.5" />
-            <line x1="32" y1="20" x2="32" y2="32" stroke="#cbd5e1" stroke-width="2" />
-            <line x1="65" y1="23" x2="85" y2="32" stroke="#cbd5e1" stroke-width="2.5" />
-          </svg>
-        </div>
-        <div style="text-align: center; font-size: 0.8em; font-weight: 700; color: #e2e8f0; margin-bottom: 0.4em;">SET 2 OF 3</div>
-        <div class="mock-circle-chart" style="width: 5.8em; height: 5.8em; margin: 0.2em auto 0.6em; position:relative; display:flex; align-items:center; justify-content:center;">
-          <div style="width: 100%; height: 100%; border-radius: 50%; border: 5px solid rgba(139,92,246,0.1); border-top-color: #8b5cf6; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 0 15px rgba(139,92,246,0.2); background: #050811; position:absolute;">
-            <span style="font-size: 0.55em; color: #94a3b8; font-weight: 700; letter-spacing: 0.5px;">WORKING</span>
-            <span style="font-size: 1.25em; font-weight: 800; color: #8b5cf6; line-height: 1.0; margin-top: 2px;">00:41</span>
-            <span style="font-size: 0.55em; color: #94a3b8; margin-top: 2px;">Keep going!</span>
-          </div>
-        </div>
-        <div style="display: flex; justify-content: center; align-items:center; gap: 1.5em; font-size: 1.1em; cursor: pointer; color: #94a3b8; margin-top: auto; padding-top: 0.5em; border-top: 1px solid rgba(255,255,255,0.05); width:100%;">
-          <span>⏮️</span>
-          <span style="background: #ea580c; color: #ffffff; width: 1.8em; height: 1.8em; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8em; box-shadow: 0 2px 6px rgba(234,88,12,0.3); font-weight:bold;">⏸️</span>
-          <span>⏭️</span>
-        </div>
-      </div>
-    `,
-    8: `
-      <div class="app-screen-content theme-light-gray">
-        <div class="mock-header-row">
-          <span style="font-size: 1.15em; font-weight: 800; color: #0f172a;">Community</span>
-          <span class="mock-badge-pill blue" style="font-size: 0.75em; padding: 0.25em 0.6em; cursor: pointer; background:rgba(59,130,246,0.1); color:#3b82f6; border-radius:12px;">Post</span>
-        </div>
-        <div style="display: flex; gap: 2px; background: #f1f5f9; padding: 2px; border-radius: 8px; margin-bottom: 0.8em; border: 1px solid #e2e8f0;">
-          <span style="background: #3b82f6; color: #ffffff; font-size: 0.75em; padding: 0.4em 0; border-radius: 6px; flex: 1; text-align: center; font-weight: 700; box-shadow: var(--shadow-sm);">Feed</span>
-          <span style="font-size: 0.75em; padding: 0.4em 0; color: #64748b; flex: 1; text-align: center; font-weight: 600;">Leaderboard</span>
-        </div>
-        <div style="background: linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%); color: #ffffff; padding: 0.6em 0.8em; border-radius: 10px; font-size: 0.8em; font-weight: 600; text-align: center; box-shadow: 0 4px 10px rgba(139,92,246,0.15); margin-bottom: 0.8em;">
-          🏆 Global Rank: #5
-          <div style="font-size: 0.8em; font-weight: 400; opacity: 0.95; margin-top: 2px;">210 XP • Keep crushing it!</div>
-        </div>
-        <div style="display: flex; flex-direction: column; gap: 0.5em; flex:1;">
-          <div class="mock-card" style="padding: 0.55em 0.7em; margin-bottom: 0; font-size: 0.85em; text-align:left; background:white; border:1px solid #e2e8f0; border-radius:8px;">
-            <div style="display: flex; align-items: center; gap: 0.4em; margin-bottom: 0.3em;">
-              <div style="width: 1.5em; height: 1.5em; border-radius: 50%; background: #8b5cf6; color: #fff; font-size: 0.7em; display: flex; align-items: center; justify-content: center; font-weight: 800;">M</div>
-              <strong style="color: #334155; font-size: 0.9em;">mmnu</strong>
-            </div>
-            <p style="margin: 0; line-height: 1.3; color: #64748b; font-size: 0.85em;">enjoyed water 💧</p>
-          </div>
-          <div class="mock-card" style="padding: 0.55em 0.7em; margin-bottom: 0; font-size: 0.85em; text-align:left; background:white; border:1px solid #e2e8f0; border-radius:8px;">
-            <div style="display: flex; align-items: center; gap: 0.4em; margin-bottom: 0.3em;">
-              <div style="width: 1.5em; height: 1.5em; border-radius: 50%; background: #f43f5e; color: #fff; font-size: 0.7em; display: flex; align-items: center; justify-content: center; font-weight: 800;">U</div>
-              <strong style="color: #334155; font-size: 0.9em;">Umar Hashmi</strong>
-            </div>
-            <p style="margin: 0; line-height: 1.3; color: #64748b; font-size: 0.85em;">enjoyed mutton 🍖</p>
-          </div>
-        </div>
-      </div>
-    `,
-    9: `
-      <div class="app-screen-content theme-light-gray">
-        <div class="mock-header-row">
-          <span style="font-size: 1.15em; font-weight: 800; color: #0f172a;">Profile</span>
-          <span style="font-size: 1.1em; color: #64748b; cursor:pointer;">⚙️</span>
-        </div>
-        <div style="background: linear-gradient(135deg, #1e3a8a 0%, #1e1b4b 100%); color: #ffffff; padding: 0.6em 0.8em; border-radius: 10px; display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.6em; text-align:left;">
-          <div style="position: relative; width: 2.2em; height: 2.2em; border-radius: 50%; background: #ffffff; color: #1e3a8a; font-weight: 800; font-size: 0.9em; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);">
-            R
-          </div>
-          <div style="line-height: 1.25; overflow: hidden; flex:1;">
-            <strong style="font-size: 0.82em; display: block; color: #ffffff; white-space: nowrap; text-overflow: ellipsis;">Rafi Rahman</strong>
-            <span style="font-size: 0.65em; opacity: 0.85; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">rafi@gmail.com</span>
-          </div>
-        </div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.4em; text-align: center; font-size: 0.7em; font-weight: 700; margin-bottom: 0.6em;">
-          <div style="background: #ffedd5; border: 1px solid #ffddd2; border-radius: 6px; padding: 0.4em 0.2em;">
-            <span style="color: #ea580c; display: block; font-size: 1.15em; font-weight: 800;">12d</span> Streak
-          </div>
-          <div style="background: #fae8ff; border: 1px solid #f3d9fa; border-radius: 6px; padding: 0.4em 0.2em;">
-            <span style="color: #c084fc; display: block; font-size: 1.15em; font-weight: 800;">7</span> Badges
-          </div>
-          <div style="background: #dbeafe; border: 1px solid #d2e4ff; border-radius: 6px; padding: 0.4em 0.2em;">
-            <span style="color: #3b82f6; display: block; font-size: 1.15em; font-weight: 800;">14</span> Lifts
-          </div>
-        </div>
-        <div class="mock-card" style="padding: 0.5em 0.6em; margin-bottom: 0.6em; text-align: center; background:white; border:1px solid #e2e8f0; border-radius:8px;">
-          <strong style="color: #334155; display: block; font-size: 0.82em; margin-bottom: 0.25em; text-align:left;">Weight Progress</strong>
-          <svg viewBox="0 0 100 20" style="width: 100%; height: 1.2em;">
-            <path d="M 0 15 L 20 13 L 40 12 L 60 10 L 80 8 L 100 8" fill="none" stroke="#3b82f6" stroke-width="1.8" />
-            <circle cx="20" cy="13" r="1.2" fill="#3b82f6" />
-            <circle cx="40" cy="12" r="1.2" fill="#3b82f6" />
-            <circle cx="60" cy="10" r="1.2" fill="#3b82f6" />
-            <circle cx="80" cy="8" r="1.2" fill="#3b82f6" />
-            <circle cx="100" cy="8" r="1.2" fill="#3b82f6" />
-          </svg>
-        </div>
-        <div style="font-size: 0.8em; font-weight: 700; color: #334155; margin-bottom: 0.3em; text-align:left;">Achievements</div>
-        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.4em; text-align: center; font-size: 0.68em; font-weight:600;">
-          <div style="border: 1px solid #e2e8f0; background: #ffffff; padding: 0.3em 0.1em; border-radius: 4px; opacity: 0.85;">🥇 First Lift</div>
-          <div style="border: 1px solid #e2e8f0; background: #ffffff; padding: 0.3em 0.1em; border-radius: 4px; opacity: 0.85;">🔥 10d Streak</div>
-          <div style="border: 1px solid #e2e8f0; background: #ffffff; padding: 0.3em 0.1em; border-radius: 4px; opacity: 0.85;">💪 Iron Lifter</div>
-        </div>
-        <div style="font-size: 0.48em; text-align: center; color: #94a3b8; font-weight: 700; margin-top: auto; border-top: 1px solid #e2e8f0; padding-top: 0.5em; letter-spacing: 0.5px;">
-          CREATED WITH ❤️ BY MR. MOHD UMAR HASHMI
-        </div>
-      </div>
-    `
+    0: `<img src="siufit_screen_onboarding.png" alt="Onboarding Config" style="width:100%; height:100%; object-fit:cover; display:block;" class="real-screenshot-preview">`,
+    1: `<img src="siufit_screen_coach_setup.png" alt="Context Alignment" style="width:100%; height:100%; object-fit:cover; display:block;" class="real-screenshot-preview">`,
+    2: `<img src="siufit_screen_dashboard.png" alt="Central Data Hud" style="width:100%; height:100%; object-fit:cover; display:block;" class="real-screenshot-preview">`,
+    3: `<img src="siufit_screen_coach.png" alt="Intelligent Chat" style="width:100%; height:100%; object-fit:cover; display:block;" class="real-screenshot-preview">`,
+    4: `<img src="siufit_screen_logger.png" alt="Log Engines" style="width:100%; height:100%; object-fit:cover; display:block;" class="real-screenshot-preview">`,
+    5: `<img src="siufit_screen_nutrition.png" alt="Macronutrients" style="width:100%; height:100%; object-fit:cover; display:block;" class="real-screenshot-preview">`,
+    6: `<img src="siufit_screen_workouts.png" alt="Fatigue Coordinator" style="width:100%; height:100%; object-fit:cover; display:block;" class="real-screenshot-preview">`,
+    7: `<img src="siufit_screen_timer.png" alt="Session Guides" style="width:100%; height:100%; object-fit:cover; display:block;" class="real-screenshot-preview">`,
+    8: `<img src="siufit_screen_leaderboard.png" alt="Engagement" style="width:100%; height:100%; object-fit:cover; display:block;" class="real-screenshot-preview">`,
+    9: `<img src="siufit_screen_profile.png" alt="Gamification" style="width:100%; height:100%; object-fit:cover; display:block;" class="real-screenshot-preview">`
   };
 
   // Screen descriptions for Feature Explorer
@@ -1266,7 +898,7 @@ const ARCH_DETAILS = {
   let activeExplorerIndex = 0;
 
   // Showcase Modal Handler
-  function initSiufitCarousel() {
+  function initSiufitShowcase() {
     const modal = document.getElementById('siufit-product-modal');
     const openBtn = document.getElementById('siufit-explore-btn');
     const closeBtn = document.getElementById('siufit-modal-close');
@@ -1517,13 +1149,13 @@ const ARCH_DETAILS = {
     });
 
     // Resize listener to match indicator bounds
-    window.addEventListener('resize', () => {
+    window.addEventListener('resize', debounce(() => {
       const activeTab = document.querySelector('.explorer-tab.active');
       if (activeTab && indicator) {
         indicator.style.width = `${activeTab.offsetWidth}px`;
         indicator.style.left = `${activeTab.offsetLeft}px`;
       }
-    });
+    }, 150));
 
     // Initial position
     setTimeout(() => {
@@ -1826,9 +1458,6 @@ const ARCH_DETAILS = {
     });
   }
 
-/* ==========================================================================
-   10. Testimonials Slider
-   ========================================================================== */
 function initTestimonialSlider() {
   const track = document.getElementById('testimonial-track');
   const dots = document.querySelectorAll('#testimonial-dots .dot');
@@ -2287,9 +1916,9 @@ function initHeroCanvas() {
   }
 
   // Event Listeners
-  window.addEventListener('resize', () => {
+  window.addEventListener('resize', debounce(() => {
     resizeCanvas();
-  });
+  }, 150));
 
   heroSection.addEventListener('mousemove', (e) => {
     const rect = canvas.getBoundingClientRect();
@@ -2324,7 +1953,7 @@ function initHeroCanvas() {
    ========================================================================== */
 function initCardTilt3D() {
   if (window.innerWidth < 768) return; // Disable tilt on mobile for smoother scrolling and less CPU draw
-  const cards = document.querySelectorAll('.siufit-hero-card, .project-card, .about-story, .metrics-glass-card, .hero-image-frame');
+  const cards = document.querySelectorAll('.siufit-hero-card, .project-card, .about-story');
 
   if (!cards.length) return;
 
@@ -2994,7 +2623,7 @@ function initTechEcosystemCanvas() {
     ctx.scale(dpr, dpr);
   }
 
-  window.addEventListener('resize', resizeCanvas);
+  window.addEventListener('resize', debounce(resizeCanvas, 150));
   resizeCanvas();
 
   // Find center position of a node element relative to the container
@@ -3213,8 +2842,8 @@ function initExperienceTimeline() {
       });
     };
 
-    window.addEventListener('scroll', trackVerticalFill);
-    window.addEventListener('resize', trackVerticalFill);
+    window.addEventListener('scroll', throttleRAF(trackVerticalFill));
+    window.addEventListener('resize', debounce(trackVerticalFill, 150));
     setTimeout(trackVerticalFill, 200);
   }
 }
@@ -3287,5 +2916,5 @@ function initOverflowDiagnostic() {
     });
   };
   window.addEventListener('load', checkOverflows);
-  window.addEventListener('resize', checkOverflows);
+  window.addEventListener('resize', debounce(checkOverflows, 150));
 }

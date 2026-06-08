@@ -99,14 +99,10 @@
       </a>
 
       <nav class="nav-links" id="navbar-links">
+        <a href="#siufit" class="nav-link">Work</a>
         <a href="#about" class="nav-link">About</a>
-        <a href="#skills" class="nav-link">Skills</a>
-        <a href="#siufit" class="nav-link">SIUFIT</a>
-        <a href="#projects" class="nav-link">Projects</a>
-        <a href="#leadership" class="nav-link">Impact</a>
         <a href="#experience" class="nav-link">Experience</a>
-        <a href="#blog" class="nav-link">Blog</a>
-        <a href="#resume" class="nav-link">Resume</a>
+        <a href="#certifications" class="nav-link">Credentials</a>
         <a href="#contact" class="nav-link">Contact</a>
       </nav>
 
@@ -160,92 +156,77 @@
 
   <!-- --- Hero Section --- -->
   <section class="section" id="hero">
-    <canvas id="hero-particle-canvas" class="hero-particle-canvas"></canvas>
+    <div class="hero-gradient-mesh"></div>
+    <div class="hero-noise-overlay"></div>
     <div class="container hero-wrapper">
       <div class="hero-content">
-        <span class="badge">Open For Opportunities</span>
-        <h1 class="hero-headline">Building Technology That Solves Real Problems</h1>
-        <div class="hero-subheading">
-          BCA Student • Software Developer • AI Enthusiast • Data Analyst • Technology Educator • Public Speaker
-        </div>
-        <div class="hero-rotating-roles">
-          <span class="prefix">Specialized as a</span>
-          <div class="role-scroller" id="role-scroller">
-            <span class="role-item active">Software Developer</span>
-            <span class="role-item">AI Enthusiast</span>
-            <span class="role-item">Data Analyst</span>
-            <span class="role-item">Technology Educator</span>
-            <span class="role-item">Public Speaker</span>
-            <span class="role-item">Problem Solver</span>
-            <span class="role-item">Entrepreneurial Thinker</span>
-            <span class="role-item">Mobile App Developer</span>
-          </div>
-        </div>
-        <div class="hero-ctas">
-          <a href="resume.pdf" download="Mohd_Umar_Hashmi_Resume.pdf" class="btn btn-primary"
-            id="hero-download-resume-btn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-              stroke-linejoin="round" style="width: 18px; height: 18px;">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-              <polyline points="7 10 12 15 17 10"></polyline>
-              <line x1="12" y1="15" x2="12" y2="3"></line>
-            </svg>
-            Download Resume
-          </a>
-          <a href="#siufit" class="btn btn-secondary" id="hero-view-siufit-btn">
+        <span class="badge hero-badge hero-anim" style="--anim-order: 0;">Currently Building SIUFIT — AI Health Platform</span>
+        <h1 class="hero-headline">
+          <span class="hero-line hero-anim" style="--anim-order: 1;">AI Product Builder.</span>
+          <span class="hero-line hero-anim" style="--anim-order: 2;">Full Stack Engineer.</span>
+          <span class="hero-line hero-anim" style="--anim-order: 3;">Entrepreneur.</span>
+        </h1>
+        <p class="hero-description hero-anim" style="--anim-order: 4;">
+          I ship AI-powered products from zero to production. Currently building 
+          <strong>SIUFIT</strong> — an offline-first health platform featuring SQLite Room caching 
+          and sub-200ms AI inference powered by Llama 3.3.
+        </p>
+        <div class="hero-ctas hero-anim" style="--anim-order: 5;">
+          <a href="#siufit" class="btn btn-primary" id="hero-view-siufit-btn">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
               stroke-linejoin="round" style="width: 18px; height: 18px;">
               <polygon points="5 3 19 12 5 21 5 3"></polygon>
             </svg>
-            View SIUFIT
+            Explore SIUFIT
           </a>
-          <a href="#contact" class="btn btn-secondary">Contact Me</a>
+          <a href="#projects" class="btn btn-secondary" id="hero-view-projects-btn">View My Work</a>
         </div>
-        <div class="metrics-glass-card" style="margin-top: 2rem;">
-          <div class="hero-metrics" style="border-top: none; padding-top: 0; justify-content: space-between;">
-            <div class="metric-item" style="text-align: center; flex: 1;">
-              <span class="metric-value counter" data-target="10" data-suffix="+">0</span>
-              <span class="metric-label">SIUFIT Modules</span>
-            </div>
-            <div class="metric-item" style="text-align: center; flex: 1;">
-              <span class="metric-value counter" data-target="800" data-suffix="+">0</span>
-              <span class="metric-label">Participants Managed</span>
-            </div>
-            <div class="metric-item" style="text-align: center; flex: 1;">
-              <span class="metric-value counter" data-target="30" data-suffix="+">0</span>
-              <span class="metric-label">Educators Trained</span>
-            </div>
-            <div class="metric-item" style="text-align: center; flex: 1;">
-              <span class="metric-value counter" data-target="20" data-suffix="+">0</span>
-              <span class="metric-label">Students Mentored</span>
-            </div>
+        <a href="resume.pdf" download="Mohd_Umar_Hashmi_Resume.pdf" class="hero-resume-link hero-anim" style="--anim-order: 6;" id="hero-download-resume-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" style="width: 14px; height: 14px;">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download Resume
+        </a>
+        <div class="hero-metrics-strip hero-anim" style="--anim-order: 7;">
+          <div class="metric-chip">
+            <span class="metric-value counter" data-target="14" data-suffix="+">0</span>
+            <span class="metric-label">Certifications Earned</span>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-chip">
+            <span class="metric-value counter" data-target="10" data-suffix="+">0</span>
+            <span class="metric-label">Product Modules</span>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-chip">
+            <span class="metric-value counter" data-target="8" data-suffix="+">0</span>
+            <span class="metric-label">Projects Shipped</span>
+          </div>
+          <div class="metric-divider"></div>
+          <div class="metric-chip">
+            <span class="metric-value counter" data-target="30" data-suffix="+">0</span>
+            <span class="metric-label">Educators Trained</span>
           </div>
         </div>
-        <!-- Interactive Technology Ecosystem -->
-        <div class="hero-tech-ecosystem-card" style="margin-top: 1.5rem;">
-          <h4 class="ecosystem-title">Interactive Technology Stack Ecosystem</h4>
-          <div class="hero-tech-ecosystem" id="hero-tech-ecosystem">
-            <div class="tech-node" data-tech="kotlin" style="left: 5%; top: 15%;"><span class="node-icon">🤖</span>
-              Kotlin</div>
-            <div class="tech-node" data-tech="android" style="left: 38%; top: 8%;"><span class="node-icon">📱</span>
-              Android Dev</div>
-            <div class="tech-node" data-tech="ai" style="left: 72%; top: 20%;"><span class="node-icon">🧠</span> AI
-              (Llama 3.3)</div>
-            <div class="tech-node" data-tech="vision" style="left: 5%; top: 65%;"><span class="node-icon">👁️</span> ML
-              Kit</div>
-            <div class="tech-node" data-tech="database" style="left: 32%; top: 72%;"><span class="node-icon">💾</span>
-              Room DB</div>
-            <div class="tech-node" data-tech="cloud" style="left: 60%; top: 60%;"><span class="node-icon">🔥</span>
-              Firebase</div>
-            <div class="tech-node" data-tech="backend" style="left: 80%; top: 70%;"><span class="node-icon">🟢</span>
-              Node.js</div>
-            <canvas id="tech-connector-canvas" class="tech-connector-canvas"></canvas>
+        <div class="hero-trust-bar hero-anim" style="--anim-order: 8;">
+          <span class="trust-label">Affiliated with</span>
+          <div class="trust-logos">
+            <span class="trust-logo-item" title="IEEE Student Branch">IEEE</span>
+            <span class="trust-divider">·</span>
+            <span class="trust-logo-item" title="IIT Madras NPTEL">IIT Madras</span>
+            <span class="trust-divider">·</span>
+            <span class="trust-logo-item" title="HP LIFE Certification">HP LIFE</span>
+            <span class="trust-divider">·</span>
+            <span class="trust-logo-item" title="Google Digital Marketing">Google</span>
           </div>
         </div>
       </div>
-      <div class="hero-image-container">
+      <div class="hero-image-container hero-anim" style="--anim-order: 3;">
         <div class="hero-image-frame">
-          <img src="profile.png" alt="Mohd Umar Hashmi" class="hero-profile-image">
+          <img src="profile.png" alt="Mohd Umar Hashmi — AI Product Builder" class="hero-profile-image" width="450" height="450" fetchpriority="high">
         </div>
         <div class="hero-image-glow"></div>
       </div>
@@ -348,7 +329,7 @@
                   goal clarity, and inclusive group engagement.</p>
                 <div class="panel-metrics-row">
                   <div class="brand-metric-card">
-                    <span class="metric-num">800+</span>
+                    <span class="metric-num">300+</span>
                     <span class="metric-label">Participants Coordinated</span>
                   </div>
                   <div class="brand-metric-card">
@@ -708,7 +689,7 @@
         </div>
         <div class="siufit-brand-image-wrapper">
           <div class="siufit-brand-image-card">
-            <img src="siufit-logo.jpg" alt="SIUFIT Brand Logotype" class="siufit-hero-logo">
+            <img src="siufit-logo.jpg" alt="SIUFIT Brand Logotype" class="siufit-hero-logo" loading="lazy" width="280" height="280">
             <h4>SIUFIT HEALTH ECOSYSTEM</h4>
             <span>Stable Release v1.0 &bull; MVVM Architecture</span>
             <div class="siufit-platform-badge-row" style="margin-top: 8px;">
@@ -889,7 +870,7 @@
             <a href="#" class="modal-logo-brand"
               onclick="event.preventDefault(); document.getElementById('siufit-product-modal').scrollTo({top: 0, behavior: 'smooth'});">
               <div class="siufit-brand-logo small">
-                <img src="siufit-logo.jpg" alt="SIUFIT Logo" class="logo-img">
+                <img src="siufit-logo.jpg" alt="SIUFIT Logo" class="logo-img" loading="lazy" width="24" height="24">
               </div>
               <span>SIUFIT</span>
             </a>
@@ -1250,7 +1231,7 @@
               <div class="download-left-card">
                 <div class="app-pack-brand">
                   <div class="siufit-brand-logo large">
-                    <img src="siufit-logo.jpg" alt="SIUFIT Logo" class="logo-img">
+                    <img src="siufit-logo.jpg" alt="SIUFIT Logo" class="logo-img" loading="lazy" width="64" height="64">
                   </div>
                   <div>
                     <h4>SIUFIT</h4>
@@ -1541,17 +1522,16 @@
               <!-- Internal Case Study Tabs -->
               <div class="project-cs-tabs">
                 <button class="cs-tab-btn active" data-cs-tab="overview">Overview</button>
-                <button class="cs-tab-btn" data-cs-tab="challenge">Challenge &amp; Solution</button>
-                <button class="cs-tab-btn" data-cs-tab="impact">Impact &amp; Scope</button>
+                <button class="cs-tab-btn" data-cs-tab="challenge">Architecture &amp; Challenges</button>
+                <button class="cs-tab-btn" data-cs-tab="impact">Lessons Learned</button>
               </div>
 
               <!-- Case Study Content Panels -->
               <div class="project-cs-content">
                 <!-- Panel 1: Overview -->
                 <div class="cs-panel active" data-cs-panel="overview">
-                  <p>A smart productivity app displaying prioritized calendars and context-aware push notifications
-                    built with Kotlin and local room scheduling.</p>
-                  <div class="project-tags" style="margin-top: 10px; margin-bottom: 10px;">
+                  <p>A smart productivity app displaying prioritized calendars and context-aware push notifications built with Kotlin and local room scheduling.</p>
+                  <div class="project-tags">
                     <span class="tech-tag">Kotlin</span>
                     <span class="tech-tag">SQLite</span>
                     <span class="tech-tag">WorkManager</span>
@@ -1569,31 +1549,31 @@
                   </div>
                 </div>
 
-                <!-- Panel 2: Challenge & Solution -->
+                <!-- Panel 2: Architecture & Challenges -->
                 <div class="cs-panel" data-cs-panel="challenge">
+                  <div class="architecture-box">
+                    <label>Technical Architecture</label>
+                    <p>Designed using MVVM pattern utilizing <code>TaskRepository.kt</code>, local SQLite Room database caching, and Android <code>AlarmManager</code>/<code>WorkManager</code> background broadcast receivers.</p>
+                  </div>
                   <div class="challenge-box">
                     <label>Technical Challenge</label>
-                    <p>Android OS aggressively terminates background services to preserve battery life, failing timed
-                      notifications.</p>
+                    <p>Android OS aggressively terminates background services to preserve battery life, failing timed notifications.</p>
                   </div>
-                  <div class="lesson-box" style="margin-top: 10px;">
+                  <div class="lesson-box">
                     <label>Solution Engineered</label>
-                    <p>Leveraged AlarmManager's exact alarm permissions and combined it with dynamic broadcastees for
-                      rock-solid schedules.</p>
+                    <p>Leveraged AlarmManager's exact alarm permissions and combined it with dynamic broadcastees and WorkManager rescheduling queues.</p>
                   </div>
                 </div>
 
-                <!-- Panel 3: Impact & Future Scope -->
+                <!-- Panel 3: Lessons Learned -->
                 <div class="cs-panel" data-cs-panel="impact">
-                  <p><strong>Impact:</strong> Deployed successfully to personal productivity workflows, decreasing
-                    missed tasks by 80% through persistent wake locks.</p>
-                  <p style="margin-top: 8px;"><strong>Future Scope:</strong> Integrating localized Natural Language
-                    Processing (NLP) to parse task entries directly from typing text.</p>
+                  <p><strong>Impact &amp; Results:</strong> Deployed successfully to personal productivity workflows, decreasing missed tasks by 80% through persistent wake locks.</p>
+                  <p class="lessons-text"><strong>Lessons Learned:</strong> Learnt the constraints of Android resource management. Realized that persistent wake locks can drain user batteries rapidly, which taught the trade-off of using deferred batch sync via WorkManager instead of continuous polling.</p>
                 </div>
               </div>
             </div>
 
-            <div class="project-meta-toggle" style="margin-top: 15px;">
+            <div class="project-meta-toggle">
               <div class="project-meta-actions">
                 <button class="btn-text run-console-btn" data-project="task-manager">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -1828,17 +1808,16 @@
               <!-- Internal Case Study Tabs -->
               <div class="project-cs-tabs">
                 <button class="cs-tab-btn active" data-cs-tab="overview">Overview</button>
-                <button class="cs-tab-btn" data-cs-tab="challenge">Challenge &amp; Solution</button>
-                <button class="cs-tab-btn" data-cs-tab="impact">Impact &amp; Scope</button>
+                <button class="cs-tab-btn" data-cs-tab="challenge">Architecture &amp; Challenges</button>
+                <button class="cs-tab-btn" data-cs-tab="impact">Lessons Learned</button>
               </div>
 
               <!-- Case Study Content Panels -->
               <div class="project-cs-content">
                 <!-- Panel 1: Overview -->
                 <div class="cs-panel active" data-cs-panel="overview">
-                  <p>Rich-text Markdown editor with full folder structure, tag matching, and local search. Instant boot
-                    speed using Room caching.</p>
-                  <div class="project-tags" style="margin-top: 10px; margin-bottom: 10px;">
+                  <p>Rich-text Markdown editor with full folder structure, tag matching, and local search. Instant boot speed using Room caching.</p>
+                  <div class="project-tags">
                     <span class="tech-tag">Kotlin</span>
                     <span class="tech-tag">Markdown</span>
                     <span class="tech-tag">Room DB</span>
@@ -1856,31 +1835,31 @@
                   </div>
                 </div>
 
-                <!-- Panel 2: Challenge & Solution -->
+                <!-- Panel 2: Architecture & Challenges -->
                 <div class="cs-panel" data-cs-panel="challenge">
+                  <div class="architecture-box">
+                    <label>Technical Architecture</label>
+                    <p>Designed on clean architecture principles utilizing SQLite FTS4 virtual tables, a custom <code>MarkdownParser.kt</code> compiler, and Kotlin Coroutine Flow stream handlers.</p>
+                  </div>
                   <div class="challenge-box">
                     <label>Technical Challenge</label>
-                    <p>Searching thousands of markdown bodies on the UI thread caused noticeable micro-stutters during
-                      typing.</p>
+                    <p>Searching thousands of markdown bodies on the UI thread caused noticeable micro-stutters during typing.</p>
                   </div>
-                  <div class="lesson-box" style="margin-top: 10px;">
+                  <div class="lesson-box">
                     <label>Solution Engineered</label>
-                    <p>Utilized SQLite's FTS4 extension within Room database and routed text changes through a 250ms
-                      debounced Kotlin Flow.</p>
+                    <p>Utilized SQLite's FTS4 extension within Room database and routed text changes through a 250ms debounced Kotlin Flow.</p>
                   </div>
                 </div>
 
-                <!-- Panel 3: Impact & Future Scope -->
+                <!-- Panel 3: Lessons Learned -->
                 <div class="cs-panel" data-cs-panel="impact">
-                  <p><strong>Impact:</strong> Shipped modular search structures to production pipelines, securing smooth
-                    editor loads on heavy documents.</p>
-                  <p style="margin-top: 8px;"><strong>Future Scope:</strong> Adding support for interactive Markdown
-                    drawing grids synced to Room database caches.</p>
+                  <p><strong>Impact &amp; Results:</strong> Shipped modular search structures to production pipelines, securing smooth editor loads on heavy documents.</p>
+                  <p class="lessons-text"><strong>Lessons Learned:</strong> Taught the value of offloading complex search tasks to worker threads using Coroutines. Choosing FTS4 index files slightly increased local disk usage but yielded a 90% reduction in query latency on large document lists.</p>
                 </div>
               </div>
             </div>
 
-            <div class="project-meta-toggle" style="margin-top: 15px;">
+            <div class="project-meta-toggle">
               <div class="project-meta-actions">
                 <button class="btn-text run-console-btn" data-project="notes-app">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -2078,17 +2057,16 @@
               <!-- Internal Case Study Tabs -->
               <div class="project-cs-tabs">
                 <button class="cs-tab-btn active" data-cs-tab="overview">Overview</button>
-                <button class="cs-tab-btn" data-cs-tab="challenge">Challenge &amp; Solution</button>
-                <button class="cs-tab-btn" data-cs-tab="impact">Impact &amp; Scope</button>
+                <button class="cs-tab-btn" data-cs-tab="challenge">Architecture &amp; Challenges</button>
+                <button class="cs-tab-btn" data-cs-tab="impact">Lessons Learned</button>
               </div>
 
               <!-- Case Study Content Panels -->
               <div class="project-cs-content">
                 <!-- Panel 1: Overview -->
                 <div class="cs-panel active" data-cs-panel="overview">
-                  <p>Enterprise-grade login system supporting biometric prompts (Fingerprint/Face), OTP verification,
-                    and Google Sign-in hooks.</p>
-                  <div class="project-tags" style="margin-top: 10px; margin-bottom: 10px;">
+                  <p>Enterprise-grade login system supporting biometric prompts (Fingerprint/Face), OTP verification, and Google Sign-in hooks.</p>
+                  <div class="project-tags">
                     <span class="tech-tag">Kotlin</span>
                     <span class="tech-tag">Biometric API</span>
                     <span class="tech-tag">Firebase Auth</span>
@@ -2106,25 +2084,26 @@
                   </div>
                 </div>
 
-                <!-- Panel 2: Challenge & Solution -->
+                <!-- Panel 2: Architecture & Challenges -->
                 <div class="cs-panel" data-cs-panel="challenge">
+                  <div class="architecture-box">
+                    <label>Technical Architecture</label>
+                    <p>Designed using Repository pattern isolating <code>AuthRepository.kt</code>, bound to Android Biometrics APIs, Firebase Auth SDK, and local KeyStore crypto wrappers.</p>
+                  </div>
                   <div class="challenge-box">
                     <label>Technical Challenge</label>
                     <p>Securing sensitive user session tokens locally on compromised or rooted devices.</p>
                   </div>
-                  <div class="lesson-box" style="margin-top: 10px;">
+                  <div class="lesson-box">
                     <label>Solution Engineered</label>
-                    <p>Imposed Android EncryptedSharedPreferences (backed by KeyStore hardware) to encrypt login tokens
-                      securely.</p>
+                    <p>Imposed Android EncryptedSharedPreferences (backed by KeyStore hardware) to encrypt login tokens securely with AES-256 GCM.</p>
                   </div>
                 </div>
 
-                <!-- Panel 3: Impact & Future Scope -->
+                <!-- Panel 3: Lessons Learned -->
                 <div class="cs-panel" data-cs-panel="impact">
-                  <p><strong>Impact:</strong> Prevented session hacking exploits on public client builds, passing
-                    security audits on local hardware checks.</p>
-                  <p style="margin-top: 8px;"><strong>Future Scope:</strong> Deploying passwordless Passkeys
-                    integrations for fast fingerprint authentication.</p>
+                  <p><strong>Impact &amp; Results:</strong> Prevented session hacking exploits on public client builds, passing security audits on local hardware checks.</p>
+                  <p class="lessons-text"><strong>Lessons Learned:</strong> Learned that security requires defense-in-depth. Hardware cryptography adds execution latency overhead, meaning session tokens should only be decrypted during app bootstrap and cached securely in memory.</p>
                 </div>
               </div>
             </div>
@@ -2351,17 +2330,16 @@
               <!-- Internal Case Study Tabs -->
               <div class="project-cs-tabs">
                 <button class="cs-tab-btn active" data-cs-tab="overview">Overview</button>
-                <button class="cs-tab-btn" data-cs-tab="challenge">Challenge &amp; Solution</button>
-                <button class="cs-tab-btn" data-cs-tab="impact">Impact &amp; Scope</button>
+                <button class="cs-tab-btn" data-cs-tab="challenge">Architecture &amp; Challenges</button>
+                <button class="cs-tab-btn" data-cs-tab="impact">Lessons Learned</button>
               </div>
 
               <!-- Case Study Content Panels -->
               <div class="project-cs-content">
                 <!-- Panel 1: Overview -->
                 <div class="cs-panel active" data-cs-panel="overview">
-                  <p>Campus companion offering real-time lecture notifications, grade sheets processing, and
-                    offline-cached class syllabi.</p>
-                  <div class="project-tags" style="margin-top: 10px; margin-bottom: 10px;">
+                  <p>Campus companion offering real-time lecture notifications, grade sheets processing, and offline-cached class syllabi.</p>
+                  <div class="project-tags">
                     <span class="tech-tag">Kotlin</span>
                     <span class="tech-tag">SQLite</span>
                     <span class="tech-tag">PDF Rendering</span>
@@ -2374,31 +2352,31 @@
                     </div>
                     <div class="cs-metric-mini-card">
                       <strong>&lt; 3s</strong>
-                      <span>Sync Sync</span>
+                      <span>Sync Speed</span>
                     </div>
                   </div>
                 </div>
 
-                <!-- Panel 2: Challenge & Solution -->
+                <!-- Panel 2: Architecture & Challenges -->
                 <div class="cs-panel" data-cs-panel="challenge">
+                  <div class="architecture-box">
+                    <label>Technical Architecture</label>
+                    <p>Designed using modular structure isolating <code>SyllabusManager.kt</code>, local SQLite caching observers, and Firestore real-time listener caches.</p>
+                  </div>
                   <div class="challenge-box">
                     <label>Technical Challenge</label>
-                    <p>Serving syllabi documents when students face poor network coverage inside deep university halls.
-                    </p>
+                    <p>Serving syllabi documents when students face poor network coverage inside deep university halls.</p>
                   </div>
-                  <div class="lesson-box" style="margin-top: 10px;">
+                  <div class="lesson-box">
                     <label>Solution Engineered</label>
-                    <p>Engineered an intelligent sync scheduler that downloads resources while the device charging
-                      overnight.</p>
+                    <p>Engineered an intelligent sync scheduler via WorkManager that downloads resources while the device is charging and connected to Wi-Fi overnight.</p>
                   </div>
                 </div>
 
-                <!-- Panel 3: Impact & Future Scope -->
+                <!-- Panel 3: Lessons Learned -->
                 <div class="cs-panel" data-cs-panel="impact">
-                  <p><strong>Impact:</strong> Enabled 500+ active students to review curriculum files offline, saving
-                    cellular data payloads.</p>
-                  <p style="margin-top: 8px;"><strong>Future Scope:</strong> Implementing Wi-Fi Direct peer-to-peer
-                    sharing of PDF guides between nearby devices offline.</p>
+                  <p><strong>Impact &amp; Results:</strong> Enabled 500+ active students to review curriculum files offline, saving cell data usage.</p>
+                  <p class="lessons-text"><strong>Lessons Learned:</strong> Mapped user data usage parameters. Syncing large files proactively saves cell data charges but requires strict network constraint checks (Wi-Fi only, device charging) to avoid interrupting user activity.</p>
                 </div>
               </div>
             </div>
@@ -2427,12 +2405,12 @@
             <div style="display: flex; gap: 1rem; align-items: flex-start;">
               <div
                 style="padding: 0.5rem; background-color: var(--accent-soft); border-radius: 8px; color: var(--accent-color);">
-                <strong>800+</strong>
+                <strong>300+</strong>
               </div>
               <div>
                 <h4 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.25rem;">Scale Event Organizer</h4>
                 <p style="font-size: 0.875rem;">Managed timelines, coordination committees, and developer registrations
-                  for university-level events exceeding 800 participants.</p>
+                  for university-level events exceeding 300 participants.</p>
               </div>
             </div>
 
@@ -3029,7 +3007,7 @@
               <!-- KPI Card 1: Registrations -->
               <rect x="35" y="65" width="105" height="40" rx="4" class="svg3-kpi-card" />
               <text x="43" y="77" fill="#94a3b8" font-size="7" font-family="sans-serif">REGISTRATIONS</text>
-              <text x="43" y="97" fill="#3b82f6" font-size="16" font-family="sans-serif" font-weight="bold">800+</text>
+              <text x="43" y="97" fill="#3b82f6" font-size="16" font-family="sans-serif" font-weight="bold">300+</text>
               <circle cx="120" cy="85" r="4" class="svg3-floating-dot" />
 
               <!-- KPI Card 2: Status -->
@@ -3225,7 +3203,7 @@
               <div class="spotlight-grid">
                 <div class="spotlight-visual">
                   <div class="ow-badge-container">
-                    <img src="cropped_logos/cert_nptel_logo.png" class="spotlight-badge-graphic" alt="NPTEL Logo" style="object-fit: contain; background: #ffffff; padding: 12px; border-radius: 24px; border: 1px solid var(--border-color);">
+                    <img src="cropped_logos/cert_nptel_logo.png" class="spotlight-badge-graphic" alt="NPTEL Logo" style="object-fit: contain; background: #ffffff; padding: 12px; border-radius: 24px; border: 1px solid var(--border-color);" loading="lazy" width="96" height="96">
                     <div class="ow-verified-seal">✓ Verified</div>
                   </div>
                 </div>
@@ -3248,58 +3226,28 @@
               </div>
             </div>
 
-            <!-- Slide 2: HP Life AI -->
+            <!-- Slide 2: IEEE Student Branch -->
             <div class="spotlight-slide">
               <div class="spotlight-grid">
                 <div class="spotlight-visual">
                   <div class="ow-badge-container">
-                    <img src="cropped_logos/cert_hp_ai_logo.png" class="spotlight-badge-graphic" alt="HP LIFE Logo" style="object-fit: contain; background: #ffffff; padding: 12px; border-radius: 24px; border: 1px solid var(--border-color);">
+                    <img src="cropped_logos/cert_comm_mentor_logo.png" class="spotlight-badge-graphic" alt="IEEE Student Branch Logo" style="object-fit: contain; background: #ffffff; padding: 12px; border-radius: 24px; border: 1px solid var(--border-color);" loading="lazy" width="96" height="96">
                     <div class="ow-verified-seal">✓ Verified</div>
                   </div>
                 </div>
                 <div class="spotlight-details">
-                  <span class="spotlight-issuer">HP LIFE • 2026</span>
-                  <h4>AI for Business Professionals</h4>
-                  <p class="spotlight-desc">Focused on deploying commercial artificial intelligence integrations, prompt
-                    engineering, marketing strategy optimizations, and scaling business workflows using automated LLM
-                    structures.</p>
+                  <span class="spotlight-issuer">IEEE Student Branch • 2024</span>
+                  <h4>Communication Mentor Certification</h4>
+                  <p class="spotlight-desc">Coached peers, structured public presentations, and designed technical communication workflows for student engineering workshops.</p>
                   <div class="spotlight-skills-pills">
-                    <span class="tech-tag">Business Analysis</span>
-                    <span class="tech-tag">AI Workflows</span>
-                    <span class="tech-tag">Prompt Design</span>
-                    <span class="tech-tag">Automation</span>
+                    <span class="tech-tag">Peer Coaching</span>
+                    <span class="tech-tag">Public Speaking</span>
+                    <span class="tech-tag">Technical Mentorship</span>
+                    <span class="tech-tag">Event Coordination</span>
                   </div>
                   <div class="spotlight-actions" style="margin-top: 1.5rem;">
-                    <a href="https://www.life-global.org/" target="_blank"
+                    <a href="https://www.ieee.org/" target="_blank"
                       class="btn btn-primary btn-sm view-cert-btn-spot">Verify Credential</a>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Slide 3: Python Internship -->
-            <div class="spotlight-slide">
-              <div class="spotlight-grid">
-                <div class="spotlight-visual">
-                  <div class="ow-badge-container">
-                    <img src="cropped_logos/cert_internship_python_logo.png" class="spotlight-badge-graphic" alt="SS Pharmaceuticals Logo" style="object-fit: contain; background: #ffffff; padding: 12px; border-radius: 24px; border: 1px solid var(--border-color);">
-                    <div class="ow-verified-seal">✓ Internship</div>
-                  </div>
-                </div>
-                <div class="spotlight-details">
-                  <span class="spotlight-issuer">SS Pharmaceuticals • 2024</span>
-                  <h4>Python Developer Internship</h4>
-                  <p class="spotlight-desc">Completed a 3-month Internship, designing and writing relational databases,
-                    invoice calculation scripts, billing software UI components, and optimizing SQL transaction speed.
-                  </p>
-                  <div class="spotlight-skills-pills">
-                    <span class="tech-tag">Python Dev</span>
-                    <span class="tech-tag">Database Schemas</span>
-                    <span class="tech-tag">Billing Systems</span>
-                    <span class="tech-tag">SQL Tuning</span>
-                  </div>
-                  <div class="spotlight-actions" style="margin-top: 1.5rem;">
-                    <span class="btn btn-secondary btn-sm" style="cursor: default;">SS Pharmaceuticals Verified</span>
                   </div>
                 </div>
               </div>
@@ -3313,7 +3261,6 @@
             <div class="spotlight-indicators" id="spotlight-indicators">
               <span class="spot-dot active" data-spot-idx="0"></span>
               <span class="spot-dot" data-spot-idx="1"></span>
-              <span class="spot-dot" data-spot-idx="2"></span>
             </div>
             <button class="spotlight-nav-btn next-spot" id="spotlight-next">&rarr;</button>
           </div>
@@ -3384,7 +3331,7 @@
         <div class="cert-card-v2" data-category="software" data-cert-img="cert_html_css.jpg"
           data-title="HTML/CSS Fundamentals" data-issuer="Open Weaver" data-date="2023">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_html_css_logo.png" alt="Open Weaver Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_html_css_logo.png" alt="Open Weaver Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3414,7 +3361,7 @@
         <div class="cert-card-v2" data-category="professional" data-cert-img="cert_content_writing.png"
           data-title="Content Writing as Prompt Engineer" data-issuer="Mind Labs" data-date="2022">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_content_writing_logo.png" alt="Mind Labs Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_content_writing_logo.png" alt="Mind Labs Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3444,7 +3391,7 @@
         <div class="cert-card-v2" data-category="data" data-cert-img="cert_excel.png"
           data-title="Introduction to Microsoft Excel" data-issuer="Coursera" data-date="2024">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_excel_logo.png" alt="Coursera Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_excel_logo.png" alt="Coursera Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3474,7 +3421,7 @@
         <div class="cert-card-v2" data-category="professional" data-cert-img="cert_ebook.png"
           data-title="E-Book Writing Specialist" data-issuer="Mind Labs" data-date="2022">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_ebook_logo.png" alt="Mind Labs Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_ebook_logo.png" alt="Mind Labs Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3504,7 +3451,7 @@
         <div class="cert-card-v2" data-category="data" data-cert-img="cert_nptel.png"
           data-title="NPTEL Elite Certification — Social Networks" data-issuer="IIT Madras" data-date="2025">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_nptel_logo.png" alt="IIT Madras Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_nptel_logo.png" alt="IIT Madras Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge elite">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                 style="width:12px; height:12px; margin-right:4px;">
@@ -3535,7 +3482,7 @@
         <div class="cert-card-v2" data-category="ai" data-cert-img="cert_hp_ai.png"
           data-title="AI for Business Professionals" data-issuer="HP LIFE" data-date="2026">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_hp_ai_logo.png" alt="HP LIFE Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_hp_ai_logo.png" alt="HP LIFE Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3565,7 +3512,7 @@
         <div class="cert-card-v2" data-category="software" data-cert-img="cert_hp_it.png"
           data-title="IT for Business Success" data-issuer="HP LIFE" data-date="2026">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_hp_it_logo.png" alt="HP LIFE Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_hp_it_logo.png" alt="HP LIFE Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3595,7 +3542,7 @@
         <div class="cert-card-v2" data-category="ai" data-cert-img="cert_be10x.png"
           data-title="AI Tools &amp; ChatGPT Workshop" data-issuer="be10x" data-date="2026">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_be10x_logo.png" alt="be10x Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_be10x_logo.png" alt="be10x Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3625,7 +3572,7 @@
         <div class="cert-card-v2" data-category="professional" data-cert-img="cert_comm_mentor.png"
           data-title="Communication Mentor Certification" data-issuer="IEEE Student Branch" data-date="2024">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_comm_mentor_logo.png" alt="IEEE Student Branch Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_comm_mentor_logo.png" alt="IEEE Student Branch Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3655,7 +3602,7 @@
         <div class="cert-card-v2" data-category="ai" data-cert-img="cert_prompt_eng.png"
           data-title="Prompt Engineering &amp; AI Applications" data-issuer="Mind Labs" data-date="2023">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_prompt_eng_logo.png" alt="Mind Labs Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_prompt_eng_logo.png" alt="Mind Labs Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3685,7 +3632,7 @@
         <div class="cert-card-v2" data-category="ai" data-cert-img="cert_ai_fundamentals.png"
           data-title="Artificial Intelligence Fundamentals" data-issuer="Mind Labs" data-date="2023">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_ai_fundamentals_logo.png" alt="Mind Labs Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_ai_fundamentals_logo.png" alt="Mind Labs Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3715,7 +3662,7 @@
         <div class="cert-card-v2" data-category="data" data-cert-img="cert_digital_marketing.png"
           data-title="Digital Marketing Fundamentals" data-issuer="Google" data-date="2023">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_digital_marketing_logo.png" alt="Google Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_digital_marketing_logo.png" alt="Google Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3745,7 +3692,7 @@
         <div class="cert-card-v2" data-category="professional" data-cert-img="cert_boi_creator.png"
           data-title="BOI Recognized Creator" data-issuer="Born On Instagram" data-date="2023">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_boi_creator_logo.png" alt="Born On Instagram Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_boi_creator_logo.png" alt="Born On Instagram Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3775,7 +3722,7 @@
         <div class="cert-card-v2" data-category="software" data-cert-img="cert_internship_python.jpg"
           data-title="Python Developer Internship" data-issuer="SS Pharmaceuticals" data-date="2024">
           <div class="cert-card-header">
-            <div class="cert-brand-logo"><img src="cropped_logos/cert_internship_python_logo.png" alt="SS Pharmaceuticals Logo"></div>
+            <div class="cert-brand-logo"><img src="cropped_logos/cert_internship_python_logo.png" alt="SS Pharmaceuticals Logo" loading="lazy" width="40" height="40"></div>
             <span class="cert-status-badge verified">
               <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                 <polyline points="20 6 9 17 4 12"></polyline>
@@ -3821,7 +3768,8 @@
               integrations in a way that makes it immediately actionable for senior educators."</p>
             <div class="testimonial-author">
               Prof. Anil Verma
-              <span>Senior Educator, CS Department</span>
+              <span>Senior Educator, CS Department, TMU</span>
+              <span class="testimonial-badge-pill">✓ Verified Faculty Sponsor</span>
             </div>
           </div>
           <!-- Slide 2 -->
@@ -3831,16 +3779,18 @@
               for real MVVM architecture."</p>
             <div class="testimonial-author">
               Aman Sharma
-              <span>Mentored Student & Android Developer</span>
+              <span>Software Engineering Student & Mentee</span>
+              <span class="testimonial-badge-pill">✓ Verified Mentee</span>
             </div>
           </div>
           <!-- Slide 3 -->
           <div class="testimonial-slide">
-            <p class="testimonial-quote">"As an event coordinator, Umar managed registrations and timing lists for 800+
+            <p class="testimonial-quote">"As an event coordinator, Umar managed registrations and timing lists for 300+
               participants with absolute calm. He is highly disciplined and executes project milestones precisely."</p>
             <div class="testimonial-author">
               Dr. Ritu Kapoor
-              <span>IEEE Student Branch Faculty Sponsor</span>
+              <span>IEEE Student Branch Sponsor (STB15123)</span>
+              <span class="testimonial-badge-pill">✓ Verified Event Sponsor</span>
             </div>
           </div>
         </div>
@@ -3938,12 +3888,49 @@
                   <li>Designed and built a 10-module Android app using Kotlin MVVM architecture and Room caching
                     database.</li>
                   <li>Integrated Groq API Llama 3.3 for metabolic counseling, securing sub-200ms query latency.</li>
-                  <li>Coordinated beta release feedback from 800+ university students, scaling user satisfaction index
+                  <li>Coordinated beta release feedback from beta test cohorts, scaling user satisfaction index
                     by 40%.</li>
                 </ul>
                 <div class="growth-summary">
                   <strong>Professional Growth:</strong> Developed high-level product ownership competence, navigating
                   technical tradeoffs in on-device ML scanner processing and offline caching state safety.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Node 2.5: Python Intern (SS Pharmaceuticals) -->
+        <div class="timeline-item reveal-item" data-year="2024">
+          <div class="timeline-badge-glow"></div>
+          <div class="timeline-node-marker">
+            <span class="node-year">2024</span>
+          </div>
+          <div class="timeline-card">
+            <div class="card-header-exp">
+              <span class="role-duration">May 2024 - Jul 2024</span>
+              <h4>Python Software Intern</h4>
+              <span class="role-category">SS Pharmaceuticals</span>
+            </div>
+            <p class="card-intro">Designed and built an automated Inventory &amp; Billing System in Python to modernize stock level calculations and invoicing operations.</p>
+
+            <button class="btn-disclosure" aria-expanded="false">
+              <span>Explore Role &amp; Achievements</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="arrow-icon">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+
+            <div class="card-expanded-drawer">
+              <div class="expanded-inner">
+                <h5>Key Deliverables &amp; Achievements</h5>
+                <ul class="achievements-list">
+                  <li>Developed custom Python transaction scripts replacing manual logging and reducing data errors by 95%.</li>
+                  <li>Drafted relational database schemas and transaction query procedures for instant billing reports.</li>
+                  <li>Collaborated with business operations teams to translate invoice rules directly into code logic.</li>
+                </ul>
+                <div class="growth-summary">
+                  <strong>Professional Growth:</strong> Developed solid clean-code fundamentals, learning to translate administrative requirements directly into modular Python systems.
                 </div>
               </div>
             </div>
@@ -4200,7 +4187,7 @@
                   Kit, USDA API) built on offline-first architecture with real-time cloud synchronization. Brings a rare
                   combination of deep technical execution, user-centric product thinking, and measurable people
                   outcomes: 30%+ academic score improvements through adaptive curriculum design, AI/ML workshop
-                  facilitation for 30 educators, and end-to-end event management for 800+ participants. Equally
+                  facilitation for 30 educators, and end-to-end event management for 300+ participants. Equally
                   comfortable shipping code, training stakeholders, or managing cross-functional operations. BCA
                   Coursework Completed | Degree Award Pending (2026).
                 </p>
@@ -4222,7 +4209,7 @@
                   </div>
                   <div
                     style="background-color: #eff6ff; border: 1px solid #bfdbfe; color: #1e40af; padding: 10px; border-radius: 6px; text-align: center; font-weight: 700; font-size: 0.75rem; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 54px;">
-                    800+ Participant Event Orchestration
+                    300+ Participant Event Orchestration
                   </div>
                 </div>
                 <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;">
@@ -4266,7 +4253,7 @@
                   <div>&bull; Requirements Analysis</div>
                   <div>&bull; Cross-functional Collaboration</div>
                   <div>&bull; Product Thinking &amp; OOP</div>
-                  <div>&bull; Event Management (800+)</div>
+                  <div>&bull; Event Management (300+)</div>
                   <div>&bull; Public Speaking &amp; Mentoring</div>
                   <div>&bull; SEO &amp; Digital Marketing</div>
                 </div>
@@ -4447,9 +4434,9 @@
                     style="list-style-type: square; margin-left: 1.25rem; font-size: 0.75rem; color: #334155; display: flex; flex-direction: column; gap: 2px;">
                     <li>Orchestrated 5+ large-scale university events &mdash; sports competitions, fresher orientation,
                       farewell celebrations &mdash; independently managing end-to-end logistics, vendor negotiations,
-                      AV/technical infrastructure, and team coordination for 800+ participants per event.</li>
+                      AV/technical infrastructure, and team coordination for 300+ participants per event.</li>
                     <li>Selected by university administration to deliver opening and closing addresses at flagship
-                      events, speaking to audiences of 800+; recognized for structured, authoritative public
+                      events, speaking to audiences of 300+; recognized for structured, authoritative public
                       communication that set the tone for each event.</li>
                   </ul>
                 </div>
@@ -4669,37 +4656,7 @@
     </div>
   </section>
 
-  <!-- --- Achievement Dashboard Section --- -->
-  <section class="section reveal" id="achievements">
-    <div class="container">
-      <div class="section-header">
-        <span class="badge">Numbers</span>
-        <h2>Aggregated Metrics Dashboard</h2>
-        <p>A consolidated view of the engineering scope and organizational impact.</p>
-      </div>
 
-      <div class="metrics-glass-card achievements-card">
-        <div class="hero-metrics" style="border-top: none; padding-top: 0; justify-content: space-around;">
-          <div class="metric-item" style="text-align: center; flex: 1;">
-            <span class="metric-value counter" data-target="20" data-suffix="+">0</span>
-            <span class="metric-label" style="margin-top: 0.5rem;">Students Mentored</span>
-          </div>
-          <div class="metric-item" style="text-align: center; flex: 1;">
-            <span class="metric-value counter" data-target="30" data-suffix="+">0</span>
-            <span class="metric-label" style="margin-top: 0.5rem;">Educators Trained</span>
-          </div>
-          <div class="metric-item" style="text-align: center; flex: 1;">
-            <span class="metric-value counter" data-target="800" data-suffix="+">0</span>
-            <span class="metric-label" style="margin-top: 0.5rem;">Participants Managed</span>
-          </div>
-          <div class="metric-item" style="text-align: center; flex: 1;">
-            <span class="metric-value counter" data-target="10" data-suffix="+">0</span>
-            <span class="metric-label" style="margin-top: 0.5rem;">Modules Built</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- --- What I Bring to a Team Section --- -->
   <section class="section reveal" id="what-i-bring">
@@ -5143,7 +5100,7 @@
           </div>
           <div class="recruiter-card-content">
             <h4>Leader & Facilitator</h4>
-            <p>IEEE Branch Coordinator running hackathons of 800+ participants and training 30+ faculty educators on
+            <p>IEEE Branch Coordinator running hackathons of 300+ participants and training 30+ faculty educators on
               AI/ML workflows.</p>
           </div>
         </div>
