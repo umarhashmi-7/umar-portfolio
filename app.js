@@ -34,9 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
   initCertificationsShowcase();
   initSiufitShowcasePlayground();
   initProjectCaseStudyTabs();
+  initProjectsExplorer();
   initExperienceTimeline();
   initSpotlightCarousel();
   initOverflowDiagnostic();
+  initSuperSections();
+  initSkillRadarChart();
+  initCommandPalette();
+  initCertificationsModal();
+  initLeadershipAccordion();
+  initPremiumAnimations();
 });
 
 // Helper to calculate correct assets path relative to base directory (to avoid 404s on GitHub Pages subdirectories)
@@ -2291,6 +2298,53 @@ function initBlogModal() {
 }
 
 /* ==========================================================================
+   30b. Projects Explorer (Inline Tabbed Navigation)
+   ========================================================================== */
+function initProjectsExplorer() {
+  const tabs = document.querySelectorAll('.project-explorer-tab-btn');
+  const cards = document.querySelectorAll('.projects-display-pane .project-card');
+
+  if (!tabs.length || !cards.length) return;
+
+  // 1. Mouse Spotlight Tracker for tab buttons
+  tabs.forEach(tab => {
+    tab.addEventListener('mousemove', (e) => {
+      const rect = tab.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      tab.style.setProperty('--mouse-x', `${x}px`);
+      tab.style.setProperty('--mouse-y', `${y}px`);
+    });
+  });
+
+  // 2. Tab switcher click events
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const targetIdx = parseInt(tab.getAttribute('data-project-idx'), 10);
+
+      // Toggle active states on tab buttons
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      // Show the matching project card, hide the rest
+      cards.forEach((card, idx) => {
+        if (idx === targetIdx) {
+          card.classList.add('active');
+          // Force layout reflow to trigger CSS animations inside the active card
+          void card.offsetWidth;
+        } else {
+          card.classList.remove('active');
+        }
+      });
+
+      if (window.recordEngagementAction) {
+        window.recordEngagementAction();
+      }
+    });
+  });
+}
+
+/* ==========================================================================
    31. Credentials & Certifications Showcase
    ========================================================================== */
 function initCertificationsShowcase() {
@@ -2319,31 +2373,111 @@ function initCertificationsShowcase() {
     });
   });
 
-  // 2. Category Filtering Logic
+  // 2. Category Collapsing and Filtering Logic
+  let isCertsExpanded = false;
+  const toggleBtn = document.getElementById('cert-toggle-btn');
+  const toggleText = document.getElementById('cert-toggle-text');
+
+  const updateCertsVisibility = () => {
+    // Get active filter
+    const activeBtn = document.querySelector('.cert-filter-btn.active');
+    const filterVal = activeBtn ? activeBtn.getAttribute('data-filter') : 'all';
+
+    // Find all cards that match current filter (meaning they do not have class .hidden)
+    const matchingCards = [];
+    cards.forEach(card => {
+      const category = card.getAttribute('data-category');
+      if (filterVal === 'all' || category === filterVal) {
+        matchingCards.push(card);
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+        card.classList.remove('is-collapsed');
+      }
+    });
+
+    // Apply collapse rules to matching cards
+    if (isCertsExpanded) {
+      matchingCards.forEach(card => {
+        card.classList.remove('is-collapsed');
+      });
+      if (toggleBtn) {
+        toggleBtn.classList.add('expanded');
+        if (toggleText) toggleText.textContent = 'Show Less';
+      }
+    } else {
+      matchingCards.forEach((card, idx) => {
+        if (idx < 4) {
+          card.classList.remove('is-collapsed');
+        } else {
+          card.classList.add('is-collapsed');
+        }
+      });
+      if (toggleBtn) {
+        toggleBtn.classList.remove('expanded');
+        if (toggleText) toggleText.textContent = 'Show All Certifications';
+      }
+    }
+
+    // Hide/show the toggle button based on matching cards count
+    if (toggleBtn) {
+      if (matchingCards.length > 4) {
+        toggleBtn.style.display = 'flex';
+      } else {
+        toggleBtn.style.display = 'none';
+      }
+    }
+  };
+
+  // Run on load
+  updateCertsVisibility();
+
+  // Category filter buttons click logic
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       // Toggle active states
       filterBtns.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
 
-      const filterVal = btn.getAttribute('data-filter');
+      // Reset expanded state on filter change
+      isCertsExpanded = false;
+      updateCertsVisibility();
 
+      // Trigger animations for visible, active cards
       cards.forEach(card => {
-        const category = card.getAttribute('data-category');
-        // Reset animation
-        card.style.animation = 'none';
-        
-        if (filterVal === 'all' || category === filterVal) {
-          card.classList.remove('hidden');
-          // Force reflow
+        if (!card.classList.contains('hidden') && !card.classList.contains('is-collapsed')) {
+          card.style.animation = 'none';
           void card.offsetWidth;
-          card.style.animation = 'certFadeIn 0.5s ease forwards';
-        } else {
-          card.classList.add('hidden');
+          card.style.animation = 'certFadeIn 0.4s ease forwards';
         }
       });
     });
   });
+
+  // Toggle button click listener
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      isCertsExpanded = !isCertsExpanded;
+      updateCertsVisibility();
+
+      // Trigger animation for newly revealed cards
+      if (isCertsExpanded) {
+        cards.forEach(card => {
+          if (!card.classList.contains('hidden') && !card.classList.contains('is-collapsed')) {
+            card.style.animation = 'none';
+            void card.offsetWidth;
+            card.style.animation = 'certFadeIn 0.4s ease forwards';
+          }
+        });
+      } else {
+        // Smoothly scroll back to credentials header
+        const certSection = document.getElementById('certifications');
+        if (certSection) {
+          certSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }
+    });
+  }
 
   // 3. Build Gallery array of certs that have images
   const gallery = [];
@@ -2915,6 +3049,469 @@ function initOverflowDiagnostic() {
       }
     });
   };
-  window.addEventListener('load', checkOverflows);
   window.addEventListener('resize', debounce(checkOverflows, 150));
+}
+
+// ==========================================================================
+// 41. Super-Section Tabs System
+// ==========================================================================
+function initSuperSections() {
+  const tabContainers = document.querySelectorAll('.super-section');
+  
+  tabContainers.forEach(container => {
+    const nav = container.querySelector('.super-section-nav');
+    if (!nav) return;
+    
+    const buttons = nav.querySelectorAll('.super-tab-btn');
+    const panels = container.querySelectorAll('.super-tab-panel');
+    
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetTab = btn.getAttribute('data-super-tab');
+        
+        buttons.forEach(b => b.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        
+        btn.classList.add('active');
+        const targetPanel = container.querySelector(`#panel-${targetTab}`);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+          
+          const reveals = targetPanel.querySelectorAll('.reveal');
+          reveals.forEach(r => r.classList.add('active'));
+        }
+      });
+    });
+  });
+
+  const navLinks = document.querySelectorAll('.nav-links a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      if (!href.startsWith('#')) return;
+      
+      const targetId = href.substring(1);
+      
+      const targetPanel = document.getElementById(`panel-${targetId}`);
+      if (targetPanel) {
+        const superSection = targetPanel.closest('.super-section');
+        if (superSection) {
+          const tabBtn = superSection.querySelector(`.super-tab-btn[data-super-tab="${targetId}"]`);
+          if (tabBtn) {
+            e.preventDefault();
+            tabBtn.click();
+            superSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      }
+    });
+  });
+}
+
+// ==========================================================================
+// 42. Interactive Skill Radar Chart
+// ==========================================================================
+function initSkillRadarChart() {
+  const radarSvg = document.getElementById('skill-radar-svg');
+  if (!radarSvg) return;
+
+  const dots = radarSvg.querySelectorAll('.radar-dot');
+  const labels = radarSvg.querySelectorAll('.radar-label');
+  const legendItems = document.querySelectorAll('.radar-legend-item');
+
+  const constituentSkills = {
+    0: ['Kotlin', 'Android SDK', 'Jetpack Compose', 'MVVM', 'Coroutines', 'Offline-First', 'SQLite/Room DB'],
+    1: ['Generative AI Integration', 'Local LLM Assistants', 'Groq SDK', 'ML Kit SDK', 'Retrieval-Augmented Generation (RAG)'],
+    2: ['Node.js', 'REST APIs', 'Serverless Functions', 'JWT Auth', 'Firebase Functions', 'Express.js'],
+    3: ['Room DB Caching', 'SQL / SQLite Query Tuning', 'Firebase Firestore Syncing', 'Realtime Sync', 'Schema Migrations'],
+    4: ['IEEE Student Branch Coordinator', 'Mock Interviews Organizer', 'Hackathons Organizer', 'Cross-Functional Team Lead'],
+    5: ['Business Analysis', 'User Journey Mapping', 'SEO Optimization', 'Funnel Analytics', 'Conversion Rate Optimization']
+  };
+
+  const tooltip = document.createElement('div');
+  tooltip.className = 'radar-tooltip';
+  tooltip.style.position = 'fixed';
+  tooltip.style.padding = '0.75rem 1rem';
+  tooltip.style.background = 'var(--glass-bg)';
+  tooltip.style.border = '1px solid var(--border-color)';
+  tooltip.style.borderRadius = '8px';
+  tooltip.style.boxShadow = 'var(--shadow-lg)';
+  tooltip.style.backdropFilter = 'blur(12px)';
+  tooltip.style.webkitBackdropFilter = 'blur(12px)';
+  tooltip.style.color = 'var(--text-primary)';
+  tooltip.style.fontSize = '0.75rem';
+  tooltip.style.fontWeight = '500';
+  tooltip.style.pointerEvents = 'none';
+  tooltip.style.zIndex = '10005';
+  tooltip.style.opacity = '0';
+  tooltip.style.transition = 'opacity var(--transition-fast)';
+  document.body.appendChild(tooltip);
+
+  const showTooltip = (axisIdx, x, y, title) => {
+    const skills = constituentSkills[axisIdx] || [];
+    tooltip.innerHTML = `
+      <strong style="color: var(--accent-color); font-weight: 700; display: block; margin-bottom: 0.25rem;">${title}</strong>
+      <div style="display: flex; flex-direction: column; gap: 0.125rem;">
+        ${skills.map(s => `• ${s}`).join('<br>')}
+      </div>
+    `;
+    tooltip.style.left = `${x + 15}px`;
+    tooltip.style.top = `${y - 15}px`;
+    tooltip.style.opacity = '1';
+  };
+
+  const hideTooltip = () => {
+    tooltip.style.opacity = '0';
+  };
+
+  const attachHover = (el, axisIdx, title) => {
+    el.addEventListener('mousemove', (e) => {
+      showTooltip(axisIdx, e.clientX, e.clientY, title);
+    });
+    el.addEventListener('mouseleave', hideTooltip);
+    el.addEventListener('click', () => {
+      const skillCards = document.querySelectorAll('.skills-grid .skill-card');
+      if (skillCards[axisIdx]) {
+        skillCards[axisIdx].scrollIntoView({ behavior: 'smooth', block: 'center' });
+        skillCards[axisIdx].style.borderColor = 'var(--accent-color)';
+        skillCards[axisIdx].style.boxShadow = '0 0 15px var(--accent-soft)';
+        setTimeout(() => {
+          skillCards[axisIdx].style.borderColor = '';
+          skillCards[axisIdx].style.boxShadow = '';
+        }, 1500);
+      }
+    });
+  };
+
+  const axesTitles = [
+    'Android Dev (95%)',
+    'AI / ML Integration (85%)',
+    'Backend & Cloud (80%)',
+    'Databases & Cache (90%)',
+    'Leadership & Ops (85%)',
+    'Business & Stats (75%)'
+  ];
+
+  dots.forEach(dot => {
+    const axis = parseInt(dot.getAttribute('data-axis'), 10);
+    attachHover(dot, axis, axesTitles[axis]);
+  });
+
+  labels.forEach(label => {
+    const axis = parseInt(label.getAttribute('data-axis'), 10);
+    attachHover(label, axis, axesTitles[axis]);
+  });
+
+  legendItems.forEach(item => {
+    const axis = parseInt(item.getAttribute('data-axis'), 10);
+    attachHover(item, axis, axesTitles[axis]);
+  });
+}
+
+// ==========================================================================
+// 43. Command Palette Control
+// ==========================================================================
+function initCommandPalette() {
+  const palette = document.getElementById('cmd-palette');
+  const input = document.getElementById('cmd-palette-input');
+  const resultsContainer = document.getElementById('cmd-palette-results');
+  const triggerBtn = document.getElementById('cmd-palette-trigger');
+
+  if (!palette || !input || !resultsContainer) return;
+
+  const cmdItems = [
+    { name: 'Go to Hero / Top', type: 'navigation', target: 'hero', shortcut: 'G H' },
+    { name: 'View Flagship Showcase (SIUFIT)', type: 'navigation', target: 'siufit', shortcut: 'G W' },
+    { name: 'View Other Projects', type: 'navigation', target: 'projects', shortcut: 'G P' },
+    { name: 'About Mohd Umar Hashmi', type: 'navigation', target: 'about', shortcut: 'G A' },
+    { name: 'Skills & Tech Stack', type: 'navigation', target: 'skills', shortcut: 'G S' },
+    { name: 'Professional Experience Timeline', type: 'navigation', target: 'experience', shortcut: 'G E' },
+    { name: 'Credentials & Certifications', type: 'navigation', target: 'certifications', shortcut: 'G C' },
+    { name: 'Contact Umar Hashmi', type: 'navigation', target: 'contact', shortcut: 'G M' },
+    { name: 'Open Certifications Modal', type: 'action', action: 'openCerts', shortcut: 'O C' },
+    { name: 'Download PDF Resume', type: 'action', action: 'downloadResume', shortcut: 'D R' },
+    { name: 'Toggle Light / Dark Theme', type: 'action', action: 'toggleTheme', shortcut: 'T T' },
+    { name: 'Open Visitor Analytics', type: 'action', action: 'openAnalytics', shortcut: 'O A' },
+    { name: 'Chat with local AI Bot', type: 'action', action: 'openAIBot', shortcut: 'C A' },
+  ];
+
+  let selectedIndex = 0;
+  let filteredItems = [];
+
+  const togglePalette = () => {
+    const isOpen = palette.classList.contains('open');
+    if (isOpen) {
+      palette.classList.remove('open');
+      document.body.style.overflow = '';
+      input.value = '';
+    } else {
+      palette.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => input.focus(), 50);
+      renderResults();
+    }
+  };
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      togglePalette();
+    }
+    if (e.key === 'Escape' && palette.classList.contains('open')) {
+      togglePalette();
+    }
+  });
+
+  if (triggerBtn) {
+    triggerBtn.addEventListener('click', togglePalette);
+  }
+
+  palette.addEventListener('click', (e) => {
+    if (e.target === palette) togglePalette();
+  });
+
+  const performAction = (item) => {
+    togglePalette();
+    if (item.type === 'navigation') {
+      const targetPanel = document.getElementById(`panel-${item.target}`);
+      if (targetPanel) {
+        const superSection = targetPanel.closest('.super-section');
+        if (superSection) {
+          const tabBtn = superSection.querySelector(`.super-tab-btn[data-super-tab="${item.target}"]`);
+          if (tabBtn) tabBtn.click();
+          superSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      } else {
+        const el = document.getElementById(item.target);
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    } else if (item.type === 'action') {
+      if (item.action === 'openCerts') {
+        const btn = document.getElementById('open-certs-modal-btn');
+        if (btn) btn.click();
+      } else if (item.action === 'downloadResume') {
+        const btn = document.querySelector('a[download*="resume"]');
+        if (btn) btn.click();
+      } else if (item.action === 'toggleTheme') {
+        const themeBtn = document.getElementById('theme-toggle');
+        if (themeBtn) themeBtn.click();
+      } else if (item.action === 'openAnalytics') {
+        const btn = document.getElementById('analytics-btn');
+        if (btn) btn.click();
+      } else if (item.action === 'openAIBot') {
+        const botTrigger = document.querySelector('.floating-ai-bot-trigger') || document.getElementById('ai-bot-trigger');
+        if (botTrigger) botTrigger.click();
+      }
+    }
+  };
+
+  const renderResults = () => {
+    const query = input.value.trim().toLowerCase();
+    filteredItems = cmdItems.filter(item => item.name.toLowerCase().includes(query) || item.type.toLowerCase().includes(query));
+    
+    resultsContainer.innerHTML = '';
+    
+    if (filteredItems.length === 0) {
+      resultsContainer.innerHTML = '<div class="cmd-palette-empty">No results found</div>';
+      return;
+    }
+
+    selectedIndex = Math.min(selectedIndex, filteredItems.length - 1);
+    if (selectedIndex < 0) selectedIndex = 0;
+
+    let currentGroup = '';
+    
+    filteredItems.forEach((item, idx) => {
+      if (item.type !== currentGroup) {
+        currentGroup = item.type;
+        const label = document.createElement('div');
+        label.className = 'cmd-palette-group-label';
+        label.textContent = currentGroup === 'navigation' ? 'Go to Section' : 'System Actions';
+        resultsContainer.appendChild(label);
+      }
+
+      const div = document.createElement('div');
+      div.className = `cmd-palette-item ${idx === selectedIndex ? 'selected' : ''}`;
+      
+      const icon = item.type === 'navigation' 
+        ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>'
+        : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>';
+        
+      div.innerHTML = `
+        ${icon}
+        <span>${item.name}</span>
+        <span class="cmd-item-shortcut">${item.shortcut}</span>
+      `;
+
+      div.addEventListener('click', () => {
+        selectedIndex = idx;
+        performAction(item);
+      });
+
+      div.addEventListener('mouseenter', () => {
+        const items = resultsContainer.querySelectorAll('.cmd-palette-item');
+        items.forEach(el => el.classList.remove('selected'));
+        div.classList.add('selected');
+        selectedIndex = idx;
+      });
+
+      resultsContainer.appendChild(div);
+    });
+
+    const selectedElement = resultsContainer.querySelector('.cmd-palette-item.selected');
+    if (selectedElement) {
+      selectedElement.scrollIntoView({ block: 'nearest' });
+    }
+  };
+
+  input.addEventListener('input', () => {
+    selectedIndex = 0;
+    renderResults();
+  });
+
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = (selectedIndex + 1) % filteredItems.length;
+      renderResults();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = (selectedIndex - 1 + filteredItems.length) % filteredItems.length;
+      renderResults();
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (filteredItems[selectedIndex]) {
+        performAction(filteredItems[selectedIndex]);
+      }
+    }
+  });
+}
+
+// ==========================================================================
+// 44. Certifications Fullscreen Modal
+// ==========================================================================
+function initCertificationsModal() {
+  const modal = document.getElementById('certs-modal');
+  const closeBtn = document.getElementById('certs-modal-close');
+  const openBtn = document.getElementById('open-certs-modal-btn');
+  const previewGrid = document.getElementById('cert-preview-grid');
+  
+  if (!modal || !previewGrid) return;
+
+  const modalList = modal.querySelector('.certifications-list-v2');
+  if (modalList) {
+    const cards = modalList.querySelectorAll('.cert-card-v2');
+    for (let i = 0; i < Math.min(4, cards.length); i++) {
+      const clone = cards[i].cloneNode(true);
+      const cloneBtn = clone.querySelector('.view-cert-btn');
+      if (cloneBtn) {
+        cloneBtn.addEventListener('click', () => {
+          const originalBtn = cards[i].querySelector('.view-cert-btn');
+          if (originalBtn) originalBtn.click();
+        });
+      }
+      previewGrid.appendChild(clone);
+    }
+  }
+
+  if (openBtn) {
+    openBtn.addEventListener('click', () => {
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      if (window.recordEngagementAction) {
+        window.recordEngagementAction();
+      }
+    });
+  }
+
+  const closeModal = () => {
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeModal);
+  }
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+}
+
+// ==========================================================================
+// 45. Leadership Accordion Action
+// ==========================================================================
+function initLeadershipAccordion() {
+  const headers = document.querySelectorAll('.leadership-accordion-header');
+  headers.forEach(header => {
+    header.addEventListener('click', () => {
+      const item = header.closest('.leadership-accordion-item');
+      const drawer = item.querySelector('.leadership-accordion-drawer');
+      const inner = drawer.querySelector('.leadership-accordion-inner');
+      const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+      if (isExpanded) {
+        drawer.style.maxHeight = '0px';
+        header.setAttribute('aria-expanded', 'false');
+      } else {
+        document.querySelectorAll('.leadership-accordion-header').forEach(h => {
+          if (h !== header && h.getAttribute('aria-expanded') === 'true') {
+            const otherItem = h.closest('.leadership-accordion-item');
+            const otherDrawer = otherItem.querySelector('.leadership-accordion-drawer');
+            otherDrawer.style.maxHeight = '0px';
+            h.setAttribute('aria-expanded', 'false');
+          }
+        });
+        
+        drawer.style.maxHeight = `${inner.scrollHeight}px`;
+        header.setAttribute('aria-expanded', 'true');
+      }
+
+      if (window.recordEngagementAction) {
+        window.recordEngagementAction();
+      }
+    });
+  });
+}
+
+// ==========================================================================
+// 46. Magnetic Buttons & Spotlight Cursor Enhancements
+// ==========================================================================
+function initPremiumAnimations() {
+  const hero = document.getElementById('hero');
+  const spotlight = document.getElementById('hero-spotlight');
+  if (hero && spotlight) {
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      spotlight.style.left = `${x}px`;
+      spotlight.style.top = `${y}px`;
+    });
+  }
+
+  const btnElements = document.querySelectorAll('.btn-primary, .btn-secondary, .theme-toggle-btn');
+  btnElements.forEach(btn => {
+    if (btn.classList.contains('theme-toggle-btn') || btn.classList.contains('cert-action-btn')) return;
+    
+    const parent = btn.parentNode;
+    if (parent && parent.classList.contains('magnetic-wrap')) return;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'magnetic-wrap';
+    parent.replaceChild(wrap, btn);
+    wrap.appendChild(btn);
+
+    wrap.addEventListener('mousemove', (e) => {
+      const rect = wrap.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+    });
+
+    wrap.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
 }
