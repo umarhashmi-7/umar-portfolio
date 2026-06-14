@@ -412,12 +412,13 @@ function initVisitorAnalytics() {
     });
   }
 
-  function recordMetric(key) {
+  window.recordMetric = function(key) {
     const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
     counts[key] = (counts[key] || 0) + 1;
     localStorage.setItem('umar-portfolio-metrics', JSON.stringify(counts));
     window.updateEngagementScore();
-  }
+  };
+  const recordMetric = window.recordMetric;
 
   function updateAnalyticsDisplay() {
     const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
@@ -1439,7 +1440,7 @@ const ARCH_DETAILS = {
             isDownloading = false;
 
             // Log analytics apk download metric
-            recordMetric('apkDownloads');
+            window.recordMetric('apkDownloads');
           }, 800);
         }
       }, 100);
@@ -2349,7 +2350,7 @@ function initProjectsExplorer() {
    ========================================================================== */
 function initCertificationsShowcase() {
   const filterBtns = document.querySelectorAll('.cert-filter-btn');
-  const cards = document.querySelectorAll('.cert-card-v2');
+  const cards = document.querySelectorAll('.certifications-list-v2 .cert-card-v2');
   const modal = document.getElementById('cert-lightbox-modal');
   const modalImg = document.getElementById('cert-lightbox-img');
   const modalCaption = document.getElementById('cert-lightbox-caption-text');
@@ -2374,7 +2375,7 @@ function initCertificationsShowcase() {
   });
 
   // 2. Category Collapsing and Filtering Logic
-  let isCertsExpanded = false;
+  let isCertsExpanded = true;
   const toggleBtn = document.getElementById('cert-toggle-btn');
   const toggleText = document.getElementById('cert-toggle-text');
 

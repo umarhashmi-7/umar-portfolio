@@ -166,6 +166,7 @@
   
 <!-- --- Hero Section --- -->
   <section class="section" id="hero">
+    <canvas id="hero-particle-canvas" class="hero-particle-canvas"></canvas>
     <div class="spotlight-cursor" id="hero-spotlight"></div>
     <div class="hero-gradient-mesh"></div>
     <div class="hero-noise-overlay"></div>
@@ -484,459 +485,7 @@
         </div>
       </div>
 
-      <!-- SIUFIT Product Launch Fullscreen Showcase Modal -->
-      <div id="siufit-product-modal" class="siufit-product-modal" role="dialog" aria-modal="true">
-        <!-- Scroll Progress Tracker -->
-        <div class="modal-scroll-progress" id="modal-scroll-progress"></div>
 
-        <!-- Sticky Navigation Header -->
-        <header class="modal-header">
-          <div class="modal-nav-container">
-            <a href="#" class="modal-logo-brand"
-              onclick="event.preventDefault(); document.getElementById('siufit-product-modal').scrollTo({top: 0, behavior: 'smooth'});">
-              <div class="siufit-brand-logo small">
-                <img src="siufit-logo.jpg" alt="SIUFIT Logo" class="logo-img" loading="lazy" width="24" height="24">
-              </div>
-              <span>SIUFIT</span>
-            </a>
-
-            <!-- Tabs -->
-            <nav class="modal-nav-links" id="modal-nav-links">
-              <a href="#modal-overview" class="modal-nav-link active">Overview</a>
-              <a href="#modal-features" class="modal-nav-link">Features</a>
-              <a href="#modal-gallery" class="modal-nav-link">Gallery</a>
-              <a href="#modal-tech-stack" class="modal-nav-link">Tech Stack</a>
-              <a href="#modal-timeline" class="modal-nav-link">Journey</a>
-              <a href="#modal-download" class="modal-nav-link">Download</a>
-            </nav>
-
-            <!-- Close Trigger -->
-            <button class="modal-close-btn" id="siufit-modal-close" aria-label="Close Showcase">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
-                stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </button>
-          </div>
-        </header>
-
-        <!-- Content Area -->
-        <div class="modal-wrapper">
-
-          <!-- SECTION 1: OVERVIEW -->
-          <section id="modal-overview" class="modal-section scroll-reveal">
-            <div class="modal-grid-two-col">
-              <div class="overview-left">
-                <span class="modal-badge">PRODUCT SHIELD</span>
-                <h1 class="modal-heading">Reimagining Indian Mobile Health</h1>
-                <p class="modal-lead">
-                  SIUFIT bridges the gap between fragmented health tracking tools. It unites AI Coaching guidance,
-                  real-time macronutrient calculations, offline-first SQLite synchronization, and calorie scanning
-                  routines into a single context-aware Android client.
-                </p>
-                <div class="overview-pillars">
-                  <div class="pillar-item">
-                    <span class="pillar-icon">🤖</span>
-                    <div class="pillar-details">
-                      <h5>Generative AI Coach</h5>
-                      <p>Integrates Groq Llama 3.3 gateway delivering conversational guidance in under 200ms.</p>
-                    </div>
-                  </div>
-                  <div class="pillar-item">
-                    <span class="pillar-icon">🥗</span>
-                    <div class="pillar-details">
-                      <h5>Calorie & USDA Maps</h5>
-                      <p>Maps nutrition parameters to USDA databases and regional fallbacks for local dishes.</p>
-                    </div>
-                  </div>
-                  <div class="pillar-item">
-                    <span class="pillar-icon">🏋️</span>
-                    <div class="pillar-details">
-                      <h5>PPL Workout Engine</h5>
-                      <p>Schedules customized push-pull-legs training routines and rest countdown splits.</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="overview-ctas">
-                  <a href="#modal-features" class="btn btn-primary modal-action-btn">Explore Features</a>
-                  <a href="#modal-download" class="btn btn-secondary modal-action-btn">Get the App</a>
-                </div>
-              </div>
-
-              <!-- Overview Right: Autoplay phone mockup -->
-              <div class="overview-right">
-                <div class="phone-mockup-frame float-effect">
-                  <div class="phone-status-bar">
-                    <span>9:41</span>
-                    <div class="status-bar-icons">
-                      <span>📶</span>
-                      <span>🔋</span>
-                    </div>
-                  </div>
-                  <div class="phone-screen">
-                    <div class="phone-screen-viewport" id="overview-phone-viewport">
-                      <!-- Active content loaded and auto-cycled by app.js -->
-                      <div class="mock-screen active" id="overview-screen-holder">
-                        <div class="app-screen-loading">
-                          <span class="spinner"></span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="phone-shadow"></div>
-              </div>
-            </div>
-          </section>
-
-          <!-- SECTION 2: FEATURE EXPLORER -->
-          <section id="modal-features" class="modal-section scroll-reveal">
-            <div class="section-center-header">
-              <span class="modal-badge">MODULE HUB</span>
-              <h2>Platform Feature Explorer</h2>
-              <p>Interact with our custom dashboard components to view live layout mockups and developer metrics.</p>
-            </div>
-
-            <div class="feature-explorer-container">
-              <!-- Explorer Navigation Tabs -->
-              <div class="explorer-nav-wrapper">
-                <div class="explorer-tab-indicator" id="explorer-tab-indicator"></div>
-                <div class="explorer-tabs">
-                  <button class="explorer-tab active" data-explorer-tab="0">Onboarding</button>
-                  <button class="explorer-tab" data-explorer-tab="1">AI Setup</button>
-                  <button class="explorer-tab" data-explorer-tab="2">Dashboard</button>
-                  <button class="explorer-tab" data-explorer-tab="3">AI Chat</button>
-                  <button class="explorer-tab" data-explorer-tab="4">Food Logs</button>
-                  <button class="explorer-tab" data-explorer-tab="5">Nutrition</button>
-                  <button class="explorer-tab" data-explorer-tab="6">Workouts</button>
-                  <button class="explorer-tab" data-explorer-tab="7">Live Engine</button>
-                  <button class="explorer-tab" data-explorer-tab="8">Community</button>
-                  <button class="explorer-tab" data-explorer-tab="9">Profile Hub</button>
-                </div>
-              </div>
-
-              <!-- Explorer Layout Grid -->
-              <div class="explorer-layout-grid">
-                <!-- Left: Feature description -->
-                <div class="explorer-details-panel">
-                  <div class="explorer-details-card" id="explorer-details-card">
-                    <!-- Populated dynamically by JS -->
-                  </div>
-                </div>
-
-                <!-- Right: Mockup screen -->
-                <div class="explorer-mockup-panel">
-                  <div class="phone-mockup-frame">
-                    <div class="phone-status-bar">
-                      <span>9:41</span>
-                      <div class="status-bar-icons">
-                        <span>📶</span>
-                        <span>🔋</span>
-                      </div>
-                    </div>
-                    <div class="phone-screen">
-                      <div class="phone-screen-viewport" id="explorer-phone-viewport">
-                        <!-- Loaded dynamically by JS -->
-                      </div>
-                    </div>
-                  </div>
-                  <div class="phone-shadow"></div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- SECTION 3: APP GALLERY -->
-          <section id="modal-gallery" class="modal-section scroll-reveal">
-            <div class="section-center-header">
-              <span class="modal-badge">APP GALLERY</span>
-              <h2>Visual Walkthrough</h2>
-              <p>Swipe or drag horizontally through high-fidelity application interface layouts. Click a screen to
-                inspect in the Lightbox.</p>
-            </div>
-
-            <div class="gallery-snap-container">
-              <div class="gallery-scroll-track" id="gallery-scroll-track">
-                <!-- 10 screens populated dynamically with lazy-loading by JS -->
-              </div>
-            </div>
-          </section>
-
-          <!-- SECTION 4: TECH STACK VISUALIZATION -->
-          <section id="modal-tech-stack" class="modal-section scroll-reveal">
-            <div class="section-center-header">
-              <span class="modal-badge">ARCHITECTURE</span>
-              <h2>System Flow Ecosystem</h2>
-              <p>Hover or click nodes on the interactive canvas below to inspect communication channels and local data
-                bindings.</p>
-            </div>
-
-            <div class="ecosystem-container">
-              <div class="svg-diagram-wrapper">
-                <svg viewBox="0 0 600 380" class="interactive-svg-canvas" id="modal-architecture-diagram">
-                  <!-- Connection Lines with pulsing gradients -->
-                  <defs>
-                    <linearGradient id="link-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.8" />
-                      <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.8" />
-                    </linearGradient>
-                  </defs>
-
-                  <path d="M75,190 Q200,190 200,190" class="svg-flow-path active-pulse" id="path-app-user" />
-                  <path d="M325,190 Q435,70 435,70" class="svg-flow-path" id="path-app-firebase" />
-                  <path d="M325,190 Q435,150 435,150" class="svg-flow-path" id="path-app-ai" />
-                  <path d="M325,190 Q435,230 435,230" class="svg-flow-path" id="path-app-nutrition" />
-                  <path d="M325,190 Q435,310 435,310" class="svg-flow-path" id="path-app-analytics" />
-
-                  <!-- Nodes -->
-                  <g class="diagram-node" data-node="user" id="dnode-user">
-                    <rect x="15" y="155" width="120" height="70" rx="12" />
-                    <text x="75" y="190" text-anchor="middle" class="node-title">1. User Client</text>
-                    <text x="75" y="208" text-anchor="middle" class="node-subtitle">UI Interactions</text>
-                  </g>
-
-                  <g class="diagram-node active" data-node="app" id="dnode-app">
-                    <rect x="200" y="155" width="125" height="70" rx="12" />
-                    <text x="262" y="190" text-anchor="middle" class="node-title">2. Android App</text>
-                    <text x="262" y="208" text-anchor="middle" class="node-subtitle">MVVM Core</text>
-                  </g>
-
-                  <g class="diagram-node" data-node="firebase" id="dnode-firebase">
-                    <rect x="390" y="35" width="130" height="70" rx="12" />
-                    <text x="455" y="70" text-anchor="middle" class="node-title">Firebase DB</text>
-                    <text x="455" y="88" text-anchor="middle" class="node-subtitle">Auth & Sync</text>
-                  </g>
-
-                  <g class="diagram-node" data-node="ai" id="dnode-ai">
-                    <rect x="390" y="115" width="130" height="70" rx="12" />
-                    <text x="455" y="150" text-anchor="middle" class="node-title">Groq AI Client</text>
-                    <text x="455" y="168" text-anchor="middle" class="node-subtitle">Llama 3.3 Engine</text>
-                  </g>
-
-                  <g class="diagram-node" data-node="nutrition" id="dnode-nutrition">
-                    <rect x="390" y="195" width="130" height="70" rx="12" />
-                    <text x="455" y="230" text-anchor="middle" class="node-title">Nutrition APIs</text>
-                    <text x="455" y="248" text-anchor="middle" class="node-subtitle">USDA Database</text>
-                  </g>
-
-                  <g class="diagram-node" data-node="analytics" id="dnode-analytics">
-                    <rect x="390" y="275" width="130" height="70" rx="12" />
-                    <text x="455" y="310" text-anchor="middle" class="node-title">Room SQLite</text>
-                    <text x="455" y="328" text-anchor="middle" class="node-subtitle">Offline Cache</text>
-                  </g>
-                </svg>
-              </div>
-              <div class="diagram-readout-panel" id="modal-diagram-readout">
-                <strong>Select or hover over any architecture node to inspect technical details and data
-                  pipelines.</strong>
-              </div>
-            </div>
-          </section>
-
-          <!-- SECTION 5: DEVELOPMENT TIMELINE & ROADMAP -->
-          <section id="modal-timeline" class="modal-section scroll-reveal">
-            <div class="section-center-header">
-              <span class="modal-badge">JOURNEY</span>
-              <h2>Development Timeline</h2>
-              <p>Follow the chronological step-by-step milestones engineered during the implementation lifecycle.</p>
-            </div>
-
-            <div class="timeline-journey-wrapper">
-              <div class="timeline-track-bar">
-                <div class="timeline-fill-bar" id="modal-timeline-fill"></div>
-              </div>
-              <div class="timeline-steps" id="modal-timeline-steps">
-                <div class="timeline-step" data-timeline-step="0">
-                  <div class="timeline-bullet">1</div>
-                  <div class="timeline-content">
-                    <h5>Firebase Auth & Profiles</h5>
-                    <p>Secured accounts and initialized Firestore collections for sync tasks.</p>
-                  </div>
-                </div>
-                <div class="timeline-step" data-timeline-step="1">
-                  <div class="timeline-bullet">2</div>
-                  <div class="timeline-content">
-                    <h5>Onboarding Baseline Parameters</h5>
-                    <p>Wrote algorithm computing BMR and macro deficits locally.</p>
-                  </div>
-                </div>
-                <div class="timeline-step" data-timeline-step="2">
-                  <div class="timeline-bullet">3</div>
-                  <div class="timeline-content">
-                    <h5>USDA & Custom Catalog</h5>
-                    <p>Integrated search interfaces mapping queries to nutrition APIs.</p>
-                  </div>
-                </div>
-                <div class="timeline-step" data-timeline-step="3">
-                  <div class="timeline-bullet">4</div>
-                  <div class="timeline-content">
-                    <h5>Room DB & Firebase Sync</h5>
-                    <p>Created SQLite schema tables synced with cloud Firebase Firestore databases.</p>
-                  </div>
-                </div>
-                <div class="timeline-step" data-timeline-step="4">
-                  <div class="timeline-bullet">5</div>
-                  <div class="timeline-content">
-                    <h5>Llama 3.3 Chat Prompting</h5>
-                    <p>Connected clients to Groq endpoints for context-aware responses.</p>
-                  </div>
-                </div>
-                <div class="timeline-step" data-timeline-step="5">
-                  <div class="timeline-bullet">6</div>
-                  <div class="timeline-content">
-                    <h5>Push-Pull-Legs Scheduler</h5>
-                    <p>Structured workout engines tracking sets, rest timers and muscle targets.</p>
-                  </div>
-                </div>
-                <div class="timeline-step" data-timeline-step="6">
-                  <div class="timeline-bullet">7</div>
-                  <div class="timeline-content">
-                    <h5>WorkManager Sync</h5>
-                    <p>Engineered silent sync uploads triggered when internet connection is available.</p>
-                  </div>
-                </div>
-                <div class="timeline-step" data-timeline-step="7">
-                  <div class="timeline-bullet">8</div>
-                  <div class="timeline-content">
-                    <h5>Gamified Experience Loop</h5>
-                    <p>Completed title badges and weight tracking graphs for rewarding loops.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Future Roadmap Release Phases -->
-            <div class="roadmap-grid-wrapper">
-              <h3 class="roadmap-title">Future Product Releases</h3>
-              <div class="roadmap-grid-cards">
-                <div class="roadmap-card">
-                  <span class="roadmap-phase">Phase 01</span>
-                  <h5>Barcode Logging</h5>
-                  <p>Incorporates camera barcode scanner matching local Indian products instantly.</p>
-                </div>
-                <div class="roadmap-card">
-                  <span class="roadmap-phase">Phase 02</span>
-                  <h5>Food Recognition</h5>
-                  <p>Client-side CNN neural network identifying meal components from camera photos.</p>
-                </div>
-                <div class="roadmap-card">
-                  <span class="roadmap-phase">Phase 03</span>
-                  <h5>Smartwatch Integrations</h5>
-                  <p>WearOS companion interfaces logging workout heart rates dynamically.</p>
-                </div>
-                <div class="roadmap-card">
-                  <span class="roadmap-phase">Phase 04</span>
-                  <h5>Sleep Quality Analytics</h5>
-                  <p>Analyzing sleep duration profiles to calculate muscle recovery levels.</p>
-                </div>
-                <div class="roadmap-card">
-                  <span class="roadmap-phase">Phase 05</span>
-                  <h5>Deficit Predictions</h5>
-                  <p>Linear predictions projecting target weight timelines from daily deficit rates.</p>
-                </div>
-                <div class="roadmap-card">
-                  <span class="roadmap-phase">Phase 06</span>
-                  <h5>Voice assistant</h5>
-                  <p>Natural language voice queries executing logging and setup commands offline.</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- SECTION 6: APK DOWNLOAD CENTER -->
-          <section id="modal-download" class="modal-section scroll-reveal">
-            <div class="section-center-header">
-              <span class="modal-badge">GET THE APP</span>
-              <h2>APK Download Center</h2>
-              <p>Install the SIUFIT binary packages directly to test out the client app experience.</p>
-            </div>
-
-            <div class="download-dashboard">
-              <div class="download-left-card">
-                <div class="app-pack-brand">
-                  <div class="siufit-brand-logo large">
-                    <img src="siufit-logo.jpg" alt="SIUFIT Logo" class="logo-img" loading="lazy" width="64" height="64">
-                  </div>
-                  <div>
-                    <h4>SIUFIT</h4>
-                    <p>Android Package Binary File</p>
-                  </div>
-                </div>
-
-                <!-- Package Details -->
-                <div class="package-info-rows">
-                  <div class="info-row">
-                    <span>Stable Version</span>
-                    <strong>v1.0</strong>
-                  </div>
-                  <div class="info-row">
-                    <span>File Size</span>
-                    <strong>109 MB</strong>
-                  </div>
-                  <div class="info-row">
-                    <span>MD5 Checksum</span>
-                    <strong class="code-font">5f4dcc3b5aa765d61d8327deb882cf99</strong>
-                  </div>
-                  <div class="info-row">
-                    <span>Minimum OS</span>
-                    <strong>Android 8.0 (API 26+)</strong>
-                  </div>
-                  <div class="info-row">
-                    <span>Build Status</span>
-                    <strong class="status-passed">Passed ✓</strong>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Interactive Download Control -->
-              <div class="download-right-card">
-                <div class="download-interaction-wrapper">
-                  <div class="download-status-content" id="download-status-box">
-                    <div class="download-idle-state">
-                      <span class="dl-icon">📥</span>
-                      <h5>SIUFIT Stable Release v1.0</h5>
-                      <p>Click the button below to initiate the secure download connection.</p>
-                    </div>
-                    <div class="download-active-state" style="display:none;">
-                      <h5 id="dl-progress-title">Connecting to secure package host...</h5>
-                      <div class="dl-progress-bar-wrapper">
-                        <div class="dl-progress-bar" id="dl-progress-bar"></div>
-                      </div>
-                      <div class="dl-progress-metadata">
-                        <span id="dl-pct">0%</span>
-                        <span id="dl-speed">-- KB/s</span>
-                      </div>
-                    </div>
-                  </div>
-                  <button class="btn btn-primary magnetic-btn" id="modal-download-trigger">
-                    Initiate Package Download
-                  </button>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Showcase Modal Footer -->
-          <footer class="modal-footer">
-            <p>CREATED WITH ❤️ BY MR. MOHD UMAR HASHMI</p>
-            <p class="copyright">&copy; 2026 SIUFIT Inc. All Rights Reserved.</p>
-          </footer>
-        </div>
-      </div>
-
-      <!-- PREMIUM LIGHTBOX MODAL OVERLAY -->
-      <div class="lightbox-overlay-modal" id="siufit-lightbox-modal">
-        <span class="lightbox-close-btn" id="lightbox-close-btn">&times;</span>
-        <div class="lightbox-content-box">
-          <div class="lightbox-screenshot-preview" id="lightbox-preview-container">
-            <!-- Populated dynamically by JS -->
-          </div>
-          <div class="lightbox-caption-details" id="lightbox-caption-container">
-            <!-- Populated dynamically by JS -->
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -4860,6 +4409,460 @@
           </div>
         </div>
         <div id="chart-tooltip" class="chart-tooltip">0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SIUFIT Product Launch Fullscreen Showcase Modal -->
+  <div id="siufit-product-modal" class="siufit-product-modal" role="dialog" aria-modal="true">
+    <!-- Scroll Progress Tracker -->
+    <div class="modal-scroll-progress" id="modal-scroll-progress"></div>
+
+    <!-- Sticky Navigation Header -->
+    <header class="modal-header">
+      <div class="modal-nav-container">
+        <a href="#" class="modal-logo-brand"
+          onclick="event.preventDefault(); document.getElementById('siufit-product-modal').scrollTo({top: 0, behavior: 'smooth'});">
+          <div class="siufit-brand-logo small">
+            <img src="siufit-logo.jpg" alt="SIUFIT Logo" class="logo-img" loading="lazy" width="24" height="24">
+          </div>
+          <span>SIUFIT</span>
+        </a>
+
+        <!-- Tabs -->
+        <nav class="modal-nav-links" id="modal-nav-links">
+          <a href="#modal-overview" class="modal-nav-link active">Overview</a>
+          <a href="#modal-features" class="modal-nav-link">Features</a>
+          <a href="#modal-gallery" class="modal-nav-link">Gallery</a>
+          <a href="#modal-tech-stack" class="modal-nav-link">Tech Stack</a>
+          <a href="#modal-timeline" class="modal-nav-link">Journey</a>
+          <a href="#modal-download" class="modal-nav-link">Download</a>
+        </nav>
+
+        <!-- Close Trigger -->
+        <button class="modal-close-btn" id="siufit-modal-close" aria-label="Close Showcase">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+            stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <div class="modal-wrapper">
+
+      <!-- SECTION 1: OVERVIEW -->
+      <section id="modal-overview" class="modal-section scroll-reveal">
+        <div class="modal-grid-two-col">
+          <div class="overview-left">
+            <span class="modal-badge">PRODUCT SHIELD</span>
+            <h1 class="modal-heading">Reimagining Indian Mobile Health</h1>
+            <p class="modal-lead">
+              SIUFIT bridges the gap between fragmented health tracking tools. It unites AI Coaching guidance,
+              real-time macronutrient calculations, offline-first SQLite synchronization, and calorie scanning
+              routines into a single context-aware Android client.
+            </p>
+            <div class="overview-pillars">
+              <div class="pillar-item">
+                <span class="pillar-icon">🤖</span>
+                <div class="pillar-details">
+                  <h5>Generative AI Coach</h5>
+                  <p>Integrates Groq Llama 3.3 gateway delivering conversational guidance in under 200ms.</p>
+                </div>
+              </div>
+              <div class="pillar-item">
+                <span class="pillar-icon">🥗</span>
+                <div class="pillar-details">
+                  <h5>Calorie & USDA Maps</h5>
+                  <p>Maps nutrition parameters to USDA databases and regional fallbacks for local dishes.</p>
+                </div>
+              </div>
+              <div class="pillar-item">
+                <span class="pillar-icon">🏋️</span>
+                <div class="pillar-details">
+                  <h5>PPL Workout Engine</h5>
+                  <p>Schedules customized push-pull-legs training routines and rest countdown splits.</p>
+                </div>
+              </div>
+            </div>
+            <div class="overview-ctas">
+              <a href="#modal-features" class="btn btn-primary modal-action-btn">Explore Features</a>
+              <a href="#modal-download" class="btn btn-secondary modal-action-btn">Get the App</a>
+            </div>
+          </div>
+
+          <!-- Overview Right: Autoplay phone mockup -->
+          <div class="overview-right">
+            <div class="phone-mockup-frame float-effect">
+              <div class="phone-status-bar">
+                <span>9:41</span>
+                <div class="status-bar-icons">
+                  <span>📶</span>
+                  <span>🔋</span>
+                </div>
+              </div>
+              <div class="phone-screen">
+                <div class="phone-screen-viewport" id="overview-phone-viewport">
+                  <!-- Active content loaded and auto-cycled by app.js -->
+                  <div class="mock-screen active" id="overview-screen-holder">
+                    <div class="app-screen-loading">
+                      <span class="spinner"></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="phone-shadow"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 2: FEATURE EXPLORER -->
+      <section id="modal-features" class="modal-section scroll-reveal">
+        <div class="section-center-header">
+          <span class="modal-badge">MODULE HUB</span>
+          <h2>Platform Feature Explorer</h2>
+          <p>Interact with our custom dashboard components to view live layout mockups and developer metrics.</p>
+        </div>
+
+        <div class="feature-explorer-container">
+          <!-- Explorer Navigation Tabs -->
+          <div class="explorer-nav-wrapper">
+            <div class="explorer-tab-indicator" id="explorer-tab-indicator"></div>
+            <div class="explorer-tabs">
+              <button class="explorer-tab active" data-explorer-tab="0">Onboarding</button>
+              <button class="explorer-tab" data-explorer-tab="1">AI Setup</button>
+              <button class="explorer-tab" data-explorer-tab="2">Dashboard</button>
+              <button class="explorer-tab" data-explorer-tab="3">AI Chat</button>
+              <button class="explorer-tab" data-explorer-tab="4">Food Logs</button>
+              <button class="explorer-tab" data-explorer-tab="5">Nutrition</button>
+              <button class="explorer-tab" data-explorer-tab="6">Workouts</button>
+              <button class="explorer-tab" data-explorer-tab="7">Live Engine</button>
+              <button class="explorer-tab" data-explorer-tab="8">Community</button>
+              <button class="explorer-tab" data-explorer-tab="9">Profile Hub</button>
+            </div>
+          </div>
+
+          <!-- Explorer Layout Grid -->
+          <div class="explorer-layout-grid">
+            <!-- Left: Feature description -->
+            <div class="explorer-details-panel">
+              <div class="explorer-details-card" id="explorer-details-card">
+                <!-- Populated dynamically by JS -->
+              </div>
+            </div>
+
+            <!-- Right: Mockup screen -->
+            <div class="explorer-mockup-panel">
+              <div class="phone-mockup-frame">
+                <div class="phone-status-bar">
+                  <span>9:41</span>
+                  <div class="status-bar-icons">
+                    <span>📶</span>
+                    <span>🔋</span>
+                  </div>
+                </div>
+                <div class="phone-screen">
+                  <div class="phone-screen-viewport" id="explorer-phone-viewport">
+                    <!-- Loaded dynamically by JS -->
+                  </div>
+                </div>
+              </div>
+              <div class="phone-shadow"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 3: APP GALLERY -->
+      <section id="modal-gallery" class="modal-section scroll-reveal">
+        <div class="section-center-header">
+          <span class="modal-badge">APP GALLERY</span>
+          <h2>Visual Walkthrough</h2>
+          <p>Swipe or drag horizontally through high-fidelity application interface layouts. Click a screen to
+            inspect in the Lightbox.</p>
+        </div>
+
+        <div class="gallery-snap-container">
+          <div class="gallery-scroll-track" id="gallery-scroll-track">
+            <!-- 10 screens populated dynamically with lazy-loading by JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 4: TECH STACK VISUALIZATION -->
+      <section id="modal-tech-stack" class="modal-section scroll-reveal">
+        <div class="section-center-header">
+          <span class="modal-badge">ARCHITECTURE</span>
+          <h2>System Flow Ecosystem</h2>
+          <p>Hover or click nodes on the interactive canvas below to inspect communication channels and local data
+            bindings.</p>
+        </div>
+
+        <div class="ecosystem-container">
+          <div class="svg-diagram-wrapper">
+            <svg viewBox="0 0 600 380" class="interactive-svg-canvas" id="modal-architecture-diagram">
+              <!-- Connection Lines with pulsing gradients -->
+              <defs>
+                <linearGradient id="link-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.8" />
+                  <stop offset="100%" stop-color="#8b5cf6" stop-opacity="0.8" />
+                </linearGradient>
+              </defs>
+
+              <path d="M75,190 Q200,190 200,190" class="svg-flow-path active-pulse" id="path-app-user" />
+              <path d="M325,190 Q435,70 435,70" class="svg-flow-path" id="path-app-firebase" />
+              <path d="M325,190 Q435,150 435,150" class="svg-flow-path" id="path-app-ai" />
+              <path d="M325,190 Q435,230 435,230" class="svg-flow-path" id="path-app-nutrition" />
+              <path d="M325,190 Q435,310 435,310" class="svg-flow-path" id="path-app-analytics" />
+
+              <!-- Nodes -->
+              <g class="diagram-node" data-node="user" id="dnode-user">
+                <rect x="15" y="155" width="120" height="70" rx="12" />
+                <text x="75" y="190" text-anchor="middle" class="node-title">1. User Client</text>
+                <text x="75" y="208" text-anchor="middle" class="node-subtitle">UI Interactions</text>
+              </g>
+
+              <g class="diagram-node active" data-node="app" id="dnode-app">
+                <rect x="200" y="155" width="125" height="70" rx="12" />
+                <text x="262" y="190" text-anchor="middle" class="node-title">2. Android App</text>
+                <text x="262" y="208" text-anchor="middle" class="node-subtitle">MVVM Core</text>
+              </g>
+
+              <g class="diagram-node" data-node="firebase" id="dnode-firebase">
+                <rect x="390" y="35" width="130" height="70" rx="12" />
+                <text x="455" y="70" text-anchor="middle" class="node-title">Firebase DB</text>
+                <text x="455" y="88" text-anchor="middle" class="node-subtitle">Auth & Sync</text>
+              </g>
+
+              <g class="diagram-node" data-node="ai" id="dnode-ai">
+                <rect x="390" y="115" width="130" height="70" rx="12" />
+                <text x="455" y="150" text-anchor="middle" class="node-title">Groq AI Client</text>
+                <text x="455" y="168" text-anchor="middle" class="node-subtitle">Llama 3.3 Engine</text>
+              </g>
+
+              <g class="diagram-node" data-node="nutrition" id="dnode-nutrition">
+                <rect x="390" y="195" width="130" height="70" rx="12" />
+                <text x="455" y="230" text-anchor="middle" class="node-title">Nutrition APIs</text>
+                <text x="455" y="248" text-anchor="middle" class="node-subtitle">USDA Database</text>
+              </g>
+
+              <g class="diagram-node" data-node="analytics" id="dnode-analytics">
+                <rect x="390" y="275" width="130" height="70" rx="12" />
+                <text x="455" y="310" text-anchor="middle" class="node-title">Room SQLite</text>
+                <text x="455" y="328" text-anchor="middle" class="node-subtitle">Offline Cache</text>
+              </g>
+            </svg>
+          </div>
+          <div class="diagram-readout-panel" id="modal-diagram-readout">
+            <strong>Select or hover over any architecture node to inspect technical details and data
+              pipelines.</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 5: DEVELOPMENT TIMELINE & ROADMAP -->
+      <section id="modal-timeline" class="modal-section scroll-reveal">
+        <div class="section-center-header">
+          <span class="modal-badge">JOURNEY</span>
+          <h2>Development Timeline</h2>
+          <p>Follow the chronological step-by-step milestones engineered during the implementation lifecycle.</p>
+        </div>
+
+        <div class="timeline-journey-wrapper">
+          <div class="timeline-track-bar">
+            <div class="timeline-fill-bar" id="modal-timeline-fill"></div>
+          </div>
+          <div class="timeline-steps" id="modal-timeline-steps">
+            <div class="timeline-step" data-timeline-step="0">
+              <div class="timeline-bullet">1</div>
+              <div class="timeline-content">
+                <h5>Firebase Auth & Profiles</h5>
+                <p>Secured accounts and initialized Firestore collections for sync tasks.</p>
+              </div>
+            </div>
+            <div class="timeline-step" data-timeline-step="1">
+              <div class="timeline-bullet">2</div>
+              <div class="timeline-content">
+                <h5>Onboarding Baseline Parameters</h5>
+                <p>Wrote algorithm computing BMR and macro deficits locally.</p>
+              </div>
+            </div>
+            <div class="timeline-step" data-timeline-step="2">
+              <div class="timeline-bullet">3</div>
+              <div class="timeline-content">
+                <h5>USDA & Custom Catalog</h5>
+                <p>Integrated search interfaces mapping queries to nutrition APIs.</p>
+              </div>
+            </div>
+            <div class="timeline-step" data-timeline-step="3">
+              <div class="timeline-bullet">4</div>
+              <div class="timeline-content">
+                <h5>Room DB & Firebase Sync</h5>
+                <p>Created SQLite schema tables synced with cloud Firebase Firestore databases.</p>
+              </div>
+            </div>
+            <div class="timeline-step" data-timeline-step="4">
+              <div class="timeline-bullet">5</div>
+              <div class="timeline-content">
+                <h5>Llama 3.3 Chat Prompting</h5>
+                <p>Connected clients to Groq endpoints for context-aware responses.</p>
+              </div>
+            </div>
+            <div class="timeline-step" data-timeline-step="5">
+              <div class="timeline-bullet">6</div>
+              <div class="timeline-content">
+                <h5>Push-Pull-Legs Scheduler</h5>
+                <p>Structured workout engines tracking sets, rest timers and muscle targets.</p>
+              </div>
+            </div>
+            <div class="timeline-step" data-timeline-step="6">
+              <div class="timeline-bullet">7</div>
+              <div class="timeline-content">
+                <h5>WorkManager Sync</h5>
+                <p>Engineered silent sync uploads triggered when internet connection is available.</p>
+              </div>
+            </div>
+            <div class="timeline-step" data-timeline-step="7">
+              <div class="timeline-bullet">8</div>
+              <div class="timeline-content">
+                <h5>Gamified Experience Loop</h5>
+                <p>Completed title badges and weight tracking graphs for rewarding loops.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Future Roadmap Release Phases -->
+        <div class="roadmap-grid-wrapper">
+          <h3 class="roadmap-title">Future Product Releases</h3>
+          <div class="roadmap-grid-cards">
+            <div class="roadmap-card">
+              <span class="roadmap-phase">Phase 01</span>
+              <h5>Barcode Logging</h5>
+              <p>Incorporates camera barcode scanner matching local Indian products instantly.</p>
+            </div>
+            <div class="roadmap-card">
+              <span class="roadmap-phase">Phase 02</span>
+              <h5>Food Recognition</h5>
+              <p>Client-side CNN neural network identifying meal components from camera photos.</p>
+            </div>
+            <div class="roadmap-card">
+              <span class="roadmap-phase">Phase 03</span>
+              <h5>Smartwatch Integrations</h5>
+              <p>WearOS companion interfaces logging workout heart rates dynamically.</p>
+            </div>
+            <div class="roadmap-card">
+              <span class="roadmap-phase">Phase 04</span>
+              <h5>Sleep Quality Analytics</h5>
+              <p>Analyzing sleep duration profiles to calculate muscle recovery levels.</p>
+            </div>
+            <div class="roadmap-card">
+              <span class="roadmap-phase">Phase 05</span>
+              <h5>Deficit Predictions</h5>
+              <p>Linear predictions projecting target weight timelines from daily deficit rates.</p>
+            </div>
+            <div class="roadmap-card">
+              <span class="roadmap-phase">Phase 06</span>
+              <h5>Voice assistant</h5>
+              <p>Natural language voice queries executing logging and setup commands offline.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECTION 6: APK DOWNLOAD CENTER -->
+      <section id="modal-download" class="modal-section scroll-reveal">
+        <div class="section-center-header">
+          <span class="modal-badge">GET THE APP</span>
+          <h2>APK Download Center</h2>
+          <p>Install the SIUFIT binary packages directly to test out the client app experience.</p>
+        </div>
+
+        <div class="download-dashboard">
+          <div class="download-left-card">
+            <div class="app-pack-brand">
+              <div class="siufit-brand-logo large">
+                <img src="siufit-logo.jpg" alt="SIUFIT Logo" class="logo-img" loading="lazy" width="64" height="64">
+              </div>
+              <div>
+                <h4>SIUFIT</h4>
+                <p>Android Package Binary File</p>
+              </div>
+            </div>
+
+            <!-- Package Details -->
+            <div class="package-info-rows">
+              <div class="info-row">
+                <span>Stable Version</span>
+                <strong>v1.0</strong>
+              </div>
+              <div class="info-row">
+                <span>File Size</span>
+                <strong>109 MB</strong>
+              </div>
+              <div class="info-row">
+                <span>MD5 Checksum</span>
+                <strong class="code-font">5f4dcc3b5aa765d61d8327deb882cf99</strong>
+              </div>
+              <div class="info-row">
+                <span>Minimum OS</span>
+                <strong>Android 8.0 (API 26+)</strong>
+              </div>
+              <div class="info-row">
+                <span>Build Status</span>
+                <strong class="status-passed">Passed ✓</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Download Control -->
+          <div class="download-right-card">
+            <div class="download-interaction-wrapper">
+              <div class="download-status-content" id="download-status-box">
+                <div class="download-idle-state">
+                  <span class="dl-icon">📥</span>
+                  <h5>SIUFIT Stable Release v1.0</h5>
+                  <p>Click the button below to initiate the secure download connection.</p>
+                </div>
+                <div class="download-active-state" style="display:none;">
+                  <h5 id="dl-progress-title">Connecting to secure package host...</h5>
+                  <div class="dl-progress-bar-wrapper">
+                    <div class="dl-progress-bar" id="dl-progress-bar"></div>
+                  </div>
+                  <div class="dl-progress-metadata">
+                    <span id="dl-pct">0%</span>
+                    <span id="dl-speed">-- KB/s</span>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-primary magnetic-btn" id="modal-download-trigger">
+                Initiate Package Download
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Showcase Modal Footer -->
+      <footer class="modal-footer">
+        <p>CREATED WITH ❤️ BY MR. MOHD UMAR HASHMI</p>
+        <p class="copyright">&copy; 2026 SIUFIT Inc. All Rights Reserved.</p>
+      </footer>
+    </div>
+  </div>
+
+  <!-- PREMIUM LIGHTBOX MODAL OVERLAY -->
+  <div class="lightbox-overlay-modal" id="siufit-lightbox-modal">
+    <span class="lightbox-close-btn" id="lightbox-close-btn">&times;</span>
+    <div class="lightbox-content-box">
+      <div class="lightbox-screenshot-preview" id="lightbox-preview-container">
+        <!-- Populated dynamically by JS -->
+      </div>
+      <div class="lightbox-caption-details" id="lightbox-caption-container">
+        <!-- Populated dynamically by JS -->
       </div>
     </div>
   </div>
