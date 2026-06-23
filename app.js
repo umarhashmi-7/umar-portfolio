@@ -86,6 +86,49 @@ function debounce(fn, delay) {
   };
 }
 
+// Non-blocking custom toast notification helper
+function showToast(message) {
+  let toast = document.getElementById('umar-custom-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'umar-custom-toast';
+    toast.style.position = 'fixed';
+    toast.style.bottom = '2rem';
+    toast.style.right = '2rem';
+    toast.style.backgroundColor = 'var(--accent-color)';
+    toast.style.color = '#ffffff';
+    toast.style.padding = '0.75rem 1.5rem';
+    toast.style.borderRadius = 'var(--radius-md)';
+    toast.style.boxShadow = 'var(--shadow-lg)';
+    toast.style.zIndex = '10000';
+    toast.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(1rem)';
+    toast.style.fontFamily = 'var(--font-sans)';
+    toast.style.fontSize = '0.9rem';
+    toast.style.fontWeight = '600';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.style.display = 'block';
+  // Force reflow
+  void toast.offsetWidth;
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateY(0)';
+  
+  if (toast.timeoutId) clearTimeout(toast.timeoutId);
+  
+  toast.timeoutId = setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(1rem)';
+    setTimeout(() => {
+      if (toast.style.opacity === '0') {
+        toast.style.display = 'none';
+      }
+    }, 300);
+  }, 3000);
+}
+
 /* ==========================================================================
    1. PWA Service Worker Registration
    ========================================================================== */
@@ -953,7 +996,9 @@ const ARCH_DETAILS = {
     
     // Close on Escape press
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isModalActive) {
+      const lightbox = document.getElementById('siufit-lightbox-modal');
+      const isLightboxActive = lightbox && lightbox.classList.contains('active');
+      if (e.key === 'Escape' && isModalActive && !isLightboxActive) {
         closeModal();
       }
     });
@@ -1662,7 +1707,7 @@ function initSocialActions() {
   if (copyBtn) {
     copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText('hashmiumar11161@gmail.com')
-        .then(() => alert('Email copied to clipboard! (hashmiumar11161@gmail.com)'))
+        .then(() => showToast('Email copied to clipboard! (hashmiumar11161@gmail.com)'))
         .catch(err => console.error('Failed to copy email address: ', err));
     });
   }
@@ -1679,7 +1724,7 @@ function initSocialActions() {
           .catch(err => console.error('Error sharing portfolio link: ', err));
       } else {
         navigator.clipboard.writeText(window.location.href)
-          .then(() => alert('Portfolio link copied to clipboard!'))
+          .then(() => showToast('Portfolio link copied to clipboard!'))
           .catch(err => console.error('Failed to copy website URL: ', err));
       }
     });
@@ -1689,7 +1734,13 @@ function initSocialActions() {
   const printActionBtn = document.getElementById('resume-print-action');
   if (printActionBtn) {
     printActionBtn.addEventListener('click', () => {
-      window.print();
+      const dlBtn = document.getElementById('resume-download-action');
+      if (dlBtn) {
+        dlBtn.click();
+        showToast('Downloading print-ready ATS resume PDF...');
+      } else {
+        window.open('resume.pdf', '_blank');
+      }
     });
   }
 
@@ -1707,7 +1758,7 @@ function initSocialActions() {
           .catch(err => console.error('Error sharing resume: ', err));
       } else {
         navigator.clipboard.writeText(window.location.href + '#resume')
-          .then(() => alert('Resume URL copied to clipboard!'))
+          .then(() => showToast('Resume URL copied to clipboard!'))
           .catch(err => console.error('Failed to copy resume link: ', err));
       }
     });
@@ -3379,7 +3430,7 @@ function initCommandPalette() {
         const btn = document.getElementById('analytics-btn');
         if (btn) btn.click();
       } else if (item.action === 'openAIBot') {
-        const botTrigger = document.querySelector('.floating-ai-bot-trigger') || document.getElementById('ai-bot-trigger');
+        const botTrigger = document.getElementById('ai-chat-trigger');
         if (botTrigger) botTrigger.click();
       }
     }
