@@ -4,46 +4,49 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  initPWA();
-  initTheme();
-  initNavigation();
-  initScrollAnimations();
-  initMetricsCounters();
-  initVisitorAnalytics();
-  initAIResumeBot();
-  initSiufitShowcase();
-  initSiufitArchitecture();
-  initSiufitJourney();
-  initSiufitLightbox();
-  initTestimonialSlider();
-  initFAQAccordion();
-  initProjectToggles();
-  initProjectConsoles();
-  initBrandMatrix();
-  initTechEcosystemCanvas();
-  initContactForm();
-  initSocialActions();
-  initResumeSlider();
-  initResumeCustomizer();
-  initHeroCanvas();
-  initCardTilt3D();
-  initSkillTraceability();
-  initChatbotShortcuts();
-  initHeroRoles();
-  initBlogModal();
-  initCertificationsShowcase();
-  initSiufitShowcasePlayground();
-  initProjectCaseStudyTabs();
-  initProjectsExplorer();
-  initExperienceTimeline();
-  initSpotlightCarousel();
-  initOverflowDiagnostic();
-  initSuperSections();
-  initSkillRadarChart();
-  initCommandPalette();
-  initCertificationsModal();
-  initLeadershipAccordion();
-  initPremiumAnimations();
+  const safeInit = (fn) => { try { fn(); } catch (e) { console.warn('[Init]', fn.name || 'anonymous', 'failed:', e); } };
+  safeInit(initPWA);
+  safeInit(initTheme);
+  safeInit(initNavigation);
+  safeInit(initScrollAnimations);
+  safeInit(initMetricsCounters);
+  safeInit(initVisitorAnalytics);
+  safeInit(initAIResumeBot);
+  safeInit(initSiufitShowcase);
+  safeInit(initHomepageShowcase);
+  safeInit(initUmarAlgoModal);
+  safeInit(initSiufitArchitecture);
+  safeInit(initSiufitJourney);
+  safeInit(initSiufitLightbox);
+  safeInit(initTestimonialSlider);
+  safeInit(initFAQAccordion);
+  safeInit(initProjectToggles);
+  safeInit(initProjectConsoles);
+  safeInit(initBrandMatrix);
+  safeInit(initTechEcosystemCanvas);
+  safeInit(initContactForm);
+  safeInit(initSocialActions);
+  safeInit(initResumeSlider);
+  safeInit(initResumeCustomizer);
+  safeInit(initHeroCanvas);
+  safeInit(initCardTilt3D);
+  safeInit(initSkillTraceability);
+  safeInit(initChatbotShortcuts);
+  safeInit(initHeroRoles);
+  safeInit(initBlogModal);
+  safeInit(initCertificationsShowcase);
+  safeInit(initSiufitShowcasePlayground);
+  safeInit(initProjectCaseStudyTabs);
+  safeInit(initProjectsExplorer);
+  safeInit(initExperienceTimeline);
+  safeInit(initSpotlightCarousel);
+  safeInit(initOverflowDiagnostic);
+  safeInit(initSuperSections);
+  safeInit(initSkillRadarChart);
+  safeInit(initCommandPalette);
+  safeInit(initCertificationsModal);
+  safeInit(initLeadershipAccordion);
+  safeInit(initPremiumAnimations);
 });
 
 // Helper to calculate correct assets path relative to base directory (to avoid 404s on GitHub Pages subdirectories)
@@ -57,7 +60,7 @@ function getCorrectAssetPath(url) {
   if (pathSegments[1] && pathSegments[1] !== 'index.html' && pathSegments[1] !== 'src') {
     return `/${pathSegments[1]}/${url}`;
   }
-  return url;
+  return '/' + url;
 }
 
 // Throttle function using requestAnimationFrame for scroll handlers
@@ -266,7 +269,7 @@ function initVisitorAnalytics() {
 
   // Expose score update globally
   window.updateEngagementScore = function() {
-    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
+    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"accessRequests":0,"contactClicks":0}');
     
     // Time score: 1 point per 5 seconds on site, up to 30 points
     const timeScore = Math.min(Math.floor(siteTimeSpent / 5), 30);
@@ -275,7 +278,7 @@ function initVisitorAnalytics() {
     const resumeScore = Math.min((counts.resumeDownloads || 0) * 20, 20);
     
     // APK downloads: 20 points per download, max 20 points
-    const apkScore = Math.min((counts.apkDownloads || 0) * 20, 20);
+    const apkScore = Math.min((counts.accessRequests || 0) * 20, 20);
     
     // Contact clicks: 10 points per click, max 20 points
     const contactScore = Math.min((counts.contactClicks || 0) * 10, 20);
@@ -305,7 +308,7 @@ function initVisitorAnalytics() {
 
   // Expose action recorder globally
   window.recordEngagementAction = function() {
-    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
+    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"accessRequests":0,"contactClicks":0}');
     counts.actions = (counts.actions || 0) + 1;
     localStorage.setItem('umar-portfolio-metrics', JSON.stringify(counts));
     window.updateEngagementScore();
@@ -347,9 +350,7 @@ function initVisitorAnalytics() {
   safeBindClick('fab-resume-btn', 'resumeDownloads');
   safeBindClick('recruiter-modal-download', 'resumeDownloads');
 
-  safeBindClick('apk-download-btn', 'apkDownloads');
-  safeBindClick('siufit-apk-btn', 'apkDownloads');
-  safeBindClick('hero-view-siufit-btn', 'apkDownloads');
+  // APK access request tracking is handled in initSiufitDownloadCenter
 
   safeBindClick('fab-whatsapp-btn', 'contactClicks');
   safeBindClick('fab-email-btn', 'contactClicks');
@@ -376,7 +377,7 @@ function initVisitorAnalytics() {
     interactiveBars.forEach(barWrapper => {
       barWrapper.addEventListener('mouseenter', () => {
         const barType = barWrapper.getAttribute('data-bar');
-        const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
+        const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"accessRequests":0,"contactClicks":0}');
         
         let val = 0;
         if (barType === 'time') {
@@ -388,7 +389,7 @@ function initVisitorAnalytics() {
         } else if (barType === 'resume') {
           val = (counts.resumeDownloads || 0) + ' Downloads';
         } else if (barType === 'apk') {
-          val = (counts.apkDownloads || 0) + ' Downloads';
+          val = (counts.accessRequests || 0) + ' Requests';
         } else if (barType === 'contact') {
           val = (counts.contactClicks || 0) + ' Clicks';
         }
@@ -413,7 +414,7 @@ function initVisitorAnalytics() {
   }
 
   window.recordMetric = function(key) {
-    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
+    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"accessRequests":0,"contactClicks":0}');
     counts[key] = (counts[key] || 0) + 1;
     localStorage.setItem('umar-portfolio-metrics', JSON.stringify(counts));
     window.updateEngagementScore();
@@ -421,7 +422,7 @@ function initVisitorAnalytics() {
   const recordMetric = window.recordMetric;
 
   function updateAnalyticsDisplay() {
-    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
+    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"accessRequests":0,"contactClicks":0}');
 
     // Time conversion
     let timeStr = siteTimeSpent + 's';
@@ -431,13 +432,13 @@ function initVisitorAnalytics() {
 
     if (durationMetric) durationMetric.innerText = timeStr;
     if (resumeMetric) resumeMetric.innerText = counts.resumeDownloads || 0;
-    if (apkMetric) apkMetric.innerText = counts.apkDownloads || 0;
+    if (apkMetric) apkMetric.innerText = counts.accessRequests || 0;
     if (contactMetric) contactMetric.innerText = counts.contactClicks || 0;
 
     // Chart update heights (percentage maps)
     const maxTimeHeight = Math.min(siteTimeSpent * 1.5, 90) + 10;
     const resumeHeight = Math.min((counts.resumeDownloads || 0) * 25, 100);
-    const apkHeight = Math.min((counts.apkDownloads || 0) * 25, 100);
+    const apkHeight = Math.min((counts.accessRequests || 0) * 25, 100);
     const contactHeight = Math.min((counts.contactClicks || 0) * 25, 100);
 
     if (barTime) barTime.style.height = maxTimeHeight + 'px';
@@ -494,7 +495,7 @@ const AI_TOPICS = [
           <div class='ai-node-desc'><strong>Emerging Tech Architect:</strong> Advising on modular Android & AI pipelines.</div>
         </div>
         <div class='ai-time-node'>
-          <div class='ai-node-year'>2023-2024</div>
+          <div class='ai-2023-2024'>2023-2024</div>
           <div class='ai-node-desc'><strong>Freelance Developer:</strong> Built custom inventory & SQLite apps.</div>
         </div>
         <div class='ai-time-node'>
@@ -735,7 +736,7 @@ function initAIResumeBot() {
     const cleanQuery = query.toLowerCase().trim();
 
     // Store bot metrics
-    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
+    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"accessRequests":0,"contactClicks":0}');
     counts.aiQueries = (counts.aiQueries || 0) + 1;
     localStorage.setItem('umar-portfolio-metrics', JSON.stringify(counts));
 
@@ -917,6 +918,16 @@ const ARCH_DETAILS = {
     openBtn.addEventListener('click', () => {
       isModalActive = true;
       modal.classList.add('active');
+      // Reset nav to Overview
+      modal.querySelectorAll('.modal-nav-link').forEach(l => l.classList.remove('active'));
+      const overviewLink = modal.querySelector('.modal-nav-link[href="#modal-overview"]');
+      if (overviewLink) overviewLink.classList.add('active');
+      const chip = document.getElementById('siufit-section-chip');
+      if (chip) chip.textContent = 'Overview';
+      // Scroll to top after modal is painted (prevents browser scroll restoration)
+      requestAnimationFrame(() => { modal.scrollTop = 0; });
+      const sbWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.paddingRight = `${sbWidth}px`;
       document.body.style.overflow = 'hidden'; // Lock homepage scroll
       
       // Initialise dynamic lazy loads
@@ -926,6 +937,7 @@ const ARCH_DETAILS = {
       initTimelineProgress();
       initMagneticButtons();
       initSiufitDownloadCenter();
+      setTimeout(() => initModalRevealAnimations(modal), 100);
     });
 
     // Close modal
@@ -933,6 +945,7 @@ const ARCH_DETAILS = {
       isModalActive = false;
       modal.classList.remove('active');
       document.body.style.overflow = ''; // Release scroll
+      document.body.style.paddingRight = '';
       stopOverviewAutoplay();
     };
 
@@ -945,20 +958,24 @@ const ARCH_DETAILS = {
       }
     });
 
-    // Scroll progress bar indicator
+    // Scroll progress bar indicator (throttled via rAF)
+    let modalScrollTicking = false;
     modal.addEventListener('scroll', () => {
-      const scrollTop = modal.scrollTop;
-      const docHeight = modal.scrollHeight - modal.clientHeight;
-      const scrollPct = (scrollTop / docHeight) * 100;
-      const progressIndicator = document.getElementById('modal-scroll-progress');
-      if (progressIndicator) {
-        progressIndicator.style.width = `${scrollPct}%`;
+      if (!modalScrollTicking) {
+        modalScrollTicking = true;
+        requestAnimationFrame(() => {
+          const scrollTop = modal.scrollTop;
+          const docHeight = modal.scrollHeight - modal.clientHeight;
+          const scrollPct = (scrollTop / docHeight) * 100;
+          const progressIndicator = document.getElementById('modal-scroll-progress');
+          if (progressIndicator) {
+            progressIndicator.style.width = `${scrollPct}%`;
+          }
+          updateActiveSectionOnScroll(modal, document.getElementById('siufit-section-chip'));
+          updateVerticalTimelineFill(modal);
+          modalScrollTicking = false;
+        });
       }
-      
-      // Update navigation active highlight based on scrolling section
-      updateActiveSectionOnScroll(modal);
-      // Update vertical timeline progress bar
-      updateVerticalTimelineFill(modal);
     });
 
     // Navigation scroll hooks inside modal
@@ -995,8 +1012,96 @@ const ARCH_DETAILS = {
     }
   }
 
+  // UMAR ALGO Full-Screen Modal Handler
+  function initUmarAlgoModal() {
+    const modal = document.getElementById('umar-algo-modal');
+    const openBtn = document.getElementById('umar-algo-explore-btn');
+    const closeBtn = document.getElementById('umar-modal-close');
+    let isUmarModalActive = false;
+
+    if (!modal || !openBtn || !closeBtn) return;
+
+    openBtn.addEventListener('click', () => {
+      isUmarModalActive = true;
+      modal.classList.add('active');
+      modal.querySelectorAll('.modal-nav-link').forEach(l => l.classList.remove('active'));
+      const overviewLink = modal.querySelector('.modal-nav-link[href="#umar-overview"]');
+      if (overviewLink) overviewLink.classList.add('active');
+      const chip = document.getElementById('umar-section-chip');
+      if (chip) chip.textContent = 'Overview';
+      requestAnimationFrame(() => { modal.scrollTop = 0; });
+      const sbWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.paddingRight = `${sbWidth}px`;
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => initModalRevealAnimations(modal), 100);
+    });
+
+    const closeModal = () => {
+      isUmarModalActive = false;
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isUmarModalActive) {
+        closeModal();
+      }
+    });
+
+    // Scroll progress bar (throttled via rAF)
+    let umarScrollTicking = false;
+    modal.addEventListener('scroll', () => {
+      if (!umarScrollTicking) {
+        umarScrollTicking = true;
+        requestAnimationFrame(() => {
+          const scrollTop = modal.scrollTop;
+          const docHeight = modal.scrollHeight - modal.clientHeight;
+          const scrollPct = (scrollTop / docHeight) * 100;
+          const progressIndicator = document.getElementById('umar-modal-scroll-progress');
+          if (progressIndicator) {
+            progressIndicator.style.width = `${scrollPct}%`;
+          }
+          updateActiveSectionOnScroll(modal, document.getElementById('umar-section-chip'));
+          umarScrollTicking = false;
+        });
+      }
+    });
+
+    // Nav link smooth scroll
+    const navLinks = modal.querySelectorAll('.modal-nav-link');
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href');
+        const targetSection = modal.querySelector(targetId);
+        if (targetSection) {
+          const topPos = targetSection.offsetTop - 100;
+          modal.scrollTo({ top: topPos, behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
+  // Reveal sections on scroll within a modal
+  function initModalRevealAnimations(modal) {
+    const revealSections = modal.querySelectorAll('.scroll-reveal');
+    if (revealSections.length === 0) return;
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { root: modal, threshold: 0.08 });
+    revealSections.forEach(s => observer.observe(s));
+  }
+
   // Update navbar state on scrolling modal sections
-  function updateActiveSectionOnScroll(modal) {
+  function updateActiveSectionOnScroll(modal, chipEl) {
     const sections = modal.querySelectorAll('.modal-section');
     const navLinks = modal.querySelectorAll('.modal-nav-link');
     const scrollY = modal.scrollTop;
@@ -1011,55 +1116,104 @@ const ARCH_DETAILS = {
         if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
           navLinks.forEach(l => l.classList.remove('active'));
           activeLink.classList.add('active');
+          if (chipEl) chipEl.textContent = activeLink.textContent.trim();
         }
       }
     });
   }
 
-  // Lazy load assets: Inject screens into horizontal gallery & explorer dashboard
+  // Lazy load assets: Bind thumbnail clicks & mockup carousel buttons inside active modal showcase
   function lazyLoadShowcaseAssets() {
-    // 1. Populate Snap Gallery track with lazy cards
-    const galleryTrack = document.getElementById('gallery-scroll-track');
-    if (galleryTrack && galleryTrack.children.length === 0) {
-      Object.keys(SIUFIT_SCREENS).forEach(index => {
-        const card = document.createElement('div');
-        card.className = 'gallery-phone-card';
-        card.setAttribute('data-gallery-idx', index);
-        
-        card.innerHTML = `
-          <div class="phone-mockup-frame">
-            <div class="phone-status-bar">
-              <span>9:41</span>
-              <div class="status-bar-icons">
-                <span>📶</span>
-                <span>🔋</span>
-              </div>
-            </div>
-            <div class="phone-screen">
-              <div class="phone-screen-viewport">
-                <div class="mock-screen active screenshot-mode">
-                  ${SIUFIT_SCREENS[index]}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gallery-card-desc">
-            <h5>${SIUFIT_GALLERY_INFO[index].title}</h5>
-            <span>${SIUFIT_GALLERY_INFO[index].feat}</span>
-          </div>
-        `;
-        
-        // Setup click action to trigger Lightbox
-        card.addEventListener('click', () => {
-          openLightboxView(index);
-        });
+    const activeImage = document.getElementById('gallery-active-screen-img');
+    const activeTitle = document.getElementById('gallery-active-title');
+    const activeDesc = document.getElementById('gallery-active-desc');
+    const thumbs = document.querySelectorAll('.thumb-card');
+    const prevBtn = document.querySelector('.gallery-prev-btn');
+    const nextBtn = document.querySelector('.gallery-next-btn');
 
-        galleryTrack.appendChild(card);
+    if (!thumbs.length) return;
+
+    let activeIdx = 0;
+
+    const screensArray = [
+      { img: 'siufit_screen_onboarding.png', title: 'Personalized Onboarding', desc: 'Establishes setup expectations and account limits' },
+      { img: 'siufit_screen_coach_setup.png', title: 'AI Coach Setup', desc: 'Customizes calorie limits to match daily biometrics' },
+      { img: 'siufit_screen_dashboard.png', title: 'Unified Dashboard', desc: 'Acts as the central health tracking hub' },
+      { img: 'siufit_screen_coach.png', title: 'Groq AI Coach Chat', desc: 'Provides 24/7 metabolic guidelines and recipe updates' },
+      { img: 'siufit_screen_logger.png', title: 'Food Search Library', desc: 'Accelerates database lookup for local dishes' },
+      { img: 'siufit_screen_nutrition.png', title: 'Nutrition Analytics', desc: 'Displays macro limits and balances calorie budgets' },
+      { img: 'siufit_screen_workouts.png', title: 'Workout Scheduler', desc: 'Prevents fatigue by scheduling split routines' },
+      { img: 'siufit_screen_timer.png', title: 'Active Workout Engine', desc: 'Handles timers off the main UI thread via Coroutines' },
+      { img: 'siufit_screen_leaderboard.png', title: 'Social Community Feed', desc: 'Boosts accountability through peer and streak motivation' },
+      { img: 'siufit_screen_profile.png', title: 'Profile & Progress', desc: 'Aggregates long-term rewards and progression stats' }
+    ];
+
+    function showScreen(idx) {
+      if (idx < 0) idx = screensArray.length - 1;
+      if (idx >= screensArray.length) idx = 0;
+      activeIdx = idx;
+
+      thumbs.forEach((thumb, i) => {
+        if (i === activeIdx) {
+          thumb.style.borderColor = 'var(--accent-color)';
+          thumb.classList.add('active');
+          thumb.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+        } else {
+          thumb.style.borderColor = 'transparent';
+          thumb.classList.remove('active');
+        }
       });
-      
-      // Add scroll-drag interactions for desktop snapping
-      setupHorizontalDragScroll(galleryTrack);
+
+      if (activeImage) {
+        activeImage.style.opacity = '0';
+        setTimeout(() => {
+          activeImage.src = screensArray[activeIdx].img;
+          activeImage.alt = screensArray[activeIdx].title;
+          activeImage.style.opacity = '1';
+        }, 150);
+      }
+
+      if (activeTitle) activeTitle.textContent = screensArray[activeIdx].title;
+      if (activeDesc) activeDesc.textContent = screensArray[activeIdx].desc;
     }
+
+    thumbs.forEach((thumb, i) => {
+      thumb.addEventListener('click', () => {
+        showScreen(i);
+      });
+    });
+
+    if (prevBtn) {
+      const newPrev = prevBtn.cloneNode(true);
+      prevBtn.parentNode.replaceChild(newPrev, prevBtn);
+      newPrev.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showScreen(activeIdx - 1);
+      });
+    }
+
+    if (nextBtn) {
+      const newNext = nextBtn.cloneNode(true);
+      nextBtn.parentNode.replaceChild(newNext, nextBtn);
+      newNext.addEventListener('click', (e) => {
+        e.stopPropagation();
+        showScreen(activeIdx + 1);
+      });
+    }
+
+    if (activeImage) {
+      activeImage.style.cursor = 'zoom-in';
+      // Clear previous onclick listener
+      activeImage.onclick = null;
+      activeImage.addEventListener('click', () => {
+        if (window.openLightboxView) {
+          window.openLightboxView(activeIdx);
+        }
+      });
+    }
+
+    // Initialize with index 0
+    showScreen(0);
 
     // 2. Load the initial Explorer dashboard contents
     updateExplorerDashboard(0);
@@ -1351,100 +1505,18 @@ const ARCH_DETAILS = {
     });
   }
 
-  // Simulated APK Download Center
+  // APK Access Request tracking
   function initSiufitDownloadCenter() {
-    const trigger = document.getElementById('modal-download-trigger');
-    const statusBox = document.getElementById('download-status-box');
-
-    if (!trigger || !statusBox) return;
-
-    let isDownloading = false;
-
-    trigger.addEventListener('click', () => {
-      if (isDownloading) return;
-      isDownloading = true;
-
-      trigger.disabled = true;
-      trigger.innerText = "Downloading Package...";
-
-      // Switch status container display
-      statusBox.innerHTML = `
-        <div class="download-active-state">
-          <h5 id="dl-progress-title">Connecting to package server...</h5>
-          <div class="dl-progress-bar-wrapper">
-            <div class="dl-progress-bar" id="dl-progress-bar"></div>
-          </div>
-          <div class="dl-progress-metadata">
-            <span id="dl-pct">0%</span>
-            <span id="dl-speed">0 KB/s</span>
-          </div>
-        </div>
-      `;
-
-      const progressBar = document.getElementById('dl-progress-bar');
-      const title = document.getElementById('dl-progress-title');
-      const pctDisplay = document.getElementById('dl-pct');
-      const speedDisplay = document.getElementById('dl-speed');
-
-      let progress = 0;
-      const stepsList = [
-        { limit: 20, text: "Connecting to secure Firebase cloud CDN...", speed: "840 KB/s" },
-        { limit: 55, text: "Downloading APK package (SIUFIT_v1.0_Stable)...", speed: "1.8 MB/s" },
-        { limit: 85, text: "Receiving package bytes...", speed: "2.4 MB/s" },
-        { limit: 98, text: "Verifying package MD5 checksum integrity...", speed: "Validating" },
-        { limit: 100, text: "Verification passed! Triggering file download.", speed: "Done" }
-      ];
-
-      let currentStepIdx = 0;
-
-      const dlInterval = setInterval(() => {
-        progress += Math.floor(Math.random() * 4) + 1;
-        if (progress > 100) progress = 100;
-
-        if (progressBar) progressBar.style.width = `${progress}%`;
-        if (pctDisplay) pctDisplay.innerText = `${progress}%`;
-
-        // Update step status labels
-        const currentStep = stepsList[currentStepIdx];
-        if (currentStep) {
-          if (title) title.innerText = currentStep.text;
-          if (speedDisplay) speedDisplay.innerText = currentStep.speed;
-          if (progress >= currentStep.limit) {
-            currentStepIdx++;
-          }
-        }
-
-        if (progress >= 100) {
-          clearInterval(dlInterval);
-          
-          setTimeout(() => {
-            // Trigger actual download
-            const tempLink = document.createElement('a');
-            tempLink.href = "https://github.com/umarhashmi-7/umar-portfolio/releases/download/v1.0.0/SIUFIT_v1.0_Stable.apk";
-            tempLink.download = "SIUFIT_v1.0_Stable.apk";
-            document.body.appendChild(tempLink);
-            tempLink.click();
-            document.body.removeChild(tempLink);
-
-            // Revert state
-            statusBox.innerHTML = `
-              <div class="download-idle-state">
-                <span class="dl-icon">✅</span>
-                <h5>Package Downloaded Successfully!</h5>
-                <p>Verify MD5 checksum: 5f4dcc3b5aa765d61d8327deb882cf99. Check your downloads directory.</p>
-              </div>
-            `;
-            
-            trigger.disabled = false;
-            trigger.innerText = "Download Package Again";
-            isDownloading = false;
-
-            // Log analytics apk download metric
-            window.recordMetric('apkDownloads');
-          }, 800);
-        }
-      }, 100);
-    });
+    function trackAccess(e) {
+      e.preventDefault();
+      const href = e.currentTarget.getAttribute('href');
+      window.recordMetric('accessRequests');
+      setTimeout(() => { window.location.href = href; }, 50);
+    }
+    const trigger = document.getElementById('modal-access-trigger');
+    if (trigger) trigger.addEventListener('click', trackAccess);
+    const mainBtn = document.getElementById('siufit-access-btn-main');
+    if (mainBtn) mainBtn.addEventListener('click', trackAccess);
   }
 
   // Magnetic button positioning helpers
@@ -1552,7 +1624,7 @@ function initContactForm() {
     if (!name || !email || !message) return;
 
     // Record contact analytics metric
-    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"apkDownloads":0,"contactClicks":0}');
+    const counts = JSON.parse(localStorage.getItem('umar-portfolio-metrics') || '{"resumeDownloads":0,"accessRequests":0,"contactClicks":0}');
     counts.contactClicks = (counts.contactClicks || 0) + 1;
     localStorage.setItem('umar-portfolio-metrics', JSON.stringify(counts));
 
@@ -2018,7 +2090,14 @@ function initSkillTraceability() {
     'aes-256': { targets: [projectCards[2]], hoverClass: 'hover-active' },
     'pdf rendering': { targets: [projectCards[3]], hoverClass: 'hover-active' },
     'workmanager': { targets: [siufitCard, projectCards[0]], hoverClass: 'hover-active' },
-    'firebase db': { targets: [projectCards[3]], hoverClass: 'hover-active' }
+    'firebase db': { targets: [projectCards[3]], hoverClass: 'hover-active' },
+    'python': { targets: [projectCards[4]], hoverClass: 'hover-active' },
+    'pandas': { targets: [projectCards[4]], hoverClass: 'hover-active' },
+    'numpy': { targets: [projectCards[4]], hoverClass: 'hover-active' },
+    'plotly.js': { targets: [projectCards[4]], hoverClass: 'hover-active' },
+    'delta exchange api': { targets: [projectCards[4]], hoverClass: 'hover-active' },
+    'rest apis': { targets: [siufitCard, projectCards[4]], hoverClass: 'hover-active' },
+    'retrofit': { targets: [siufitCard, projectCards[4]], hoverClass: 'hover-active' }
   };
 
   tags.forEach(tag => {
@@ -3121,12 +3200,12 @@ function initSkillRadarChart() {
   const legendItems = document.querySelectorAll('.radar-legend-item');
 
   const constituentSkills = {
-    0: ['Kotlin', 'Android SDK', 'Jetpack Compose', 'MVVM', 'Coroutines', 'Offline-First', 'SQLite/Room DB'],
-    1: ['Generative AI Integration', 'Local LLM Assistants', 'Groq SDK', 'ML Kit SDK', 'Retrieval-Augmented Generation (RAG)'],
-    2: ['Node.js', 'REST APIs', 'Serverless Functions', 'JWT Auth', 'Firebase Functions', 'Express.js'],
+    0: ['Kotlin', 'Android SDK', 'Java', 'Jetpack Compose', 'MVVM', 'Coroutines', 'CameraX', 'ML Kit', 'Offline-First', 'SQLite/Room DB'],
+    1: ['Generative AI Integration', 'Local LLM Assistants', 'Groq SDK', 'ML Kit SDK', 'RAG', 'Prompt Engineering', 'AI Workflow Automation'],
+    2: ['Python', 'Node.js', 'REST APIs', 'Retrofit', 'Serverless Functions', 'JWT Auth', 'Firebase Functions', 'Express.js'],
     3: ['Room DB Caching', 'SQL / SQLite Query Tuning', 'Firebase Firestore Syncing', 'Realtime Sync', 'Schema Migrations'],
-    4: ['IEEE Student Branch Coordinator', 'Mock Interviews Organizer', 'Hackathons Organizer', 'Cross-Functional Team Lead'],
-    5: ['Business Analysis', 'User Journey Mapping', 'SEO Optimization', 'Funnel Analytics', 'Conversion Rate Optimization']
+    4: ['IEEE Student Branch Coordinator', 'Mock Interviews Organizer', 'Hackathons Organizer', 'Cross-Functional Team Lead', 'Event Management'],
+    5: ['Business Analysis', 'User Journey Mapping', 'SEO & Digital Marketing', 'Data Visualization', 'Excel Analytics', 'Content Development', 'Funnel Analytics', 'Conversion Rate Optimization']
   };
 
   const tooltip = document.createElement('div');
@@ -3515,4 +3594,123 @@ function initPremiumAnimations() {
       btn.style.transform = '';
     });
   });
+}
+
+/* ==========================================================================
+   Interactive Homepage Showcase Slider (Auto-rotate, hover-pause, touch-swipe)
+   ========================================================================== */
+function initHomepageShowcase() {
+  const showcase = document.getElementById('siufit-homepage-showcase');
+  if (!showcase) return;
+
+  const slides = showcase.querySelectorAll('.showcase-slide');
+  const indicators = showcase.querySelectorAll('.phone-dots .pdot');
+  const prevBtn = showcase.querySelector('.phone-ctrl.prev');
+  const nextBtn = showcase.querySelector('.phone-ctrl.next');
+
+  if (!slides.length) return;
+
+  let currentIndex = 0;
+  let timer = null;
+  const intervalTime = 2500; // 2.5 seconds
+
+  function showSlide(index) {
+    if (index < 0) {
+      currentIndex = slides.length - 1;
+    } else if (index >= slides.length) {
+      currentIndex = 0;
+    } else {
+      currentIndex = index;
+    }
+
+    slides.forEach((slide, i) => {
+      if (i === currentIndex) {
+        slide.style.opacity = '1';
+        slide.style.zIndex = '2';
+        slide.classList.add('active');
+      } else {
+        slide.style.opacity = '0';
+        slide.style.zIndex = '1';
+        slide.classList.remove('active');
+      }
+    });
+
+    indicators.forEach((ind, i) => {
+      ind.classList.toggle('active', i === currentIndex);
+    });
+  }
+
+  function startTimer() {
+    stopTimer();
+    timer = setInterval(() => {
+      showSlide(currentIndex + 1);
+    }, intervalTime);
+  }
+
+  function stopTimer() {
+    if (timer) {
+      clearInterval(timer);
+      timer = null;
+    }
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showSlide(currentIndex - 1);
+      startTimer();
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showSlide(currentIndex + 1);
+      startTimer();
+    });
+  }
+
+  indicators.forEach((ind, i) => {
+    ind.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showSlide(i);
+      startTimer();
+    });
+  });
+
+  showcase.addEventListener('mouseenter', () => {
+    stopTimer();
+  });
+
+  showcase.addEventListener('mouseleave', () => {
+    startTimer();
+  });
+
+  // Mobile Touch Swiping
+  let touchStartX = 0;
+  let touchEndX = 0;
+
+  showcase.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  }, { passive: true });
+
+  showcase.addEventListener('touchend', (e) => {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+  }, { passive: true });
+
+  function handleSwipe() {
+    const diff = touchEndX - touchStartX;
+    if (Math.abs(diff) > 40) {
+      if (diff < 0) {
+        showSlide(currentIndex + 1);
+      } else {
+        showSlide(currentIndex - 1);
+      }
+      startTimer();
+    }
+  }
+
+  showSlide(0);
+  startTimer();
 }
