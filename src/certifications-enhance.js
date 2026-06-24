@@ -1,27 +1,6 @@
 const certSection = document.getElementById('certifications');
 if (certSection) {
-  const lightbox = document.getElementById('cert-lightbox-modal');
-  if (lightbox) {
-    document.addEventListener('keydown', (e) => {
-      if (!lightbox.classList.contains('active')) return;
-      if (e.key === 'Escape') lightbox.classList.remove('active');
-      if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
-        const imgs = lightbox.querySelectorAll('.lightbox-image-container img, .lightbox-image-container .default-cert-icon');
-        const current = lightbox.querySelector('.lightbox-image-container img:not([style*="display: none"])');
-        let idx = -1;
-        imgs.forEach((img, i) => {
-          if (img === current || (current && img.src === current.src)) idx = i;
-        });
-        const dir = e.key === 'ArrowRight' ? 1 : -1;
-        const next = (idx + dir + imgs.length) % imgs.length;
-        imgs.forEach((img, i) => {
-          img.style.display = i === next ? '' : 'none';
-        });
-      }
-    });
-  }
-
-  const certList = certSection.querySelector('.certifications-list-v2');
+  const certList = document.querySelector('#certs-modal .certifications-list-v2');
   if (certList) {
     const timelineContainer = document.createElement('div');
     timelineContainer.className = 'learning-timeline';

@@ -1015,6 +1015,8 @@ header {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: var(--space-6);
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 .skill-card {
@@ -1062,13 +1064,13 @@ header {
   background-color: var(--bg-primary);
   position: relative;
   overflow: hidden;
-  padding: 2rem 0;
+  padding: 1.5rem 0;
 }
 
 .siufit-compact-grid {
   display: grid;
   grid-template-columns: 1.1fr 0.9fr;
-  gap: var(--space-8);
+  gap: 1.5rem;
   align-items: center;
   min-height: 0;
 }
@@ -1077,7 +1079,7 @@ header {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  padding: var(--space-4) 0;
+  padding: 0;
 }
 
 .compact-brand-row {
@@ -1174,8 +1176,8 @@ header {
 
 .phone-frame {
   position: relative;
-  width: 240px;
-  height: 500px;
+  width: 200px;
+  height: 420px;
   border-radius: 36px;
   background: linear-gradient(145deg, #1a1a2e, #2d2d44);
   padding: 10px;
@@ -3233,7 +3235,7 @@ header {
 
 @media (max-width: 768px) {
   #siufit {
-    padding: var(--space-8) 0;
+    padding: 1.5rem 0;
   }
   .siufit-hero {
     padding: var(--space-10);
@@ -3549,7 +3551,7 @@ header {
 .cert-filters-wrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: var(--space-8);
+  margin-bottom: 1.25rem;
 }
 
 .cert-filters {
@@ -3592,7 +3594,7 @@ header {
 .certifications-list-v2 {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: var(--space-6);
+  gap: 1rem;
   margin-top: var(--space-4);
 }
 
@@ -3600,7 +3602,7 @@ header {
   background: var(--bg-card-glass, rgba(255, 255, 255, 0.03));
   border: 1px solid var(--border-color-glass, rgba(255, 255, 255, 0.08));
   border-radius: var(--radius-xl);
-  padding: var(--space-6);
+  padding: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -3643,7 +3645,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: var(--space-5);
+  margin-bottom: 0.75rem;
   position: relative;
   z-index: 2;
 }
@@ -3699,7 +3701,7 @@ header {
 
 .cert-card-body {
   flex-grow: 1;
-  margin-bottom: var(--space-6);
+  margin-bottom: 0.75rem;
   position: relative;
   z-index: 2;
 }
@@ -3731,7 +3733,7 @@ header {
   position: relative;
   z-index: 2;
   border-top: 1px solid var(--border-color-glass, rgba(255, 255, 255, 0.05));
-  padding-top: var(--space-4);
+  padding-top: 0.75rem;
   display: flex;
   align-items: center;
 }
@@ -5097,8 +5099,8 @@ footer {
 }
 
 .reveal.active {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
 /* --- Print Stylesheet Override --- */
@@ -7616,13 +7618,15 @@ footer {
 /* --- 3D Card tilt effect --- */
 .siufit-hero-card,
 .project-card,
+.v1v2-compare-card,
 .about-story {
-  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease;
+  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s ease, border-color 0.15s ease;
   transform-style: preserve-3d;
 }
 
 /* --- Project card highlights on skill hover --- */
-.project-card.trace-highlight {
+.project-card.trace-highlight,
+.v1v2-compare-card.trace-highlight {
   border-color: var(--accent-color) !important;
   box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.25) !important;
   transform: translateY(-4px) scale(1.01) !important;
@@ -9360,14 +9364,14 @@ footer {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-3xl);
-  padding: var(--space-8);
+  padding: 1.25rem;
   text-align: left;
 }
 .cert-spotlight-panel h3 {
   font-size: var(--text-2xl);
   font-weight: 800;
   margin-top: 6px;
-  margin-bottom: var(--space-8);
+  margin-bottom: 1rem;
 }
 .spotlight-carousel-container {
   position: relative;
@@ -9375,7 +9379,7 @@ footer {
 }
 .spotlight-slides {
   position: relative;
-  min-height: 280px;
+  min-height: 220px;
 }
 .spotlight-slide {
   position: absolute;
@@ -9396,7 +9400,7 @@ footer {
 .spotlight-grid {
   display: grid;
   grid-template-columns: 0.6fr 1.4fr;
-  gap: var(--space-10);
+  gap: 1.5rem;
   align-items: center;
 }
 @media (max-width: 768px) {
@@ -9411,8 +9415,8 @@ footer {
 }
 .ow-badge-container {
   position: relative;
-  width: 160px;
-  height: 160px;
+  width: 120px;
+  height: 120px;
 }
 .spotlight-badge-graphic {
   width: 100%;
@@ -9449,17 +9453,17 @@ footer {
   margin-bottom: 4px;
 }
 .spotlight-details h4 {
-  font-size: 1.35rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: var(--text-primary);
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   line-height: 1.2;
 }
 .spotlight-desc {
   font-size: var(--text-sm);
   line-height: 1.5;
   color: var(--text-secondary);
-  margin-bottom: var(--space-5);
+  margin-bottom: 0.75rem;
 }
 .spotlight-skills-pills {
   display: flex;
@@ -9472,8 +9476,8 @@ footer {
   align-items: center;
   justify-content: center;
   gap: var(--space-6);
-  margin-top: var(--space-10);
-  padding-top: var(--space-6);
+  margin-top: 1rem;
+  padding-top: 0.75rem;
   border-top: 1px solid var(--border-color);
 }
 .spotlight-nav-btn {
@@ -10652,9 +10656,10 @@ footer {
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.stagger-reveal.active > * {
-  opacity: 1;
-  transform: translateY(0);
+.stagger-reveal.active > *,
+.section.active .stagger-reveal > * {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 
 .stagger-reveal.active > *:nth-child(1) { transition-delay: 0.05s; }
@@ -10682,12 +10687,14 @@ footer {
 }
 
 /* Section padding overrides for compact layout */
-#what-i-bring,
 #data-viz-dashboard,
-#certifications,
 #leadership,
 #impact-leadership-super {
   padding: 3rem 0;
+}
+#what-i-bring,
+#certifications {
+  padding: 1.5rem 0;
 }
 
 /* Data Viz Dashboard compact grid */
@@ -10754,7 +10761,9 @@ footer {
 .bring-compact-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-4);
+  gap: 0.75rem;
+  opacity: 1 !important;
+  transform: none !important;
 }
 
 .bring-compact-card {
@@ -10762,7 +10771,7 @@ footer {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: var(--space-5) 0.75rem;
+  padding: var(--space-3) 0.75rem;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border-color);
   background: var(--card-bg);
@@ -10797,9 +10806,9 @@ footer {
 }
 
 .bring-compact-card .bring-card-icon {
-  width: 44px;
-  height: 44px;
-  margin-bottom: var(--space-2);
+  width: 36px;
+  height: 36px;
+  margin-bottom: 0.35rem;
   transition: transform var(--transition-fast);
 }
 
@@ -11584,4 +11593,214 @@ footer {
     font-size: 0.65rem;
   }
 }
+
+/* ==========================================================================
+   PORTFOLIO DENSITY + VISUAL POLISH OVERRIDES
+   ========================================================================== */
+
+/* Spacing Compression - Tab Panels */
+.super-tab-panel .section {
+  padding-top: 1.5rem !important;
+  padding-bottom: 3.5rem !important;
+}
+.super-tab-panel .section-header {
+  margin-bottom: var(--space-6) !important;
+}
+
+/* Experience Timeline Density and Viewport Entrance */
+.timeline-vertical {
+  margin: var(--space-8) auto 0 !important;
+}
+.timeline-item {
+  margin-bottom: var(--space-8) !important;
+}
+.timeline-card {
+  padding: var(--space-5) var(--space-6) !important;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+.timeline-item.active .timeline-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Impact Metrics Grid Optimization (3x2 Desktop Layout) */
+.impact-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  gap: var(--space-6) !important;
+}
+.impact-card {
+  padding: var(--space-5) 1.25rem !important;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+#impact.active .impact-card {
+  opacity: 1;
+  transform: translateY(0);
+}
+#impact.active .impact-card:nth-child(1) { transition-delay: 0.05s; }
+#impact.active .impact-card:nth-child(2) { transition-delay: 0.1s; }
+#impact.active .impact-card:nth-child(3) { transition-delay: 0.15s; }
+#impact.active .impact-card:nth-child(4) { transition-delay: 0.2s; }
+#impact.active .impact-card:nth-child(5) { transition-delay: 0.25s; }
+#impact.active .impact-card:nth-child(6) { transition-delay: 0.3s; }
+
+.impact-card:hover {
+  transform: translateY(-6px) !important;
+  box-shadow: var(--shadow-lg), 0 0 15px rgba(var(--accent-rgb), 0.08) !important;
+  border-color: var(--accent-color) !important;
+}
+
+@media (max-width: 768px) {
+  .impact-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 480px) {
+  .impact-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Dashboard Visual Overrides and Continuity */
+#impact {
+  padding-bottom: 2rem !important;
+  border-bottom: none !important;
+}
+#data-viz-dashboard {
+  padding-top: 0 !important;
+  padding-bottom: 2.5rem !important;
+}
+.impact-leadership-flex-container {
+  margin-top: 1rem !important;
+}
+.viz-card:hover {
+  border-color: var(--accent-color) !important;
+  background: var(--accent-soft) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: var(--shadow-md), 0 0 12px rgba(var(--accent-rgb), 0.05) !important;
+}
+
+/* Mini Sparkline and Gauge Charts Inside Viz Cards */
+.mini-chart {
+  width: 120px;
+  height: 30px;
+  margin-top: 0.75rem;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  position: relative;
+}
+
+.bar-chart-mini {
+  gap: 4px;
+}
+.bar-chart-mini .mini-bar {
+  flex: 1;
+  background: var(--accent-color);
+  border-radius: 2px;
+  height: 0;
+  transition: height 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: var(--delay);
+}
+#data-viz-dashboard.active .bar-chart-mini .mini-bar {
+  height: var(--val);
+}
+
+.line-chart-mini .mini-svg-line {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.line-chart-mini .mini-line-path {
+  fill: none;
+  stroke: var(--accent-color);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 120;
+  stroke-dashoffset: 120;
+  transition: stroke-dashoffset 1s ease-in-out;
+}
+#data-viz-dashboard.active .line-chart-mini .mini-line-path {
+  stroke-dashoffset: 0;
+}
+.line-chart-mini .mini-line-dot {
+  fill: var(--card-bg);
+  stroke: var(--accent-secondary);
+  stroke-width: 1.5;
+  opacity: 0;
+  transform: scale(0);
+  transform-origin: center;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition-delay: var(--delay);
+}
+#data-viz-dashboard.active .line-chart-mini .mini-line-dot {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.radar-chart-mini .mini-svg-radar {
+  width: 32px;
+  height: 32px;
+}
+.radar-chart-mini .mini-radar-bg {
+  fill: none;
+  stroke: rgba(var(--accent-rgb), 0.15);
+  stroke-width: 1;
+}
+.radar-chart-mini .mini-radar-poly {
+  fill: rgba(var(--accent-rgb), 0.15);
+  stroke: var(--accent-color);
+  stroke-width: 1.5;
+  transform: scale(0);
+  transform-origin: 20px 20px;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s;
+}
+#data-viz-dashboard.active .radar-chart-mini .mini-radar-poly {
+  transform: scale(1);
+}
+
+.progress-chart-mini {
+  align-items: center;
+}
+.progress-chart-mini .mini-progress-track {
+  width: 100%;
+  height: 4px;
+  background: var(--bg-tertiary);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.progress-chart-mini .mini-progress-fill {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-color), var(--accent-secondary));
+  border-radius: 2px;
+  transition: width 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+#data-viz-dashboard.active .progress-chart-mini .mini-progress-fill {
+  width: var(--val);
+}
+
+/* Accessibility Support */
+@media (prefers-reduced-motion: reduce) {
+  .timeline-card,
+  .impact-card,
+  .bar-chart-mini .mini-bar,
+  .line-chart-mini .mini-line-path,
+  .line-chart-mini .mini-line-dot,
+  .radar-chart-mini .mini-radar-poly,
+  .progress-chart-mini .mini-progress-fill {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+    transition-delay: 0s !important;
+    stroke-dashoffset: 0 !important;
+    height: var(--val) !important;
+    width: var(--val) !important;
+  }
+}
+
 

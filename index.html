@@ -2743,7 +2743,7 @@
       </section>
 
       <!-- --- Data Visualization Dashboard --- -->
-      <section class="section" id="data-viz-dashboard">
+      <section class="section reveal" id="data-viz-dashboard">
         <div class="container">
           <div class="section-header" style="margin-bottom: 1.5rem;">
             <span class="badge">Live Analytics</span>
@@ -2753,27 +2753,58 @@
           <div class="viz-grid" id="viz-grid">
             <div class="viz-card" id="viz-tech-distribution">
               <div class="viz-icon">🛠️</div>
-              <div class="viz-stat">8+</div>
+              <div class="viz-stat counter" data-target="8" data-suffix="+">0</div>
               <div class="viz-label">Tech Stack Tools</div>
               <div class="viz-sub">Android, Python, TS, Flutter, SQL, AI/ML, Git, Docker</div>
+              <!-- Mini SVG Bar Chart -->
+              <div class="mini-chart bar-chart-mini">
+                <div class="mini-bar" style="--val: 80%; --delay: 0.1s;"></div>
+                <div class="mini-bar" style="--val: 65%; --delay: 0.2s;"></div>
+                <div class="mini-bar" style="--val: 75%; --delay: 0.3s;"></div>
+                <div class="mini-bar" style="--val: 50%; --delay: 0.4s;"></div>
+                <div class="mini-bar" style="--val: 85%; --delay: 0.5s;"></div>
+              </div>
             </div>
             <div class="viz-card" id="viz-cert-timeline">
               <div class="viz-icon">📜</div>
-              <div class="viz-stat">14</div>
+              <div class="viz-stat counter" data-target="14">0</div>
               <div class="viz-label">Credentials Earned</div>
               <div class="viz-sub">2021 — 2026 spanning AI, SWE, Data & Professional tracks</div>
+              <!-- Mini Line Chart -->
+              <div class="mini-chart line-chart-mini">
+                <svg viewBox="0 0 100 20" class="mini-svg-line" aria-hidden="true">
+                  <path class="mini-line-path" d="M5,15 L25,12 L50,8 L75,10 L95,4" />
+                  <circle cx="25" cy="12" r="2.5" class="mini-line-dot" style="--delay: 0.15s;" />
+                  <circle cx="50" cy="8" r="2.5" class="mini-line-dot" style="--delay: 0.3s;" />
+                  <circle cx="75" cy="10" r="2.5" class="mini-line-dot" style="--delay: 0.45s;" />
+                  <circle cx="95" cy="4" r="2.5" class="mini-line-dot" style="--delay: 0.6s;" />
+                </svg>
+              </div>
             </div>
             <div class="viz-card" id="viz-skill-radar">
               <div class="viz-icon">🎯</div>
-              <div class="viz-stat">3</div>
+              <div class="viz-stat counter" data-target="3">0</div>
               <div class="viz-label">Core Competencies</div>
               <div class="viz-sub">Android Architecture • AI Integration • Full-Stack Product</div>
+              <!-- Mini Radar Chart -->
+              <div class="mini-chart radar-chart-mini">
+                <svg viewBox="0 0 40 40" class="mini-svg-radar" aria-hidden="true">
+                  <polygon points="20,5 35,15 30,35 10,35 5,15" class="mini-radar-bg" />
+                  <polygon points="20,9 31,17 28,30 13,29 9,18" class="mini-radar-poly" />
+                </svg>
+              </div>
             </div>
             <div class="viz-card" id="viz-career-growth">
               <div class="viz-icon">📈</div>
-              <div class="viz-stat">5</div>
+              <div class="viz-stat counter" data-target="5">0</div>
               <div class="viz-label">Growth Milestones</div>
               <div class="viz-sub">Educator → Developer → Product Architect → Founder</div>
+              <!-- Mini Progress Chart -->
+              <div class="mini-chart progress-chart-mini">
+                <div class="mini-progress-track">
+                  <div class="mini-progress-fill" style="--val: 80%;"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

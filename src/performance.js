@@ -18,6 +18,9 @@ document.querySelectorAll('img:not([loading])').forEach((img) => {
 });
 
 document.querySelectorAll('.section:not(#hero)').forEach((section) => {
+  if (section.closest('.super-tab-panel') || section.id === 'skills') {
+    return;
+  }
   section.style.contentVisibility = 'auto';
   section.style.containIntrinsicSize = '500px';
 });

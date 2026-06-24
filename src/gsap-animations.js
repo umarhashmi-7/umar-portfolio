@@ -3,6 +3,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
+if (typeof window !== 'undefined') {
+  window.gsap = gsap;
+  window.ScrollTrigger = ScrollTrigger;
+}
+
 document.querySelectorAll('.section').forEach((section) => {
   const children = section.children;
   const items = [];

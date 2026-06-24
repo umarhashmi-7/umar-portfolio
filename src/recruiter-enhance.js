@@ -31,7 +31,7 @@ let lastScrollY = 0;
 let ticking = false;
 window.addEventListener('scroll', () => {
   if (!ticking) {
-    RAF(() => {
+    window.requestAnimationFrame(() => {
       const heroH = document.getElementById('hero')?.offsetHeight || 500;
       if (window.scrollY > heroH) {
         if (window.scrollY < lastScrollY) {

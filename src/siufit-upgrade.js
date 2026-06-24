@@ -15,6 +15,7 @@ if (siufitSection) {
     { quote: 'As a developer, I am impressed by the architecture. Clean MVVM with seamless Firebase sync.', name: 'Arun K.', title: 'Android Developer' },
   ];
 
+  const metricsRow = siufitSection.querySelector('.compact-highlights');
   const tourBtn = document.createElement('button');
   tourBtn.className = 'btn btn-secondary';
   tourBtn.textContent = 'Take Product Tour';

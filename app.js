@@ -228,6 +228,7 @@ function initNavigation() {
    ========================================================================== */
 function initScrollAnimations() {
   const reveals = document.querySelectorAll('.reveal');
+  console.log('[Reveal] Found', reveals.length, 'reveal elements to observe');
   const observerOptions = {
     root: null,
     threshold: 0.1,
@@ -236,6 +237,7 @@ function initScrollAnimations() {
 
   const revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
+      console.log('[Reveal] Target:', entry.target.id || entry.target.className, 'isIntersecting:', entry.isIntersecting);
       if (entry.isIntersecting) {
         entry.target.classList.add('active');
         observer.unobserve(entry.target);
@@ -1637,8 +1639,10 @@ const ARCH_DETAILS = {
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && lightbox.classList.contains('active')) {
         closeLightbox();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
       }
-    });
+    }, { capture: true });
   }
 
   // APK Access Request tracking
@@ -1717,6 +1721,7 @@ function initFAQAccordion() {
       if (!isActive) {
         item.classList.add('active');
       }
+      safeRefreshScrollTrigger();
     });
   });
 }
@@ -1739,6 +1744,7 @@ function initProjectToggles() {
       } else {
         btn.innerText = 'View Challenges & Lessons';
       }
+      safeRefreshScrollTrigger();
     });
   });
 }
@@ -2207,7 +2213,8 @@ function initCardTilt3D() {
 function initSkillTraceability() {
   const tags = document.querySelectorAll('#skills .tech-tag');
   const projectCards = document.querySelectorAll('#projects .project-card');
-  const siufitCard = document.querySelector('.siufit-hero-card');
+  const siufitCard = document.querySelector('.siufit-hero-card') || document.querySelector('.siufit-compact-grid');
+  const umarAlgoCard = document.querySelector('.v1v2-compare-card');
 
   if (!tags.length) return;
 
@@ -2233,13 +2240,13 @@ function initSkillTraceability() {
     'pdf rendering': { targets: [projectCards[3]], hoverClass: 'hover-active' },
     'workmanager': { targets: [siufitCard, projectCards[0]], hoverClass: 'hover-active' },
     'firebase db': { targets: [projectCards[3]], hoverClass: 'hover-active' },
-    'python': { targets: [projectCards[4]], hoverClass: 'hover-active' },
-    'pandas': { targets: [projectCards[4]], hoverClass: 'hover-active' },
-    'numpy': { targets: [projectCards[4]], hoverClass: 'hover-active' },
-    'plotly.js': { targets: [projectCards[4]], hoverClass: 'hover-active' },
-    'delta exchange api': { targets: [projectCards[4]], hoverClass: 'hover-active' },
-    'rest apis': { targets: [siufitCard, projectCards[4]], hoverClass: 'hover-active' },
-    'retrofit': { targets: [siufitCard, projectCards[4]], hoverClass: 'hover-active' }
+    'python': { targets: [umarAlgoCard], hoverClass: 'hover-active' },
+    'pandas': { targets: [umarAlgoCard], hoverClass: 'hover-active' },
+    'numpy': { targets: [umarAlgoCard], hoverClass: 'hover-active' },
+    'plotly.js': { targets: [umarAlgoCard], hoverClass: 'hover-active' },
+    'delta exchange api': { targets: [umarAlgoCard], hoverClass: 'hover-active' },
+    'rest apis': { targets: [siufitCard, umarAlgoCard], hoverClass: 'hover-active' },
+    'retrofit': { targets: [siufitCard, umarAlgoCard], hoverClass: 'hover-active' }
   };
 
   tags.forEach(tag => {
@@ -2796,7 +2803,10 @@ function initCertificationsShowcase() {
   // 8. Close Modal Controls
   const closeLightbox = () => {
     modal.classList.remove('open');
-    document.body.style.overflow = '';
+    const certsModal = document.getElementById('certs-modal');
+    if (!certsModal || !certsModal.classList.contains('open')) {
+      document.body.style.overflow = '';
+    }
     // Reset zoom
     modalImg.classList.remove('zoomed');
     
@@ -2817,12 +2827,14 @@ function initCertificationsShowcase() {
 
     if (e.key === 'Escape') {
       closeLightbox();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
     } else if (e.key === 'ArrowRight') {
       navNext();
     } else if (e.key === 'ArrowLeft') {
       navPrev();
     }
-  });
+  }, { capture: true });
 }
 
 /* ==========================================================================
@@ -3173,6 +3185,7 @@ function initExperienceTimeline() {
       if (window.recordEngagementAction) {
         window.recordEngagementAction();
       }
+      safeRefreshScrollTrigger();
     });
   });
 
@@ -3274,6 +3287,14 @@ function initOverflowDiagnostic() {
   window.addEventListener('resize', debounce(checkOverflows, 150));
 }
 
+function safeRefreshScrollTrigger() {
+  if (typeof window !== 'undefined' && window.ScrollTrigger) {
+    setTimeout(() => {
+      window.ScrollTrigger.refresh();
+    }, 450);
+  }
+}
+
 // ==========================================================================
 // 41. Super-Section Tabs System
 // ==========================================================================
@@ -3302,6 +3323,7 @@ function initSuperSections() {
           const reveals = targetPanel.querySelectorAll('.reveal');
           reveals.forEach(r => r.classList.add('active'));
         }
+        safeRefreshScrollTrigger();
       });
     });
   });
@@ -3692,6 +3714,7 @@ function initLeadershipAccordion() {
       if (window.recordEngagementAction) {
         window.recordEngagementAction();
       }
+      safeRefreshScrollTrigger();
     });
   });
 }
