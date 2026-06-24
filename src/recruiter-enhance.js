@@ -22,7 +22,7 @@ bar.className = 'quick-action-bar';
 bar.id = 'quick-action-bar';
 bar.innerHTML = `
   <a href="resume.pdf" download="Mohd_Umar_Hashmi_Resume.pdf" class="btn btn-primary">Download Resume</a>
-  <a href="https://wa.me/919012728789" target="_blank" class="btn btn-secondary">WhatsApp Chat</a>
+  <a href="https://wa.me/919012728789" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">WhatsApp Chat</a>
   <a href="mailto:hashmiumar11161@gmail.com" class="btn btn-secondary">Email Me</a>
 `;
 document.body.appendChild(bar);

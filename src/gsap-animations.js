@@ -72,7 +72,16 @@ document.querySelectorAll('.btn').forEach((btn) => {
 
 document.querySelectorAll('h2, h3').forEach((heading) => {
   const text = heading.textContent;
-  const chars = text.split('').map((c) => `<span class="reveal-char" style="display:inline-block">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
+  const chars = text.split('').map((c) => {
+    let escaped = c;
+    if (c === '<') escaped = '&lt;';
+    else if (c === '>') escaped = '&gt;';
+    else if (c === '&') escaped = '&amp;';
+    else if (c === '"') escaped = '&quot;';
+    else if (c === "'") escaped = '&#039;';
+    else if (c === ' ') escaped = '&nbsp;';
+    return `<span class="reveal-char" style="display:inline-block">${escaped}</span>`;
+  }).join('');
   heading.innerHTML = chars;
   gsap.from(heading.querySelectorAll('.reveal-char'), {
     opacity: 0,

@@ -3,6 +3,74 @@
  * Premium micro-interactions, local AI client, and custom visitor analytics.
  */
 
+/* ==========================================================================
+   0. Accessibility Focus Trap Helpers
+   ========================================================================== */
+const activeFocusTraps = new Map();
+
+function enableFocusTrap(element) {
+  if (activeFocusTraps.has(element)) return;
+
+  const focusableSelectors = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  
+  const getFocusable = () => {
+    return Array.from(element.querySelectorAll(focusableSelectors)).filter(el => {
+      return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
+    });
+  };
+
+  const focusable = getFocusable();
+  const savedActiveElement = document.activeElement;
+
+  if (focusable.length > 0) {
+    focusable[0].focus();
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key !== 'Tab') return;
+
+    const currentFocusable = getFocusable();
+    if (currentFocusable.length === 0) {
+      e.preventDefault();
+      return;
+    }
+
+    const first = currentFocusable[0];
+    const last = currentFocusable[currentFocusable.length - 1];
+
+    if (e.shiftKey) {
+      if (document.activeElement === first) {
+        last.focus();
+        e.preventDefault();
+      }
+    } else {
+      if (document.activeElement === last) {
+        first.focus();
+        e.preventDefault();
+      }
+    }
+  };
+
+  element.addEventListener('keydown', handleKeyDown);
+  activeFocusTraps.set(element, { handleKeyDown, savedActiveElement });
+}
+
+function disableFocusTrap(element) {
+  const trap = activeFocusTraps.get(element);
+  if (!trap) return;
+
+  element.removeEventListener('keydown', trap.handleKeyDown);
+  activeFocusTraps.delete(element);
+
+  if (trap.savedActiveElement && typeof trap.savedActiveElement.focus === 'function') {
+    try {
+      trap.savedActiveElement.focus();
+    } catch (e) {
+      // Ignore
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const safeInit = (fn) => { try { fn(); } catch (e) { console.warn('[Init]', fn.name || 'anonymous', 'failed:', e); } };
   safeInit(initPWA);
@@ -409,9 +477,18 @@ function initVisitorAnalytics() {
   });
 
   // Close modal handlers
-  analyticsClose.addEventListener('click', () => analyticsModal.classList.remove('open'));
+  const closeAnalytics = () => {
+    analyticsModal.classList.remove('open');
+  };
+  analyticsClose.addEventListener('click', closeAnalytics);
   analyticsModal.addEventListener('click', (e) => {
-    if (e.target === analyticsModal) analyticsModal.classList.remove('open');
+    if (e.target === analyticsModal) closeAnalytics();
+  });
+  // Escape key handler for Visitor Analytics Modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && analyticsModal.classList.contains('open')) {
+      closeAnalytics();
+    }
   });
 
   // Overhauled Interactive Chart Tooltips
@@ -562,9 +639,9 @@ const AI_TOPICS = [
       <div class='ai-rich-title'>📞 Contact Channels</div>
       <p>Connect directly with Umar to discuss opportunities:</p>
       <div class='ai-contact-grid'>
-        <a href='https://wa.me/919012728789' target='_blank' class='ai-contact-btn wa-btn'>💬 WhatsApp Chat</a>
+        <a href='https://wa.me/919012728789' target='_blank' rel='noopener noreferrer' class='ai-contact-btn wa-btn'>💬 WhatsApp Chat</a>
         <a href='mailto:hashmiumar11161@gmail.com' class='ai-contact-btn mail-btn'>✉️ Send Email</a>
-        <a href='https://www.linkedin.com/in/mohd-umar-hashmi' target='_blank' class='ai-contact-btn link-btn'>🔗 LinkedIn Profile</a>
+        <a href='https://www.linkedin.com/in/mohd-umar-hashmi' target='_blank' rel='noopener noreferrer' class='ai-contact-btn link-btn'>🔗 LinkedIn Profile</a>
       </div>
       <a href='#contact' class='ai-rich-btn'>Go to Contact Form</a>
     </div>`
@@ -663,10 +740,18 @@ function initAIResumeBot() {
 
   trigger.addEventListener('click', () => {
     chatWindow.classList.toggle('open');
+    if (chatWindow.classList.contains('open')) {
+      enableFocusTrap(chatWindow);
+    } else {
+      disableFocusTrap(chatWindow);
+    }
     if (dot) dot.style.display = 'none';
   });
 
-  closeBtn.addEventListener('click', () => chatWindow.classList.remove('open'));
+  closeBtn.addEventListener('click', () => {
+    chatWindow.classList.remove('open');
+    disableFocusTrap(chatWindow);
+  });
 
   sendBtn.addEventListener('click', handleUserMessage);
   chatInput.addEventListener('keypress', (e) => {
@@ -681,6 +766,16 @@ function initAIResumeBot() {
       handleUserMessage();
     }
   });
+
+  // Close chatbot window on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && chatWindow.classList.contains('open')) {
+      chatWindow.classList.remove('open');
+      disableFocusTrap(chatWindow);
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    }
+  }, { capture: true });
 
   function triggerAISideEffects(query) {
     const cleanQuery = query.toLowerCase().trim();
@@ -772,7 +867,11 @@ function initAIResumeBot() {
   function appendBubble(message, sender) {
     const bubble = document.createElement('div');
     bubble.className = `chat-message message-${sender}`;
-    bubble.innerHTML = message;
+    if (sender === 'user') {
+      bubble.textContent = message;
+    } else {
+      bubble.innerHTML = message;
+    }
     chatBody.appendChild(bubble);
     chatBody.scrollTop = chatBody.scrollHeight;
   }
@@ -959,10 +1058,17 @@ const ARCH_DETAILS = {
 
     if (!modal || !openBtn || !closeBtn) return;
 
+    // Initialize sub-components once at setup time to prevent event listener memory leaks
+    initExplorerTabs();
+    initTimelineProgress();
+    initMagneticButtons();
+    initSiufitDownloadCenter();
+
     // Open modal
     openBtn.addEventListener('click', () => {
       isModalActive = true;
       modal.classList.add('active');
+      enableFocusTrap(modal);
       // Reset nav to Overview
       modal.querySelectorAll('.modal-nav-link').forEach(l => l.classList.remove('active'));
       const overviewLink = modal.querySelector('.modal-nav-link[href="#modal-overview"]');
@@ -978,10 +1084,6 @@ const ARCH_DETAILS = {
       // Initialise dynamic lazy loads
       lazyLoadShowcaseAssets();
       startOverviewAutoplay();
-      initExplorerTabs();
-      initTimelineProgress();
-      initMagneticButtons();
-      initSiufitDownloadCenter();
       setTimeout(() => initModalRevealAnimations(modal), 100);
     });
 
@@ -989,6 +1091,7 @@ const ARCH_DETAILS = {
     const closeModal = () => {
       isModalActive = false;
       modal.classList.remove('active');
+      disableFocusTrap(modal);
       document.body.style.overflow = ''; // Release scroll
       document.body.style.paddingRight = '';
       stopOverviewAutoplay();
@@ -1071,6 +1174,7 @@ const ARCH_DETAILS = {
     openBtn.addEventListener('click', () => {
       isUmarModalActive = true;
       modal.classList.add('active');
+      enableFocusTrap(modal);
       modal.querySelectorAll('.modal-nav-link').forEach(l => l.classList.remove('active'));
       const overviewLink = modal.querySelector('.modal-nav-link[href="#umar-overview"]');
       if (overviewLink) overviewLink.classList.add('active');
@@ -1086,6 +1190,7 @@ const ARCH_DETAILS = {
     const closeModal = () => {
       isUmarModalActive = false;
       modal.classList.remove('active');
+      disableFocusTrap(modal);
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
     };
@@ -1793,10 +1898,26 @@ function initSocialActions() {
   const recruiterClose = document.getElementById('recruiter-modal-close');
 
   if (recruiterBtn && recruiterModal && recruiterClose) {
-    recruiterBtn.addEventListener('click', () => recruiterModal.classList.add('open'));
-    recruiterClose.addEventListener('click', () => recruiterModal.classList.remove('open'));
+    recruiterBtn.addEventListener('click', () => {
+      recruiterModal.classList.add('open');
+      enableFocusTrap(recruiterModal);
+    });
+    recruiterClose.addEventListener('click', () => {
+      recruiterModal.classList.remove('open');
+      disableFocusTrap(recruiterModal);
+    });
     recruiterModal.addEventListener('click', (e) => {
-      if (e.target === recruiterModal) recruiterModal.classList.remove('open');
+      if (e.target === recruiterModal) {
+        recruiterModal.classList.remove('open');
+        disableFocusTrap(recruiterModal);
+      }
+    });
+    // Escape key handler for Recruiter Modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && recruiterModal.classList.contains('open')) {
+        recruiterModal.classList.remove('open');
+        disableFocusTrap(recruiterModal);
+      }
     });
   }
 
@@ -2015,13 +2136,40 @@ function highlightResumeKeywords(container, keywords, persona) {
     if (node.nodeType === 3) { // Text Node
       const text = node.nodeValue;
       if (regex.test(text)) {
-        const span = document.createElement('span');
-        span.innerHTML = text.replace(regex, `<span class="ats-highlight highlight-${persona}">$1</span>`);
+        // Reset search index
+        regex.lastIndex = 0;
+        let match;
+        let lastIdx = 0;
+        const fragment = document.createDocumentFragment();
+        
+        while ((match = regex.exec(text)) !== null) {
+          const matchText = match[0];
+          const matchIdx = match.index;
+          
+          if (matchIdx > lastIdx) {
+            fragment.appendChild(document.createTextNode(text.substring(lastIdx, matchIdx)));
+          }
+          
+          const hlSpan = document.createElement('span');
+          hlSpan.className = `ats-highlight highlight-${persona}`;
+          hlSpan.textContent = matchText;
+          fragment.appendChild(hlSpan);
+          
+          lastIdx = regex.lastIndex;
+          
+          // Avoid infinite loops with zero-width matches
+          if (match.index === regex.lastIndex) {
+            regex.lastIndex++;
+          }
+        }
+        
+        if (lastIdx < text.length) {
+          fragment.appendChild(document.createTextNode(text.substring(lastIdx)));
+        }
+        
         const parent = node.parentNode;
         if (parent && parent.className !== 'ats-highlight') {
-          while (span.firstChild) {
-            parent.insertBefore(span.firstChild, node);
-          }
+          parent.insertBefore(fragment, node);
           parent.removeChild(node);
         }
       }
@@ -2500,6 +2648,7 @@ function initBlogModal() {
       if (content) {
         modalBody.innerHTML = content;
         modal.classList.add('open');
+        enableFocusTrap(modal);
         document.body.style.overflow = 'hidden'; // Stop background scrolling
       }
     });
@@ -2507,6 +2656,7 @@ function initBlogModal() {
   
   const closeModal = () => {
     modal.classList.remove('open');
+    disableFocusTrap(modal);
     document.body.style.overflow = '';
   };
   
@@ -3301,6 +3451,16 @@ function safeRefreshScrollTrigger() {
 function initSuperSections() {
   const tabContainers = document.querySelectorAll('.super-section');
   
+  // Keyboard Escape hatch to release focus trap inside the inline resume viewer
+  const resumePanel = document.getElementById('panel-resume');
+  if (resumePanel) {
+    resumePanel.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        disableFocusTrap(resumePanel);
+      }
+    });
+  }
+
   tabContainers.forEach(container => {
     const nav = container.querySelector('.super-section-nav');
     if (!nav) return;
@@ -3319,6 +3479,17 @@ function initSuperSections() {
         const targetPanel = container.querySelector(`#panel-${targetTab}`);
         if (targetPanel) {
           targetPanel.classList.add('active');
+          
+          // Focus trap for Resume Viewer tab panel
+          if (targetTab === 'resume') {
+            enableFocusTrap(targetPanel);
+          } else {
+            // Disable focus trap on other panels
+            panels.forEach(p => {
+              disableFocusTrap(p);
+            });
+            disableFocusTrap(document.getElementById('panel-resume'));
+          }
           
           const reveals = targetPanel.querySelectorAll('.reveal');
           reveals.forEach(r => r.classList.add('active'));
@@ -3503,8 +3674,10 @@ function initCommandPalette() {
     }
     if (e.key === 'Escape' && palette.classList.contains('open')) {
       togglePalette();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
     }
-  });
+  }, { capture: true });
 
   if (triggerBtn) {
     triggerBtn.addEventListener('click', togglePalette);
@@ -3661,6 +3834,7 @@ function initCertificationsModal() {
   if (openBtn) {
     openBtn.addEventListener('click', () => {
       modal.classList.add('open');
+      enableFocusTrap(modal);
       document.body.style.overflow = 'hidden';
       if (window.recordEngagementAction) {
         window.recordEngagementAction();
@@ -3670,6 +3844,7 @@ function initCertificationsModal() {
 
   const closeModal = () => {
     modal.classList.remove('open');
+    disableFocusTrap(modal);
     document.body.style.overflow = '';
   };
 
@@ -3679,6 +3854,15 @@ function initCertificationsModal() {
 
   modal.addEventListener('click', (e) => {
     if (e.target === modal) closeModal();
+  });
+
+  // Close certifications modal on Escape key if child lightbox is not open
+  document.addEventListener('keydown', (e) => {
+    const lightbox = document.getElementById('cert-lightbox-modal');
+    const isLightboxActive = lightbox && lightbox.classList.contains('open');
+    if (e.key === 'Escape' && modal.classList.contains('open') && !isLightboxActive) {
+      closeModal();
+    }
   });
 }
 
