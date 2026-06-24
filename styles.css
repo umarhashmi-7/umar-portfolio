@@ -5901,12 +5901,12 @@ footer {
 
 /* Modal Content Wrapper */
 .modal-wrapper {
-  padding: 7rem 2rem 4rem;
+  padding: 5.5rem 2rem 3rem;
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 9rem;
+  gap: 5.5rem;
 }
 
 .modal-section {
@@ -6088,7 +6088,7 @@ footer {
 .feature-explorer-container {
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
+  gap: var(--space-6);
 }
 
 .explorer-nav-wrapper {
@@ -6147,7 +6147,7 @@ footer {
 .explorer-layout-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 2rem;
   align-items: center;
 }
 
@@ -6155,7 +6155,7 @@ footer {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: 380px;
+  min-height: 300px;
 }
 
 .explorer-details-card {
@@ -6213,7 +6213,7 @@ footer {
 }
 
 .explorer-mockup-panel .phone-mockup-frame {
-  max-width: 280px;
+  max-width: 240px;
   border-color: #1e293b;
 }
 
@@ -9226,6 +9226,13 @@ footer {
   color: var(--text-secondary);
   margin-bottom: var(--space-4);
   text-align: left;
+}
+.timeline-tech-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
 }
 .btn-disclosure {
   display: inline-flex;

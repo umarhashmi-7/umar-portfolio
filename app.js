@@ -1096,6 +1096,57 @@ const ARCH_DETAILS = {
       }
     });
 
+    // Strategy Modal Internal Tab Buttons click handler
+    const algoTabBtns = modal.querySelectorAll('.algo-tab-btn');
+    algoTabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        algoTabBtns.forEach(b => {
+          b.classList.remove('active');
+          b.style.background = 'none';
+          b.style.color = '#94a3b8';
+          b.style.borderColor = 'transparent';
+        });
+
+        modal.querySelectorAll('.algo-tab-content').forEach(c => {
+          c.classList.remove('active');
+          c.style.display = 'none';
+        });
+
+        btn.classList.add('active');
+        const tab = btn.getAttribute('data-algo-tab');
+        
+        // Dynamic colors for active state
+        if (tab === 'entry') {
+          btn.style.color = '#a78bfa';
+          btn.style.background = 'rgba(167, 139, 250, 0.08)';
+          btn.style.borderColor = 'rgba(167, 139, 250, 0.25)';
+          const entryContent = modal.querySelector('#algo-tab-entry');
+          if (entryContent) {
+            entryContent.classList.add('active');
+            entryContent.style.display = 'block';
+          }
+        } else if (tab === 'exit') {
+          btn.style.color = '#10b981';
+          btn.style.background = 'rgba(16, 185, 129, 0.08)';
+          btn.style.borderColor = 'rgba(16, 185, 129, 0.25)';
+          const exitContent = modal.querySelector('#algo-tab-exit');
+          if (exitContent) {
+            exitContent.classList.add('active');
+            exitContent.style.display = 'block';
+          }
+        } else if (tab === 'risk') {
+          btn.style.color = '#f87171';
+          btn.style.background = 'rgba(239, 68, 68, 0.08)';
+          btn.style.borderColor = 'rgba(239, 68, 68, 0.25)';
+          const riskContent = modal.querySelector('#umar-risk');
+          if (riskContent) {
+            riskContent.classList.add('active');
+            riskContent.style.display = 'block';
+          }
+        }
+      });
+    });
+
     // Scroll progress bar (throttled via rAF)
     let umarScrollTicking = false;
     modal.addEventListener('scroll', () => {
@@ -1115,16 +1166,41 @@ const ARCH_DETAILS = {
       }
     });
 
-    // Nav link smooth scroll
+    // Nav link smooth scroll (handling tab swapping dynamically)
     const navLinks = modal.querySelectorAll('.modal-nav-link');
     navLinks.forEach(link => {
       link.addEventListener('click', (e) => {
         e.preventDefault();
         const targetId = link.getAttribute('href');
-        const targetSection = modal.querySelector(targetId);
-        if (targetSection) {
-          const topPos = targetSection.offsetTop - 100;
-          modal.scrollTo({ top: topPos, behavior: 'smooth' });
+        
+        if (targetId === '#umar-risk') {
+          // Switch to Risk tab and scroll to strategy specifications section
+          const riskTabBtn = modal.querySelector('.algo-tab-btn[data-algo-tab="risk"]');
+          if (riskTabBtn) riskTabBtn.click();
+          
+          const targetSection = modal.querySelector('#umar-strategy');
+          if (targetSection) {
+            const topPos = targetSection.offsetTop - 100;
+            modal.scrollTo({ top: topPos, behavior: 'smooth' });
+          }
+        } else if (targetId === '#umar-strategy') {
+          // Default to V1 Entry Logic if currently on Risk tab
+          const activeBtn = modal.querySelector('.algo-tab-btn.active');
+          if (activeBtn && activeBtn.getAttribute('data-algo-tab') === 'risk') {
+            const entryTabBtn = modal.querySelector('.algo-tab-btn[data-algo-tab="entry"]');
+            if (entryTabBtn) entryTabBtn.click();
+          }
+          const targetSection = modal.querySelector('#umar-strategy');
+          if (targetSection) {
+            const topPos = targetSection.offsetTop - 100;
+            modal.scrollTo({ top: topPos, behavior: 'smooth' });
+          }
+        } else {
+          const targetSection = modal.querySelector(targetId);
+          if (targetSection) {
+            const topPos = targetSection.offsetTop - 100;
+            modal.scrollTo({ top: topPos, behavior: 'smooth' });
+          }
         }
       });
     });
@@ -1155,6 +1231,21 @@ const ARCH_DETAILS = {
       const sectionHeight = section.offsetHeight;
       const sectionTop = section.offsetTop - 150;
       const sectionId = section.getAttribute('id');
+      
+      // Override active header indicator for Umar Algo Risk tab scrolling
+      if (sectionId === 'umar-strategy' && modal.id === 'umar-algo-modal') {
+        const activeTab = modal.querySelector('.algo-tab-btn.active');
+        if (activeTab && activeTab.getAttribute('data-algo-tab') === 'risk') {
+          const riskLink = modal.querySelector('.modal-nav-link[href="#umar-risk"]');
+          if (riskLink && scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+            navLinks.forEach(l => l.classList.remove('active'));
+            riskLink.classList.add('active');
+            if (chipEl) chipEl.textContent = 'Risk Management';
+            return;
+          }
+        }
+      }
+
       const activeLink = modal.querySelector(`.modal-nav-link[href="#${sectionId}"]`);
 
       if (activeLink) {
