@@ -11803,4 +11803,107 @@ footer {
   }
 }
 
+/* --- Product Tour Overlay --- */
+.product-tour-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 13, 10, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+
+.product-tour-overlay.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.product-tour-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  width: 90%;
+  max-width: 440px;
+  box-shadow: var(--shadow-premium);
+  transform: translateY(20px) scale(0.95);
+  transition: transform var(--transition-normal) cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  position: relative;
+}
+
+.product-tour-overlay.active .product-tour-card {
+  transform: translateY(0) scale(1);
+}
+
+.tour-close-btn {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: color var(--transition-fast);
+  padding: 4px;
+}
+
+.tour-close-btn:hover {
+  color: var(--text-primary);
+}
+
+.product-tour-step {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.product-tour-step h3 {
+  font-size: var(--text-xl);
+  color: var(--text-primary);
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+.product-tour-step p {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+}
+
+.product-tour-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-color);
+  padding-top: var(--space-4);
+  margin-top: var(--space-2);
+}
+
+.product-tour-nav span {
+  font-size: var(--text-sm);
+  font-family: var(--font-mono);
+  color: var(--text-tertiary);
+  font-weight: 600;
+}
+
+.product-tour-nav div {
+  display: flex;
+  gap: var(--space-2);
+}
+
+
 

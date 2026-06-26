@@ -26,6 +26,7 @@ if (siufitSection) {
   overlay.className = 'product-tour-overlay';
   overlay.innerHTML = `
     <div class="product-tour-card">
+      <button id="tour-close" class="tour-close-btn" aria-label="Close Tour">&times;</button>
       <div class="product-tour-step">
         <h3 id="tour-title">Architecture Overview</h3>
         <p id="tour-desc">SIUFIT uses MVVM architecture with Kotlin Coroutines, Room database for offline storage, and Firebase Firestore for cloud sync.</p>
@@ -55,6 +56,8 @@ if (siufitSection) {
   const tourCounter = overlay.querySelector('#tour-counter');
   const tourPrev = overlay.querySelector('#tour-prev');
   const tourNext = overlay.querySelector('#tour-next');
+  const tourClose = overlay.querySelector('#tour-close');
+
 
   function updateTour() {
     const step = tourSteps[currentStep];
@@ -78,6 +81,10 @@ if (siufitSection) {
   tourNext.addEventListener('click', () => {
     if (currentStep < tourSteps.length - 1) { currentStep++; updateTour(); }
     else { overlay.classList.remove('active'); }
+  });
+
+  tourClose.addEventListener('click', () => {
+    overlay.classList.remove('active');
   });
 
   overlay.addEventListener('click', (e) => {
