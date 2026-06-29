@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { HeroBrain } from './hero/HeroBrain.js';
 
 const container = document.getElementById('hero-3d-container');
 if (!container) throw new Error('3D container not found');
@@ -13,20 +14,7 @@ const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true,
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 renderer.toneMappingExposure = 1.5;
 
-const geo = new THREE.TorusKnotGeometry(1.5, 0.4, 128, 16);
-const mat = new THREE.MeshPhysicalMaterial({
-  color: 0x4a90ff,
-  metalness: 1,
-  roughness: 0.1,
-  clearcoat: 0.4,
-  clearcoatRoughness: 0.15,
-  emissive: 0x2563eb,
-  emissiveIntensity: 0.3,
-  envMapIntensity: 2,
-});
-const mesh = new THREE.Mesh(geo, mat);
-scene.add(mesh);
-
+// Lights
 const ambient = new THREE.AmbientLight(0x5599dd, 0.6);
 scene.add(ambient);
 const key = new THREE.DirectionalLight(0x8b5cf6, 4);
@@ -39,20 +27,12 @@ const rim = new THREE.DirectionalLight(0x10b981, 1.5);
 rim.position.set(0, -4, -6);
 scene.add(rim);
 
-// Auto-fit: compute bounding box, center model, frame camera
-const box = new THREE.Box3().setFromObject(mesh);
-const center = new THREE.Vector3();
-box.getCenter(center);
-
-// Shift mesh so its center is at origin (keeps rotation centered)
-mesh.position.sub(center);
-
-// Compute actual bounding sphere radius from geometry vertices
-geo.computeBoundingSphere();
-const radius = geo.boundingSphere.radius;
-
+// Bounding parameters matching normalized brain size
+const radius = 1.45;
 const FOV = 45;
 const PADDING = 1.15; // 15% margin
+
+const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
 
 function frameCamera() {
   const w = container.clientWidth;
@@ -78,8 +58,10 @@ function frameCamera() {
   camera.updateProjectionMatrix();
 }
 
-const camera = new THREE.PerspectiveCamera(FOV, 1, 0.1, 100);
 frameCamera();
+
+// Instantiate premium holographic brain
+const brain = new HeroBrain(scene, camera);
 
 function resize() {
   const w = container.clientWidth;
@@ -94,9 +76,24 @@ const ro = new ResizeObserver(resize);
 ro.observe(container);
 resize();
 
-renderer.setAnimationLoop(() => {
-  const t = performance.now() / 1000;
-  mesh.rotation.x = t * 0.1;
-  mesh.rotation.y = t * 0.18;
+// Subtle mouse coordinates tracker
+const mouse = { x: 0, y: 0 };
+window.addEventListener('mousemove', (e) => {
+  mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+});
+
+// Run existing ticker loop
+let lastTime = 0;
+renderer.setAnimationLoop((time) => {
+  const t = time / 1000;
+  const dt = Math.min(t - lastTime, 0.1); // Cap delta time to prevent spikes
+  lastTime = t;
+  
+  const scrollY = window.scrollY || 0;
+  
+  // Drive holographic brain animations
+  brain.update(t, dt, scrollY, mouse);
+  
   renderer.render(scene, camera);
 });
