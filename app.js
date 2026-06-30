@@ -1957,7 +1957,7 @@ function initSocialActions() {
         dlBtn.click();
         showToast('Downloading print-ready ATS resume PDF...');
       } else {
-        window.open('resume.pdf', '_blank');
+        window.open('/Mohd_Umar_Hashmi_Resume.pdf', '_blank');
       }
     });
   }
@@ -2069,8 +2069,8 @@ function initResumeCustomizer() {
       slideIndex: 1 // Go to Skills
     },
     ai: {
-      coverText: '<strong>🤖 AI Integration Specialist Profile Enabled</strong><br>Umar specializes in embedding machine learning stacks directly on-device and routing Llama queries through ultra-fast API endpoints. He integrates Groq APIs for sub-200ms chat inference speeds, Google ML Kit for on-device food classification and image processing, and builds advanced prompt flows. Select highlighted keywords inside are emphasized.',
-      keywords: ['AI & LLM API Integration', 'Prompt Engineering', 'AI Workflow Automation', 'Groq API', 'LLaMA 3.3-70B', 'ML Kit', 'LLM Integration', 'AI', 'LLM', 'Llama', 'Google ML Kit', 'USDA FoodData API', 'Open Food Facts API', 'AI integration'],
+      coverText: '<strong>🤖 AI & Systems Engineer Profile Enabled</strong><br>Umar specializes in building scalable backend services, distributed multiprocessing pipelines, and AI/LLM integrations. He has architected institutional-grade Smart Money Concepts (SMC) algorithmic trading systems (UMAR SMC Bot, V7.2 MT5 Platform) built on watchdog recovery and FileLock synchronization, and integrates Groq LLaMA models for real-time inference. Select highlighted keywords inside are emphasized.',
+      keywords: ['AI & LLM API Integration', 'Prompt Engineering', 'AI Workflow Automation', 'Groq API', 'LLaMA 3.3-70B', 'ML Kit', 'LLM Integration', 'AI', 'LLM', 'Llama', 'Google ML Kit', 'USDA FoodData API', 'Open Food Facts API', 'AI integration', 'Python', 'Pandas', 'NumPy', 'Algorithmic Trading', 'SMC Bot', 'MetaTrader 5', 'MT5', 'distributed systems', 'concurrency', 'multiprocessing', 'watchdog', 'FileLock', 'concurrency', 'structured logging'],
       slideIndex: 3 // Go to Projects
     },
     educator: {
